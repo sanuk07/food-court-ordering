@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Food Court Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #f5f7f4; color: #1c2b21;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    header { background: #167447; color: white; padding: 22px 16px; }
+    header h1 { margin: 0 0 6px; font-size: 25px; }
+    header p { margin: 0; color: #e3f3e8; }
+    main { max-width: 1100px; margin: auto; padding: 20px 14px 40px; }
+    .card {
+      background: white; border: 1px solid #e0e6df;
+      border-radius: 14px; padding: 18px; margin-bottom: 18px;
+    }
+    h2 { margin-top: 0; font-size: 21px; }
+    label { display: block; margin: 12px 0 6px; font-size: 13px; font-weight: bold; }
+    input, select {
+      width: 100%; padding: 11px; border: 1px solid #cfd8cf;
+      border-radius: 8px; background: white; color: #1c2b21;
+    }
+    button {
+      border: 0; border-radius: 8px; padding: 10px 13px;
+      background: #167447; color: white; font-weight: bold; cursor: pointer;
+    }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .secondary { background: #e8f2ea; color: #17663e; }
+    .danger { background: #a83226; }
+    .row { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+    .row > * { flex: 1; min-width: 130px; }
+    .hidden { display: none !important; }
+    .muted { color: #68746b; font-size: 13px; line-height: 1.5; }
+    .status { padding: 12px; border-radius: 8px; margin: 12px 0; overflow-wrap: anywhere; }
+    .error { color: #922d20; background: #fff0ed; }
+    .success { color: #155e35; background: #e6f5e9; }
+    .order, .menu-item {
+      border: 1px solid #e1e7e0; border-radius: 10px;
+      padding: 14px; margin-top: 12px; overflow-wrap: anywhere;
+    }
+    .order h3, .menu-item h3 { margin: 0 0 8px; }
+    .order p, .menu-item p { margin: 6px 0; line-height: 1.45; }
+    .order-actions { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; margin-top: 12px; }
+    .order-actions select { max-width: 210px; }
+    .tag { display: inline-block; background: #edf4ee; color: #17663e; padding: 5px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .check { display: flex; gap: 8px; align-items: center; }
+    .check input { width: auto; }
+    .toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>🍽️ Food Court Admin</h1>
+  <p>Manage orders and menu availability</p>
+</header>
+
+<main>
+  <div id="message" class="status hidden" role="status" aria-live="polite"></div>
+
+  <section class="card" id="loginCard">
+    <h2>Admin login</h2>
+    <p class="muted">Enter the admin password configured in your Google Apps Script Code.gs.</p>
+    <form id="loginForm">
+      <label for="password">Admin password</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button id="loginButton" type="submit" style="margin-top:12px">Log in</button>
+    </form>
+  </section>
+
+  <div id="dashboard" class="hidden">
+    <section class="card">
+      <div class="toolbar">
+        <h2>Orders</h2>
+        <button id="refreshOrders" type="button" class="secondary">Refresh orders</button>
+      </div>
+      <div class="row">
+        <div>
+          <label for="orderDate">Order date</label>
+          <input id="orderDate" type="date">
+        </div>
+        <div>
+          <button id="loadOrders" type="button">Load orders</button>
+        </div>
+      </div>
+      <p class="muted">Choose a date to see its orders. Update an order status and save it.</p>
+      <div id="orders"><p class="muted">Log in to view orders.</p></div>
+    </section>
+
+    <section class="card">
+      <div class="toolbar">
+        <h2>Menu management</h2>
+        <button id="refreshMenu" type="button" class="secondary">Refresh menu</button>
+      </div>
+      <p class="muted">Add a new item or update an existing item's details and availability.</p>
+
+      <form id="menuForm">
+        <input id="menuId" type="hidden">
+        <div class="grid">
+          <div>
+            <label for="menuName">Food name *</label>
+            <input id="menuName" maxlength="100" required>
+          </div>
+          <div>
+            <label for="menuPrice">Price in ₹ *</label>
+            <input id="menuPrice" type="number" min="0.01" max="100000" step="0.01" required>
+          </div>
+          <div>
+            <label for="menuCategory">Category</label>
+            <input id="menuCategory" maxlength="60" placeholder="For example: Burger">
+          </div>
+          <div>
+            <label for="menuVeg">Food type</label>
+            <select id="menuVeg">
+              <option value="true">Vegetarian</option>
+              <option value="false">Non-vegetarian</option>
+            </select>
+          </div>
+        </div>
+        <label class="check" style="margin-top:16px">
+          <input id="menuAvailable" type="checkbox" checked>
+          Available for customers
+        </label>
+        <div class="row" style="margin-top:14px">
+          <button id="saveMenu" type="submit">Save menu item</button>
+          <button id="clearMenu" class="secondary" type="button">Clear form</button>
+        </div>
+      </form>
+      <div id="menuItems"></div>
+    </section>
+
+    <button id="logout" type="button" class="danger">Log out</button>
+  </div>
+</main>
+
+<script>
+"use strict";
+
+// Use the same deployed Apps Script URL as index.html.
+const API_URL = "https://script.google.com/macros/s/AKfycbxFnlBMfa5OxypWumiimkAhwjiQYU7593JFgB9nWXOvQ1XPoHLgWhjo-NrBU4fhZqkgzg/exec";
+
+let adminPassword = "";
+let menuCache = [];
+const $ = id => document.getElementById(id);
+
+function showMessage(message, kind = "error") {
+  $("message").textContent = message;
+  $("message").className = "status " + kind;
+}
+function clearMessage() {
+  $("message").textContent = "";
+  $("message").className = "status hidden";
+}
+function money(value) {
+  const n = Number(value);
+  return Number.isFinite(n)
+    ? new Intl.NumberFormat("en-IN", {style:"currency",currency:"INR"}).format(n)
+    : "—";
+}
+function localDate() {
+  const d = new Date();
+  return [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, "0"),
+    String(d.getDate()).padStart(2, "0")
+  ].join("-");
+}
+function makeElement(tag, text, className) {
+  const el = document.createElement(tag);
+  if (text !== undefined) el.textContent = text;
+  if (className) el.className = className;
+  return el;
+}
+
+async function api(data) {
+  if (!API_URL || API_URL.includes("PASTE_YOUR_WEB_APP")) {
+    throw new Error("Please add your Apps Script /exec URL in admin.html.");
+  }
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify(data),
+    redirect: "follow"
+  });
+  const raw = await response.text();
+  let result;
+  try { result = JSON.parse(raw); }
+  catch { throw new Error("Unexpected server response. Check deployment access and URL."); }
+  if (!response.ok || result.ok !== true) {
+    throw new Error(result.error || "The request failed.");
+  }
+  return result;
+}
+
+async function adminApi(data) {
+  return api({...data, password: adminPassword});
+}
+
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearMessage();
+  $("loginButton").disabled = true;
+  try {
+    const password = $("password").value;
+    const result = await api({action:"login", password});
+    if (result.ok !== true) throw new Error("Login failed.");
+    adminPassword = password;
+    $("password").value = "";
+    $("loginCard").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+    $("orderDate").value = localDate();
+    showMessage("Login successful.", "success");
+    await Promise.all([loadOrders(), loadMenu()]);
+  } catch (error) {
+    showMessage(error.message || "Could not log in.");
+  } finally {
+    $("loginButton").disabled = false;
+  }
+});
+
+async function loadOrders() {
+  $("orders").replaceChildren(makeElement("p", "Loading orders…", "muted"));
+  try {
+    const date = $("orderDate").value || localDate();
+    const result = await adminApi({action:"list", date});
+    renderOrders(Array.isArray(result.orders) ? result.orders : []);
+  } catch (error) {
+    $("orders").replaceChildren(makeElement("p", error.message, "muted"));
+    showMessage(error.message);
+  }
+}
+
+function renderOrders(orders) {
+  const container = $("orders");
+  container.replaceChildren();
+  if (!orders.length) {
+    container.append(makeElement("p", "No orders found for this date.", "muted"));
+    return;
+  }
+
+  orders.forEach(order => {
+    const card = makeElement("article", undefined, "order");
+    card.append(makeElement("h3", "Order " + (order.orderId || "—")));
+    card.append(makeElement("span", order.status || "NEW", "tag"));
+    card.append(makeElement("p", "Customer: " + (order.name || "—")));
+    card.append(makeElement("p", "Phone: " + (order.phone || "—")));
+    card.append(makeElement("p", "Order type: " + (order.type || "—")));
+    if (order.table) card.append(makeElement("p", "Table: " + order.table));
+    if (order.address) card.append(makeElement("p", "Address: " + order.address));
+    card.append(makeElement("p", "Items: " + (order.items || "—")));
+    card.append(makeElement("p", "Food: " + money(order.food) +
+      " · Delivery: " + money(order.deliveryFee) +
+      " · Total: " + money(order.total)));
+    if (order.notes) card.append(makeElement("p", "Notes: " + order.notes));
+    if (order.map) {
+      const link = makeElement("a", "Open route in Google Maps");
+      link.href = order.map;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      card.append(link);
+    }
+
+    const actions = makeElement("div", undefined, "order-actions");
+    const select = document.createElement("select");
+    [
+      ["NEW", "New"],
+      ["PREPARING", "Preparing"],
+      ["READY", "Ready"],
+      ["COMPLETED", "Completed"],
+      ["CANCELLED", "Cancelled"]
+    ].forEach(([value, label]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      select.append(option);
+    });
+    select.value = order.status || "NEW";
+
+    const save = makeElement("button", "Save status");
+    save.type = "button";
+    save.addEventListener("click", async () => {
+      save.disabled = true;
+      try {
+        await adminApi({
+          action:"update",
+          orderId:order.orderId,
+          status:select.value,
+          date:$("orderDate").value || localDate()
+        });
+        showMessage("Order status updated.", "success");
+        await loadOrders();
+      } catch (error) {
+        showMessage(error.message);
+      } finally {
+        save.disabled = false;
+      }
+    });
+
+    actions.append(select, save);
+    card.append(actions);
+    container.append(card);
+  });
+}
+
+async function loadMenu() {
+  $("menuItems").replaceChildren(makeElement("p", "Loading menu…", "muted"));
+  try {
+    const result = await adminApi({action:"menu"});
+    menuCache = Array.isArray(result.items) ? result.items : [];
+    renderAdminMenu();
+  } catch (error) {
+    $("menuItems").replaceChildren(makeElement("p", error.message, "muted"));
+    showMessage(error.message);
+  }
+}
+
+function renderAdminMenu() {
+  const container = $("menuItems");
+  container.replaceChildren();
+  if (!menuCache.length) {
+    container.append(makeElement("p", "No menu items found.", "muted"));
+    return;
+  }
+
+  menuCache.forEach(item => {
+    const card = makeElement("article", undefined, "menu-item");
+    card.append(makeElement("h3", item.name || "Unnamed item"));
+    card.append(makeElement("p", money(item.price) + " · " +
+      (item.veg === true ? "Vegetarian" : "Non-vegetarian") + " · " +
+      (item.available === true ? "Available" : "Unavailable")));
+    if (item.category) card.append(makeElement("p", "Category: " + item.category));
+
+    const actions = makeElement("div", undefined, "row");
+    const edit = makeElement("button", "Edit");
+    edit.type = "button";
+    edit.className = "secondary";
+    edit.addEventListener("click", () => {
+      $("menuId").value = item.id || "";
+      $("menuName").value = item.name || "";
+      $("menuPrice").value = item.price || "";
+      $("menuCategory").value = item.category || "";
+      $("menuVeg").value = String(item.veg === true);
+      $("menuAvailable").checked = item.available === true;
+      $("saveMenu").textContent = "Update menu item";
+      $("menuForm").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    const toggle = makeElement("button", item.available === true ? "Mark unavailable" : "Mark available");
+    toggle.type = "button";
+    toggle.addEventListener("click", async () => {
+      toggle.disabled = true;
+      try {
+        await adminApi({
+          action:"menu_toggle",
+          id:item.id,
+          available:!(item.available === true)
+        });
+        showMessage("Menu availability updated.", "success");
+        await loadMenu();
+      } catch (error) {
+        showMessage(error.message);
+      } finally {
+        toggle.disabled = false;
+      }
+    });
+
+    actions.append(edit, toggle);
+    card.append(actions);
+    container.append(card);
+  });
+}
+
+$("menuForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = $("saveMenu");
+  button.disabled = true;
+  try {
+    await adminApi({
+      action:"menu_save",
+      id:$("menuId").value,
+      name:$("menuName").value.trim(),
+      price:Number($("menuPrice").value),
+      category:$("menuCategory").value.trim(),
+      veg:$("menuVeg").value === "true",
+      available:$("menuAvailable").checked
+    });
+    showMessage("Menu item saved.", "success");
+    clearMenuForm();
+    await loadMenu();
+  } catch (error) {
+    showMessage(error.message);
+  } finally {
+    button.disabled = false;
+  }
+});
+
+function clearMenuForm() {
+  $("menuForm").reset();
+  $("menuId").value = "";
+  $("menuAvailable").checked = true;
+  $("saveMenu").textContent = "Save menu item";
+}
+$("clearMenu").addEventListener("click", clearMenuForm);
+$("refreshOrders").addEventListener("click", loadOrders);
+$("loadOrders").addEventListener("click", loadOrders);
+$("refreshMenu").addEventListener("click", loadMenu);
+
+$("logout").addEventListener("click", () => {
+  adminPassword = "";
+  menuCache = [];
+  $("dashboard").classList.add("hidden");
+  $("loginCard").classList.remove("hidden");
+  $("orders").replaceChildren();
+  $("menuItems").replaceChildren();
+  clearMessage();
+});
+
+$("orderDate").value = localDate();
+</script>
+</body>
+</html>
