@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kuch Bhi Kho Lo Court | Order Online</title>
+  <meta name="description" content="Order delicious food online from Kuch Bhi Kho Lo Court.">
+  <style>
+    :root {
+      --green: #167447;
+      --dark: #17251d;
+      --cream: #fffaf0;
+      --orange: #f29b38;
+      --muted: #68746b;
+      --line: #e8e9e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--dark);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    header {
+      background: var(--green);
+      color: white;
+      padding: 25px 18px;
+    }
+    .header-inner, main, footer {
+      max-width: 1120px;
+      margin: auto;
+    }
+    .brand { font-size: 25px; font-weight: 800; }
+    .tagline { margin-top: 7px; color: #e5f4e9; }
+    .hero {
+      padding: 28px 0 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    h1 { font-size: clamp(27px, 5vw, 40px); margin: 0 0 8px; }
+    h2 { font-size: 23px; }
+    .muted { color: var(--muted); line-height: 1.5; }
+    .pill {
+      display: inline-block;
+      background: #e3f3e7;
+      color: #145d38;
+      border-radius: 30px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    main { padding: 0 16px 35px; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(290px, .9fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .food-card, .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 3px 14px #18251b08;
+    }
+    .food-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 185px;
+    }
+    .food-icon { font-size: 30px; margin-bottom: 10px; }
+    .food-name { font-weight: 750; font-size: 17px; }
+    .food-category { color: var(--muted); font-size: 12px; margin-top: 5px; }
+    .food-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 16px;
+    }
+    .price { font-weight: 800; font-size: 18px; }
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      background: var(--green);
+      color: white;
+      padding: 11px 14px;
+      font-weight: 700;
+    }
+    .btn:hover { filter: brightness(.93); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-light { background: #edf4ee; color: var(--green); }
+    .btn-small { padding: 7px 11px; }
+    .panel { position: sticky; top: 12px; }
+    .panel h2 { margin-top: 0; }
+    .cart-empty { color: var(--muted); padding: 12px 0; }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .cart-item-name { font-weight: 700; }
+    .cart-item-price { font-size: 13px; color: var(--muted); margin-top: 5px; }
+    .qty { display: flex; align-items: center; gap: 8px; }
+    .qty button {
+      width: 30px; height: 30px; border-radius: 8px;
+      border: 1px solid var(--line); background: white;
+    }
+    .total-row {
+      display: flex; justify-content: space-between; gap: 10px;
+      padding: 7px 0;
+    }
+    .grand-total {
+      font-size: 20px; font-weight: 800;
+      border-top: 1px solid var(--line); margin-top: 8px; padding-top: 14px;
+    }
+    label { display: block; font-size: 13px; font-weight: 700; margin: 13px 0 6px; }
+    input, select, textarea {
+      width: 100%; padding: 11px; border: 1px solid #d8ded7;
+      border-radius: 9px; background: white; color: var(--dark);
+    }
+    textarea { min-height: 75px; resize: vertical; }
+    .form-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .full { width: 100%; margin-top: 14px; }
+    .status {
+      padding: 12px; border-radius: 10px; margin: 12px 0;
+      font-size: 14px; line-height: 1.5; overflow-wrap: anywhere;
+    }
+    .status.error { background: #fff0ed; color: #9b2c1c; }
+    .status.success { background: #e5f5e9; color: #155e35; }
+    .hidden { display: none !important; }
+    .loading { padding: 20px; color: var(--muted); }
+    footer { padding: 20px 16px 30px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; }
+      .panel { position: static; }
+    }
+    @media (max-width: 430px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .food-card { min-height: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">🍽️ Kuch Bhi Kho Lo Court</div>
+      <div class="tagline">Fresh food. Great taste. Easy ordering.</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>Your favourites, delivered.</h1>
+        <div class="muted">Choose your food, add it to your cart and place your order online.</div>
+      </div>
+      <span class="pill">Prices in Indian Rupees (₹)</span>
+    </section>
+
+    <div id="status" class="status hidden" role="status" aria-live="polite"></div>
+
+    <div class="layout">
+      <section>
+        <div class="section-heading">
+          <h2>Our Menu</h2>
+          <button id="refreshButton" class="btn btn-light btn-small" type="button">Refresh menu</button>
+        </div>
+        <div id="menu" class="menu-grid">
+          <div class="loading">Loading menu from the server…</div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <h2>🛒 Your Order</h2>
+        <div id="cartItems" class="cart-empty">Your cart is empty.</div>
+
+        <div class="total-row"><span>Food subtotal</span><strong id="foodSubtotal">₹0</strong></div>
+        <div class="total-row"><span>Delivery fee*</span><strong id="deliveryFee">Calculated by server</strong></div>
+        <div class="total-row grand-total"><span>Total</span><strong id="grandTotal">Calculated at checkout</strong></div>
+        <p class="form-note">*The final delivery fee and order total are calculated and validated by the server.</p>
+
+        <form id="orderForm">
+          <label for="customerName">Your name *</label>
+          <input id="customerName" name="name" required maxlength="80" autocomplete="name" placeholder="Enter your full name">
+
+          <label for="phone">Mobile number *</label>
+          <input id="phone" name="phone" required inputmode="tel" autocomplete="tel" maxlength="16" placeholder="Enter your phone number">
+
+          <label for="type">Order type *</label>
+          <select id="type" name="type" required>
+            <option value="delivery">Home delivery</option>
+            <option value="takeaway">Takeaway</option>
+            <option value="dine-in">Dine-in</option>
+          </select>
+
+          <div id="deliveryFields">
+            <label for="address">Delivery address *</label>
+            <textarea id="address" name="address" minlength="25" maxlength="500" placeholder="Enter house/flat, street, area, landmark and city"></textarea>
+            <button id="locationButton" class="btn btn-light full" type="button">📍 Use my current location</button>
+            <p id="locationMessage" class="form-note">Delivery requires your address and current location. Your browser may ask for location permission.</p>
+          </div>
+
+          <div id="tableField" class="hidden">
+            <label for="table">Table number *</label>
+            <input id="table" name="table" maxlength="20" placeholder="Enter your table number">
+          </div>
+
+          <label for="notes">Special instructions (optional)</label>
+          <textarea id="notes" name="notes" maxlength="500" placeholder="For example: less spicy, no onion"></textarea>
+
+          <p id="minimumNote" class="form-note"></p>
+          <button id="placeOrder" class="btn full" type="submit">Place order</button>
+          <p class="form-note">Please check your details before submitting. Do not refresh the page while your order is being submitted.</p>
+        </form>
+        <div id="orderResult" aria-live="polite"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Kuch Bhi Kho Lo Court. Online ordering.
+  </footer>
+
+  <script>
+    "use strict";
+
+    // IMPORTANT: Replace this with your deployed Apps Script URL ending in /exec.
+    const API_URL = "https://script.google.com/macros/s/AKfycbxFnlBMfa5OxypWumiimkAhwjiQYU7593JFgB9nWXOvQ1XPoHLgWhjo-NrBU4fhZqkgzg/exec";
+
+    let menuItems = [];
+    let config = null;
+    const cart = new Map();
+    let customerLat = null;
+    let customerLng = null;
+    let submitting = false;
+
+    const $ = (id) => document.getElementById(id);
+
+    function showStatus(message, kind) {
+      const el = $("status");
+      el.textContent = message;
+      el.className = "status " + (kind || "error");
+    }
+
+    function clearStatus() {
+      $("status").textContent = "";
+      $("status").className = "status hidden";
+    }
+
+    function rupees(value) {
+      const number = Number(value);
+      return Number.isFinite(number)
+        ? new Intl.NumberFormat("en-IN", {
+            style: "currency", currency: "INR", maximumFractionDigits: 2
+          }).format(number)
+        : "—";
+    }
+
+    async function apiRequest(data) {
+      if (!API_URL || API_URL.includes("PASTE_YOUR_WEB_APP")) {
+        throw new Error("Add your deployed Apps Script /exec URL in index.html first.");
+      }
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data),
+        redirect: "follow"
+      });
+
+      const raw = await response.text();
+      let result;
+      try {
+        result = JSON.parse(raw);
+      } catch {
+        throw new Error("The server returned an unexpected response. Check the Web App deployment and URL.");
+      }
+
+      if (!response.ok || result.ok === false) {
+        throw new Error(result.error || "The request could not be completed.");
+      }
+      if (result.ok !== true) {
+        throw new Error("The server response was not recognised.");
+      }
+      return result;
+    }
+
+    async function loadData() {
+      $("menu").replaceChildren();
+      const loading = document.createElement("div");
+      loading.className = "loading";
+      loading.textContent = "Loading menu from the server…";
+      $("menu").append(loading);
+      $("refreshButton").disabled = true;
+      clearStatus();
+
+      try {
+        const results = await Promise.all([
+          apiRequest({ action: "config" }),
+          apiRequest({ action: "menu" })
+        ]);
+
+        config = results[0];
+        menuItems = Array.isArray(results[1].items) ? results[1].items : [];
+
+        renderMenu();
+        renderCart();
+        updateOrderFields();
+
+        if (menuItems.length === 0) {
+          showStatus("The server is running, but no menu items are currently available.", "error");
+        }
+      } catch (error) {
+        $("menu").replaceChildren();
+        const message = document.createElement("p");
+        message.className = "muted";
+        message.textContent = "We could not load the menu. Please check your internet connection and try again.";
+        $("menu").append(message);
+        showStatus(error.message || "Unable to connect to the ordering server.", "error");
+      } finally {
+        $("refreshButton").disabled = false;
+      }
+    }
+
+    function renderMenu() {
+      const container = $("menu");
+      container.replaceChildren();
+
+      const available = menuItems.filter(item => item.available === true);
+
+      if (!available.length) {
+        const empty = document.createElement("p");
+        empty.className = "muted";
+        empty.textContent = "No food items are available right now.";
+        container.append(empty);
+        return;
+      }
+
+      available.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "food-card";
+
+        const icon = document.createElement("div");
+        icon.className = "food-icon";
+        icon.textContent = item.veg === true ? "🥗" : "🍽️";
+
+        const name = document.createElement("div");
+        name.className = "food-name";
+        name.textContent = item.name;
+
+        const category = document.createElement("div");
+        category.className = "food-category";
+        category.textContent = String(item.category || "Food") +
+          (item.veg === true ? " · Veg" : "");
+
+        const bottom = document.createElement("div");
+        bottom.className = "food-bottom";
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent = rupees(item.price);
+
+        const button = document.createElement("button");
+        button.className = "btn btn-small";
+        button.type = "button";
+        button.textContent = cart.has(String(item.id)) ? "Add more +" : "Add +";
+        button.addEventListener("click", () => addItem(item.id));
+
+        bottom.append(price, button);
+        card.append(icon, name, category, bottom);
+        container.append(card);
+      });
+    }
+
+    function addItem(id) {
+      const key = String(id);
+      const item = menuItems.find(entry => String(entry.id) === key && entry.available === true);
+      if (!item) return;
+
+      const current = cart.get(key) || 0;
+      if (current >= 20) {
+        showStatus("You can order up to 20 of each item in one cart.", "error");
+        return;
+      }
+      cart.set(key, current + 1);
+      clearStatus();
+      renderMenu();
+      renderCart();
+    }
+
+    function changeQty(id, amount) {
+      const key = String(id);
+      const next = (cart.get(key) || 0) + amount;
+      if (next <= 0) cart.delete(key);
+      else if (next <= 20) cart.set(key, next);
+      renderMenu();
+      renderCart();
+    }
+
+    function cartLines() {
+      return Array.from(cart.entries()).map(([id, qty]) => {
+        const item = menuItems.find(entry => String(entry.id) === id);
+        return item ? { item, qty } : null;
+      }).filter(Boolean);
+    }
+
+    function subtotal() {
+      return cartLines().reduce((sum, line) => sum + Number(line.item.price) * line.qty, 0);
+    }
+
+    function renderCart() {
+      const container = $("cartItems");
+      container.replaceChildren();
+      const lines = cartLines();
+
+      if (!lines.length) {
+        container.className = "cart-empty";
+        container.textContent = "Your cart is empty.";
+      } else {
+        container.className = "";
+        lines.forEach(({ item, qty }) => {
+          const row = document.createElement("div");
+          row.className = "cart-item";
+
+          const info = document.createElement("div");
+          const name = document.createElement("div");
+          name.className = "cart-item-name";
+          name.textContent = item.name;
+
+          const price = document.createElement("div");
+          price.className = "cart-item-price";
+          price.textContent = rupees(Number(item.price) * qty);
+
+          info.append(name, price);
+
+          const controls = document.createElement("div");
+          controls.className = "qty";
+
+          const minus = document.createElement("button");
+          minus.type = "button";
+          minus.setAttribute("aria-label", "Remove one " + item.name);
+          minus.textContent = "−";
+          minus.addEventListener("click", () => changeQty(item.id, -1));
+
+          const count = document.createElement("span");
+          count.textContent = String(qty);
+
+          const plus = document.createElement("button");
+          plus.type = "button";
+          plus.setAttribute("aria-label", "Add one " + item.name);
+          plus.textContent = "+";
+          plus.disabled = qty >= 20;
+          plus.addEventListener("click", () => changeQty(item.id, 1));
+
+          controls.append(minus, count, plus);
+          row.append(info, controls);
+          container.append(row);
+        });
+      }
+
+      $("foodSubtotal").textContent = rupees(subtotal());
+      $("deliveryFee").textContent = $("type").value === "delivery"
+        ? "Calculated at checkout" : rupees(0);
+      $("grandTotal").textContent = $("type").value === "delivery"
+        ? "Calculated at checkout" : rupees(subtotal());
+
+      if (config && Number.isFinite(Number(config.minOrder))) {
+        $("minimumNote").textContent =
+          "Minimum delivery food order: " + rupees(config.minOrder) +
+          ". The server validates the final amount.";
+      }
+    }
+
+    function updateOrderFields() {
+      const type = $("type").value;
+      const delivery = type === "delivery";
+      const dineIn = type === "dine-in";
+
+      $("deliveryFields").classList.toggle("hidden", !delivery);
+      $("tableField").classList.toggle("hidden", !dineIn);
+      $("address").required = delivery;
+      $("table").required = dineIn;
+
+      $("deliveryFee").textContent = delivery ? "Calculated at checkout" : rupees(0);
+      $("grandTotal").textContent = delivery ? "Calculated at checkout" : rupees(subtotal());
+      renderCart();
+    }
+
+    function getCurrentLocation() {
+      if (!navigator.geolocation) {
+        $("locationMessage").textContent = "Your browser does not support location sharing. Try another browser.";
+        return;
+      }
+
+      $("locationButton").disabled = true;
+      $("locationButton").textContent = "Getting location…";
+      $("locationMessage").textContent = "Please allow location access if your browser asks.";
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          customerLat = position.coords.latitude;
+          customerLng = position.coords.longitude;
+          $("locationMessage").textContent =
+            "Location captured successfully. Your exact coordinates will be sent with your delivery order.";
+          $("locationButton").textContent = "📍 Location captured";
+          $("locationButton").disabled = false;
+        },
+        error => {
+          customerLat = null;
+          customerLng = null;
+          const message = error.code === 1
+            ? "Location permission was denied. Allow location access in your browser and try again."
+            : "Could not get your location. Check your device location settings and try again.";
+          $("locationMessage").textContent = message;
+          $("locationButton").textContent = "📍 Use my current location";
+          $("locationButton").disabled = false;
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      );
+    }
+
+    async function submitOrder(event) {
+      event.preventDefault();
+      if (submitting) return;
+      clearStatus();
+
+      const lines = cartLines();
+      if (!lines.length) {
+        showStatus("Please add at least one food item to your cart.", "error");
+        return;
+      }
+
+      const type = $("type").value;
+      const address = $("address").value.trim();
+
+      if (type === "delivery") {
+        if (address.length < 25) {
+          showStatus("Please enter a complete delivery address of at least 25 characters.", "error");
+          $("address").focus();
+          return;
+        }
+        if (typeof customerLat !== "number" || typeof customerLng !== "number") {
+          showStatus("Please use the location button and allow location access before placing a delivery order.", "error");
+          return;
+        }
+      }
+
+      const phone = $("phone").value.trim();
+      if (!/^[0-9+()\-\s]{8,16}$/.test(phone)) {
+        showStatus("Please enter a valid phone number.", "error");
+        $("phone").focus();
+        return;
+      }
+
+      const payload = {
+        name: $("customerName").value.trim(),
+        phone,
+        type,
+        table: type === "dine-in" ? $("table").value.trim() : "",
+        items: lines.map(({ item, qty }) => ({ id: item.id, qty })),
+        notes: $("notes").value.trim(),
+        address: type === "delivery" ? address : "",
+        lat: type === "delivery" ? customerLat : null,
+        lng: type === "delivery" ? customerLng : null
+      };
+
+      submitting = true;
+      $("placeOrder").disabled = true;
+      $("placeOrder").textContent = "Submitting order…";
+      $("orderResult").replaceChildren();
+
+      try {
+        // No action field: the backend treats this as a place-order request.
+        const result = await apiRequest(payload);
+
+        const box = document.createElement("div");
+        box.className = "status success";
+
+        const heading = document.createElement("strong");
+        heading.textContent = "Order placed successfully!";
+
+        const orderId = document.createElement("p");
+        orderId.textContent = "Order number: " + String(result.orderId || "Confirmed");
+
+        const total = document.createElement("p");
+        total.textContent = "Order total: " + rupees(result.total);
+
+        const message = document.createElement("p");
+        message.textContent = "Please keep your order number for reference.";
+
+        box.append(heading, orderId, total, message);
+
+        if (result.map) {
+          const mapLink = document.createElement("a");
+          mapLink.href = result.map;
+          mapLink.target = "_blank";
+          mapLink.rel = "noopener noreferrer";
+          mapLink.textContent = "Open delivery route in Google Maps";
+          box.append(document.createElement("br"), mapLink);
+        }
+
+        $("orderResult").append(box);
+        cart.clear();
+        renderMenu();
+        renderCart();
+        $("orderForm").reset();
+        customerLat = null;
+        customerLng = null;
+        $("locationButton").textContent = "📍 Use my current location";
+        $("locationMessage").textContent =
+          "Delivery requires your address and current location. Your browser may ask for location permission.";
+        updateOrderFields();
+        box.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (error) {
+        showStatus(
+          "We could not confirm your order. " +
+          (error.message || "Please try again.") +
+          " If you are unsure whether it was submitted, check with the food court before retrying.",
+          "error"
+        );
+      } finally {
+        submitting = false;
+        $("placeOrder").disabled = false;
+        $("placeOrder").textContent = "Place order";
+      }
+    }
+
+    $("type").addEventListener("change", updateOrderFields);
+    $("locationButton").addEventListener("click", getCurrentLocation);
+    $("orderForm").addEventListener("submit", submitOrder);
+    $("refreshButton").addEventListener("click", loadData);
+    $("year").textContent = new Date().getFullYear();
+
+    loadData();
+  </script>
+</body>
+</html>
