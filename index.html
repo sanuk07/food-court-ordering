@@ -930,6 +930,100 @@
       overflow-wrap: anywhere;
     }
 
+    .distance-map-panel {
+      margin-top: 10px;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+    }
+
+    .distance-map-title {
+      margin: 0 0 7px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .distance-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .distance-text.warning { color: #a1242f; font-weight: 800; }
+
+    .distance-map {
+      display: block;
+      width: 100%;
+      height: 180px;
+      margin-top: 9px;
+      border: 0;
+      border-radius: 11px;
+      background: #f1eee8;
+    }
+
+    .distance-map-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--red);
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .distance-map[hidden], .distance-map-link[hidden] { display: none !important; }
+
+    /* Customer order tracking */
+    .tracking-section { margin: 32px 0 12px; }
+    .tracking-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .tracking-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(29,29,31,.04);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+    .tracking-card h3 { margin: 0 0 7px; font-size: 16px; font-weight: 850; }
+    .tracking-card .track-help { margin: 0 0 12px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .tracking-form { display: grid; gap: 8px; }
+    .tracking-form .input { min-height: 43px; }
+    .tracking-button {
+      min-height: 44px;
+      padding: 11px 14px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--red);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .tracking-result { min-width: 0; margin-top: 12px; }
+    .tracking-result:empty { display: none; }
+    .tracking-order-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .tracking-order-number { margin: 0; font-size: 15px; font-weight: 900; overflow-wrap: anywhere; }
+    .tracking-status-pill { display: inline-block; padding: 6px 9px; border-radius: 999px; background: #f1eee8; color: var(--ink); font-size: 10px; font-weight: 850; white-space: nowrap; }
+    .tracking-status-pill.status-cancelled { color: #a1242f; background: #fff0f0; }
+    .tracking-meta { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+    .tracking-progress { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 5px; margin-top: 13px; }
+    .tracking-step { min-width: 0; color: #9b9aa3; font-size: 10px; text-align: center; }
+    .tracking-step-mark { display: block; height: 5px; margin-bottom: 6px; border-radius: 999px; background: #e3e0da; }
+    .tracking-step.done { color: var(--ink); font-weight: 800; }
+    .tracking-step.done .tracking-step-mark { background: var(--red); }
+    .tracking-map-link { display: inline-block; margin-top: 10px; color: var(--red); font-size: 11px; font-weight: 800; text-decoration: none; }
+    .tracking-message { margin: 9px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+
+    @media (max-width: 760px) {
+      .tracking-layout { grid-template-columns: 1fr; gap: 9px; }
+      .tracking-card { padding: 13px; border-radius: 16px; }
+      .distance-map { height: 155px; }
+      .tracking-section { margin-top: 24px; }
+    }
+
     .checkout-button {
       display: flex;
       width: 100%;
@@ -1287,6 +1381,37 @@
       </div>
     </section>
 
+    <section class="tracking-section" aria-labelledby="trackingHeading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Order updates</p>
+          <h2 id="trackingHeading">Track your order</h2>
+          <p>Check your latest order or look up an order using its number and phone.</p>
+        </div>
+      </div>
+      <div class="tracking-layout">
+        <article class="tracking-card" aria-labelledby="recentOrderHeading">
+          <h3 id="recentOrderHeading">Your recent order</h3>
+          <p class="track-help">The most recent order placed in this browser appears here.</p>
+          <div id="recentOrderContent" class="tracking-result" aria-live="polite">
+            <p class="tracking-message">Your recent order will appear here after you place an order on this browser.</p>
+          </div>
+        </article>
+        <article class="tracking-card" aria-labelledby="findOrderHeading">
+          <h3 id="findOrderHeading">Find an order</h3>
+          <p class="track-help">Enter the order number and the same 10-digit phone number used at checkout.</p>
+          <form id="trackForm" class="tracking-form">
+            <label class="field-label" for="trackOrderNumber">Order number</label>
+            <input id="trackOrderNumber" class="input" required maxlength="40" autocomplete="off" placeholder="e.g. FC001">
+            <label class="field-label" for="trackPhone">Phone number</label>
+            <input id="trackPhone" class="input" required inputmode="numeric" autocomplete="tel" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile number">
+            <button id="trackSubmit" class="tracking-button" type="submit">Track order</button>
+          </form>
+          <div id="trackResult" class="tracking-result" aria-live="polite"></div>
+        </article>
+      </div>
+    </section>
+
     <footer>
       © <span id="year"></span> Kuch Bhi Kho Lo Court · Made with ❤️
     </footer>
@@ -1370,6 +1495,12 @@
               <textarea class="textarea" id="address" name="address" minlength="25" maxlength="500" placeholder="House/flat, street, area, landmark and city"></textarea>
               <button id="locationButton" class="location-button" type="button">📍 Use my current location</button>
               <p id="locationMessage" class="location-message">Your browser may ask permission to access your location.</p>
+              <div class="distance-map-panel" id="distanceMapPanel">
+                <p class="distance-map-title">📍 Kitchen distance &amp; map</p>
+                <p id="distanceText" class="distance-text">Use your current location to estimate the distance from the kitchen.</p>
+                <iframe id="distanceMap" class="distance-map" title="Map from the food court kitchen to your delivery location" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
+                <a id="distanceMapLink" class="distance-map-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Open route in Google Maps ↗</a>
+              </div>
             </div>
 
             <div id="tableField" class="form-field full-width hidden">
@@ -1406,6 +1537,9 @@
 
     // Existing backend URL — unchanged.
     const API_URL = "https://script.google.com/macros/s/AKfycbxFnlBMfa5OxypWumiimkAhwjiQYU7593JFgB9nWXOvQ1XPoHLgWhjo-NrBU4fhZqkgzg/exec";
+    const RECENT_ORDER_KEY = "kbklc_recent_order_v1";
+    const TRACKING_STEPS = ["NEW", "PREPARING", "READY", "COMPLETED"];
+    const TRACKING_LABELS = ["New", "Preparing", "Ready", "Completed"];
 
     let menuItems = [];
     let config = null;
@@ -1775,7 +1909,41 @@
       $("deliveryFee").textContent = delivery ? "Calculated at checkout" : rupees(0);
       $("grandTotal").textContent = delivery ? "Calculated at checkout" : rupees(subtotal());
       $("placeOrderAmount").textContent = rupees(subtotal()) + " →";
+      $("distanceMapPanel").classList.toggle("hidden", !delivery);
+      if (delivery && typeof customerLat === "number" && typeof customerLng === "number") {
+        updateDistanceMap();
+      }
       renderCart();
+    }
+
+    function directDistanceKm(lat1, lng1, lat2, lng2) {
+      const radians = value => value * Math.PI / 180;
+      const dLat = radians(lat2 - lat1);
+      const dLng = radians(lng2 - lng1);
+      const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLng / 2) ** 2;
+      return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+    }
+
+    function updateDistanceMap() {
+      if (!config || typeof customerLat !== "number" || typeof customerLng !== "number") return;
+      const shopLat = Number(config.shopLat);
+      const shopLng = Number(config.shopLng);
+      const distance = directDistanceKm(shopLat, shopLng, customerLat, customerLng);
+      const warning = distance > Number(config.radiusKm || 5);
+      const text = $("distanceText");
+      text.classList.toggle("warning", warning);
+      text.textContent = warning
+        ? "Approx. direct distance: " + distance.toFixed(2) + " km. This is outside our " + Number(config.radiusKm || 5) + " km delivery limit."
+        : "Approx. direct distance from kitchen: " + distance.toFixed(2) + " km · Delivery limit: " + Number(config.radiusKm || 5) + " km. The server confirms the final eligibility and fee.";
+      const origin = shopLat + "," + shopLng;
+      const destination = customerLat + "," + customerLng;
+      const route = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(origin) + "&destination=" + encodeURIComponent(destination);
+      const embed = "https://maps.google.com/maps?saddr=" + encodeURIComponent(origin) + "&daddr=" + encodeURIComponent(destination) + "&output=embed";
+      $("distanceMap").src = embed;
+      $("distanceMap").hidden = false;
+      $("distanceMapLink").href = route;
+      $("distanceMapLink").hidden = false;
     }
 
     function getCurrentLocation() {
@@ -1794,6 +1962,7 @@
           customerLng = position.coords.longitude;
           $("locationMessage").textContent =
             "Location captured successfully. Your exact coordinates will be sent with your delivery order.";
+          updateDistanceMap();
           $("locationButton").textContent = "📍 Location captured";
           $("locationButton").disabled = false;
         },
@@ -1804,6 +1973,11 @@
             ? "Location permission was denied. Allow location access in your browser and try again."
             : "Could not get your location. Check your device location settings and try again.";
           $("locationMessage").textContent = message;
+          $("distanceText").textContent = "Use your current location to estimate the distance from the kitchen.";
+          $("distanceText").classList.remove("warning");
+          $("distanceMap").hidden = true;
+          $("distanceMap").removeAttribute("src");
+          $("distanceMapLink").hidden = true;
           $("locationButton").textContent = "📍 Use my current location";
           $("locationButton").disabled = false;
         },
@@ -1841,8 +2015,8 @@
       }
 
       const phone = $("phone").value.trim();
-      if (!/^[0-9+()\-\s]{8,16}$/.test(phone)) {
-        showStatus("Please enter a valid phone number.", "error");
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        showStatus("Please enter a valid 10-digit Indian mobile number.", "error");
         $("phone").focus();
         showCartSheet();
         return;
@@ -1869,6 +2043,7 @@
       try {
         // Same order payload and existing backend request.
         const result = await apiRequest(payload);
+        saveRecentOrder({ orderId: result.orderId, phone: phone.replace(/\D/g, ""), date: result.date || "" });
 
         const box = document.createElement("div");
         box.className = "status success";
@@ -1898,6 +2073,7 @@
 
         $("orderResult").append(box);
         showSuccessSheet(result);
+        loadRecentOrder();
         cart.clear();
         renderMenu();
         renderCart();
@@ -1922,6 +2098,127 @@
         $("placeOrder").disabled = false;
         $("placeOrderLabel").textContent = "Place order";
         $("placeOrderAmount").textContent = rupees(subtotal()) + " →";
+      }
+    }
+
+    function saveRecentOrder(order) {
+      try {
+        if (!order || !order.orderId || !order.phone) return;
+        localStorage.setItem(RECENT_ORDER_KEY, JSON.stringify({
+          orderId: String(order.orderId),
+          phone: String(order.phone).replace(/\D/g, ""),
+          date: String(order.date || "")
+        }));
+      } catch (_) {
+        // Private browsing or storage restrictions should not stop checkout.
+      }
+    }
+
+    function readRecentOrder() {
+      try {
+        const raw = localStorage.getItem(RECENT_ORDER_KEY);
+        if (!raw) return null;
+        const saved = JSON.parse(raw);
+        if (!saved || !saved.orderId || !/^[6-9]\d{9}$/.test(String(saved.phone || ""))) return null;
+        return saved;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    async function loadRecentOrder() {
+      const target = $("recentOrderContent");
+      const saved = readRecentOrder();
+      target.replaceChildren();
+      if (!saved) {
+        target.append(makeTextElement("p", "Your recent order will appear here after you place an order on this browser.", "tracking-message"));
+        return;
+      }
+      target.append(makeTextElement("p", "Loading your latest order…", "tracking-message"));
+      try {
+        const request = { action: "track", orderId: saved.orderId, phone: saved.phone };
+        if (saved.date) request.date = saved.date;
+        const result = await apiRequest(request);
+        renderTrackingOrder(target, result.order);
+        appendTrackingRefresh(target, saved.orderId, saved.phone, saved.date);
+      } catch (error) {
+        target.replaceChildren();
+        target.append(makeTextElement("p", "Could not refresh this order right now. You can enter the order number and phone in Find an order.", "tracking-message"));
+        const retry = makeTextElement("button", "Refresh recent order", "tracking-button");
+        retry.type = "button";
+        retry.addEventListener("click", loadRecentOrder);
+        target.append(retry);
+      }
+    }
+
+    async function trackOrder(orderId, phone, target, date) {
+      target.replaceChildren();
+      target.append(makeTextElement("p", "Checking order details…", "tracking-message"));
+      try {
+        const request = { action: "track", orderId: orderId.trim(), phone: phone.replace(/\D/g, "") };
+        if (date) request.date = date;
+        const result = await apiRequest(request);
+        renderTrackingOrder(target, result.order);
+        appendTrackingRefresh(target, orderId.trim(), phone.replace(/\D/g, ""), date || "");
+      } catch (error) {
+        target.replaceChildren();
+        target.append(makeTextElement("p", error.message || "We could not find that order. Check the order number and phone number.", "tracking-message"));
+      }
+    }
+
+    function appendTrackingRefresh(target, orderId, phone, date) {
+      const button = makeTextElement("button", "Refresh status", "tracking-button");
+      button.type = "button";
+      button.style.marginTop = "10px";
+      button.addEventListener("click", () => trackOrder(orderId, phone, target, date));
+      target.append(button);
+    }
+
+    function renderTrackingOrder(target, order) {
+      target.replaceChildren();
+      if (!order) {
+        target.append(makeTextElement("p", "Order details are not available.", "tracking-message"));
+        return;
+      }
+
+      const top = makeTextElement("div", undefined, "tracking-order-top");
+      const number = makeTextElement("p", String(order.orderId || "Order"), "tracking-order-number");
+      const status = String(order.status || "NEW").toUpperCase();
+      const pill = makeTextElement("span", status.replace(/_/g, " "), "tracking-status-pill" + (status === "CANCELLED" ? " status-cancelled" : ""));
+      top.append(number, pill);
+
+      const metaLines = [];
+      if (order.date || order.time) metaLines.push([order.date, order.time].filter(Boolean).join(" · "));
+      if (order.items) metaLines.push("Items: " + order.items);
+      if (order.type) metaLines.push("Order type: " + String(order.type).replace(/-/g, " "));
+      metaLines.push("Total: " + rupees(order.total));
+      if (String(order.type || "").toLowerCase() === "delivery" && Number.isFinite(Number(order.distanceKm))) {
+        metaLines.push("Approx. kitchen distance: " + Number(order.distanceKm).toFixed(2) + " km");
+      }
+      const meta = makeTextElement("p", metaLines.join("\n"), "tracking-meta");
+      meta.style.whiteSpace = "pre-line";
+      target.append(top, meta);
+
+      if (status === "CANCELLED") {
+        target.append(makeTextElement("p", "This order has been cancelled. Please contact the food court if you need help.", "tracking-message"));
+      } else {
+        const activeIndex = TRACKING_STEPS.indexOf(status);
+        const progress = makeTextElement("div", undefined, "tracking-progress");
+        TRACKING_STEPS.forEach((step, index) => {
+          const cell = makeTextElement("div", undefined, "tracking-step" + (activeIndex >= index && activeIndex >= 0 ? " done" : ""));
+          cell.append(makeTextElement("span", "", "tracking-step-mark"), makeTextElement("span", TRACKING_LABELS[index]));
+          progress.append(cell);
+        });
+        target.append(progress);
+        if (activeIndex < 0) target.append(makeTextElement("p", "Current status: " + status, "tracking-message"));
+      }
+
+      if (order.map && String(order.type || "").toLowerCase() === "delivery") {
+        const link = makeTextElement("a", "Open delivery route in Google Maps ↗", "tracking-map-link");
+        link.href = String(order.map);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        target.append(link);
       }
     }
 
@@ -2132,6 +2429,21 @@
     $("locationButton").addEventListener("click", getCurrentLocation);
     $("orderForm").addEventListener("submit", submitOrder);
     $("refreshButton").addEventListener("click", loadData);
+    $("trackForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const orderId = $("trackOrderNumber").value.trim();
+      const phone = $("trackPhone").value.trim();
+      if (!orderId || !/^[6-9]\d{9}$/.test(phone)) {
+        $("trackResult").replaceChildren(makeTextElement("p", "Enter an order number and a valid 10-digit Indian mobile number.", "tracking-message"));
+        return;
+      }
+      $("trackSubmit").disabled = true;
+      $("trackSubmit").textContent = "Checking…";
+      trackOrder(orderId, phone, $("trackResult")).finally(() => {
+        $("trackSubmit").disabled = false;
+        $("trackSubmit").textContent = "Track order";
+      });
+    });
     $("year").textContent = new Date().getFullYear();
 
     $("searchInput").addEventListener("input", renderMenu);
@@ -2172,6 +2484,7 @@
 
     window.selectedFoodCategory = "All";
     loadData();
+    loadRecentOrder();
   </script>
 </body>
 </html>
