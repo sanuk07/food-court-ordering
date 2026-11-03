@@ -1,2490 +1,1011 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f1eee8">
-  <meta name="description" content="Order fresh, delicious food from Kuch Bhi Kho Lo Court.">
-  <title>Kuch Bhi Kho Lo Court — Order Online</title>
-
-  <style>
-    :root {
-      --bg: #f1eee8;
-      --ink: #1d1d1f;
-      --muted: #707080;
-      --red: #e23744;
-      --red-soft: #fde4e6;
-      --green: #270e60;
-      --green-soft: #e9e3f7;
-      --orange: #139c12;
-      --orange-soft: #e3f5e1;
-      --yellow: #f6d23f;
-      --purple: #7b4dff;
-      --white: #ffffff;
-      --line: #e9e6e0;
-      --radius: 22px;
-      --shadow: 0 1px 2px rgba(0,0,0,.05);
-      --shadow-hover: 0 8px 20px rgba(0,0,0,.08);
-      --content: 1240px;
-      --ease: cubic-bezier(.2,.8,.2,1);
-    }
-
-    * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 125px;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      overflow-x: hidden;
-    }
-
-    body.sheet-open { overflow: hidden; }
-
-    button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; touch-action: manipulation; }
-    button:focus-visible, input:focus-visible,
-    select:focus-visible, textarea:focus-visible {
-      outline: 3px solid rgba(226,55,68,.25);
-      outline-offset: 2px;
-    }
-
-    button:disabled { opacity: .6; cursor: not-allowed; }
-
-    h1, h2, h3, p { margin-top: 0; }
-
-    h1, h2, h3 {
-      letter-spacing: -.55px;
-    }
-
-    button, input, select, textarea {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .page {
-      width: min(100%, var(--content));
-      margin: 0 auto;
-      padding: 20px 22px 125px;
-    }
-
-    .eyebrow {
-      margin: 0 0 8px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.1px;
-      text-transform: uppercase;
-    }
-
-    .muted { color: var(--muted); }
-    .hidden { display: none !important; }
-
-    .brand-mark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 35px;
-      height: 35px;
-      border-radius: 12px;
-      background: rgba(255,255,255,.2);
-      font-size: 21px;
-      flex: 0 0 auto;
-    }
-
-    /* Hero bento */
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 120px 120px;
-      gap: 12px;
-    }
-
-    .hero-tile {
-      min-width: 0;
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .brand-tile {
-      grid-column: 1;
-      grid-row: 1 / 3;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      color: white;
-      background: var(--red);
-      min-height: 252px;
-    }
-
-    .brand-tile .brand-mark {
-      position: absolute;
-      left: 18px;
-      top: 18px;
-    }
-
-    .brand-emoji {
-      position: absolute;
-      top: 10px;
-      right: 8px;
-      font-size: clamp(72px, 8vw, 130px);
-      opacity: .25;
-      transform: rotate(12deg);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .brand-tile h1 {
-      position: relative;
-      z-index: 1;
-      max-width: 360px;
-      margin: 0 0 8px;
-      font-size: clamp(25px, 3vw, 34px);
-      line-height: 1.08;
-      font-weight: 850;
-      letter-spacing: -1px;
-    }
-
-    .brand-tile p {
-      position: relative;
-      z-index: 1;
-      max-width: 300px;
-      margin: 0;
-      color: rgba(255,255,255,.9);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .status-tile {
-      grid-column: 2;
-      grid-row: 1;
-      background: var(--green-soft);
-      color: var(--green);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .status-tile .eyebrow { color: var(--green); opacity: .75; }
-    .status-tile strong { font-size: 22px; letter-spacing: -.5px; }
-    .status-tile p { margin: 7px 0 0; font-size: 12px; }
-
-    .how-tile {
-      grid-column: 3;
-      grid-row: 1;
-      grid-row: 1;
-      background: var(--ink);
-      color: white;
-    }
-
-    .how-tile .eyebrow { color: #c6c5cf; }
-
-    .how-list {
-      margin: 7px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 650;
-    }
-
-    .how-list li { display: flex; align-items: center; gap: 8px; }
-
-    .how-list span {
-      display: inline-flex;
-      width: 20px;
-      height: 20px;
-      border-radius: 7px;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,.14);
-      font-size: 10px;
-    }
-
-    .search-tile {
-      grid-column: 2 / 4;
-      grid-row: 2;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: white;
-      padding: 18px;
-    }
-
-    .search-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .search-icon { font-size: 20px; }
-
-    .search-box input {
-      min-width: 0;
-      width: 100%;
-      border: 0;
-      outline: none;
-      background: transparent;
-      color: var(--ink);
-      padding: 12px 0;
-      font-size: 15px;
-    }
-
-    .search-box input:focus-visible { outline: none; }
-
-    .veg-toggle-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 42px;
-      height: 24px;
-      flex: 0 0 auto;
-    }
-
-    .switch input {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-    }
-
-    .switch-track {
-      position: absolute;
-      inset: 0;
-      border-radius: 999px;
-      background: #d7d7dc;
-      transition: background .2s ease;
-      cursor: pointer;
-    }
-
-    .switch-track::after {
-      content: "";
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      top: 3px;
-      left: 3px;
-      border-radius: 50%;
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,.2);
-      transition: transform .2s var(--ease);
-    }
-
-    .switch input:checked + .switch-track { background: #239447; }
-    .switch input:checked + .switch-track::after { transform: translateX(18px); }
-
-    /* Main content */
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 12px;
-      margin: 29px 0 14px;
-    }
-
-    .section-heading h2 {
-      margin: 0;
-      font-size: 25px;
-      font-weight: 850;
-      letter-spacing: -.8px;
-    }
-
-    .section-heading p {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .small-button {
-      min-height: 38px;
-      padding: 8px 12px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: white;
-      color: var(--ink);
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .small-button:hover { box-shadow: var(--shadow-hover); }
-
-    /* Category tiles */
-
-    .category-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin-bottom: 26px;
-    }
-
-    .category-tile {
-      min-height: 106px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 5px;
-      border: 1px solid transparent;
-      border-radius: 18px;
-      background: white;
-      color: var(--ink);
-      text-align: left;
-      box-shadow: var(--shadow);
-      transition: transform .2s var(--ease), box-shadow .2s ease, background .2s ease;
-    }
-
-    .category-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-    .category-tile.active { background: var(--ink); color: white; }
-    .category-emoji { font-size: 28px; line-height: 1.1; }
-    .category-name { font-size: 13px; font-weight: 800; }
-    .category-count { font-size: 11px; color: var(--muted); }
-    .category-tile.active .category-count { color: #c8c8d0; }
-
-    .category-tile[data-color="0"] { background-color: #fce8df; }
-    .category-tile[data-color="1"] { background-color: #e4f4e8; }
-    .category-tile[data-color="2"] { background-color: #eee7ff; }
-    .category-tile[data-color="3"] { background-color: #fff0c9; }
-    .category-tile[data-color="4"] { background-color: #e0f7f0; }
-    .category-tile[data-color="5"] { background-color: #e9edf9; }
-    .category-tile.active { background: var(--ink); }
-
-    /* Menu cards */
-
-    .menu-section { margin: 26px 0 30px; }
-
-    .menu-section-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 0 0 14px;
-      font-size: 21px;
-      font-weight: 850;
-      letter-spacing: -.6px;
-    }
-
-    .menu-section-title .title-emoji { font-size: 25px; }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 14px;
-      align-items: stretch;
-    }
-
-    .food-card {
-      min-width: 0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid rgba(29,29,31,.035);
-      border-radius: var(--radius);
-      background: white;
-      box-shadow: var(--shadow);
-      animation: card-enter .35s both;
-      transition: transform .2s var(--ease), box-shadow .2s ease;
-    }
-
-    .food-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    @keyframes card-enter {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .food-picture {
-      position: relative;
-      height: 110px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: var(--food-pastel, #fce8df);
-    }
-
-    .food-picture::after {
-      content: "";
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      border: 1px solid rgba(29,29,31,.055);
-      border-radius: 50%;
-    }
-
-    .food-picture-emoji {
-      position: relative;
-      z-index: 1;
-      font-size: 68px;
-      line-height: 1;
-      filter: drop-shadow(0 5px 3px rgba(0,0,0,.08));
-      transition: transform .25s var(--ease);
-    }
-
-    .food-card:hover .food-picture-emoji { transform: scale(1.06) rotate(-3deg); }
-
-    .food-tag {
-      position: absolute;
-      z-index: 2;
-      top: 10px;
-      left: 10px;
-      max-width: calc(100% - 80px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      border-radius: 999px;
-      padding: 6px 9px;
-      background: rgba(255,255,255,.92);
-      color: var(--ink);
-      font-size: 10px;
-      font-weight: 800;
-    }
-
-    .favourite-tag {
-      position: absolute;
-      z-index: 2;
-      top: 10px;
-      right: 10px;
-      border-radius: 999px;
-      padding: 6px 8px;
-      background: var(--yellow);
-      color: #3c3010;
-      font-size: 10px;
-      font-weight: 850;
-    }
-
-    .food-body {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      padding: 15px;
-    }
-
-    .food-name-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 7px;
-    }
-
-    .food-name {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 800;
-      line-height: 1.3;
-      overflow-wrap: anywhere;
-    }
-
-    .food-kind {
-      display: inline-flex;
-      width: 13px;
-      height: 13px;
-      margin-top: 3px;
-      flex: 0 0 auto;
-      align-items: center;
-      justify-content: center;
-      border: 1.5px solid #218c4b;
-      border-radius: 2px;
-    }
-
-    .food-kind::after {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #218c4b;
-    }
-
-    .food-kind.nonveg { border-color: #d63c42; }
-    .food-kind.nonveg::after { background: #d63c42; }
-
-    .food-description {
-      margin: 6px 0 14px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .food-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 9px;
-      margin-top: auto;
-    }
-
-    .food-price {
-      font-size: 19px;
-      font-weight: 850;
-      letter-spacing: -.4px;
-      white-space: nowrap;
-    }
-
-    .add-button {
-      min-height: 36px;
-      min-width: 68px;
-      padding: 7px 13px;
-      border: 1.5px solid var(--red);
-      border-radius: 11px;
-      background: white;
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 850;
-      transition: transform .15s ease, background .18s ease, color .18s ease;
-    }
-
-    .add-button:hover { background: var(--red); color: white; }
-    .add-button:active { transform: scale(.94); }
-
-    .stepper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 36px;
-      padding: 3px 6px;
-      border-radius: 11px;
-      background: var(--red);
-      color: white;
-    }
-
-    .stepper button {
-      width: 27px;
-      height: 28px;
-      padding: 0;
-      border: 0;
-      border-radius: 7px;
-      background: rgba(255,255,255,.16);
-      color: white;
-      font-size: 19px;
-      line-height: 1;
-    }
-
-    .stepper span { min-width: 12px; text-align: center; font-size: 13px; font-weight: 850; }
-
-    .empty-menu {
-      grid-column: 1 / -1;
-      padding: 30px 18px;
-      border-radius: 18px;
-      background: white;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    /* Status and toast */
-
-    .status {
-      padding: 13px 15px;
-      margin: 15px 0;
-      border-radius: 14px;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .status.error { background: #fff0f0; color: #a1242f; }
-    .status.success { background: #e3f5e7; color: #16633b; }
-
-    .toast {
-      position: fixed;
-      z-index: 120;
-      top: 16px;
-      left: 50%;
-      max-width: calc(100vw - 24px);
-      padding: 12px 17px;
-      border-radius: 999px;
-      background: var(--ink);
-      color: white;
-      box-shadow: 0 10px 35px rgba(0,0,0,.2);
-      font-size: 13px;
-      font-weight: 750;
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-50%, -22px);
-      transition: opacity .22s ease, transform .35s var(--ease);
-    }
-
-    .toast.visible { opacity: 1; transform: translate(-50%, 0); }
-
-    /* Floating cart */
-
-    .floating-cart {
-      position: fixed;
-      z-index: 40;
-      left: 50%;
-      bottom: 18px;
-      width: min(560px, calc(100% - 28px));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 11px 12px 11px 17px;
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 20px;
-      background: var(--ink);
-      color: white;
-      box-shadow: 0 14px 40px rgba(0,0,0,.24);
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-50%, 140%);
-      transition: transform .48s cubic-bezier(.2,1.4,.4,1), opacity .25s ease;
-    }
-
-    .floating-cart.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translate(-50%, 0);
-    }
-
-    .floating-cart.bounce { animation: cart-bounce .35s ease; }
-
-    @keyframes cart-bounce {
-      0%, 100% { scale: 1; }
-      45% { scale: 1.045; }
-    }
-
-    .cart-summary { min-width: 0; }
-    .cart-summary-count { color: #b9bac4; font-size: 12px; font-weight: 650; }
-    .cart-summary-total { margin-top: 2px; font-size: 20px; font-weight: 850; }
-
-    .view-cart {
-      min-height: 44px;
-      padding: 0 17px;
-      border: 0;
-      border-radius: 13px;
-      background: var(--red);
-      color: white;
-      font-size: 13px;
-      font-weight: 850;
-      white-space: nowrap;
-    }
-
-    .view-cart:active { transform: scale(.97); }
-
-    /* Sheets */
-
-    .sheet-overlay {
-      position: fixed;
-      z-index: 70;
-      inset: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 0;
-      background: rgba(12,12,18,.45);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity .25s ease, visibility .25s ease;
-    }
-
-    .sheet-overlay.open { opacity: 1; visibility: visible; }
-
-    .sheet {
-      position: relative;
-      width: 100%;
-      max-width: 650px;
-      max-height: 92vh;
-      max-height: 92dvh;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      padding: 13px 20px 24px;
-      border-radius: 26px 26px 0 0;
-      background: var(--bg);
-      transform: translateY(35px);
-      transition: transform .38s var(--ease);
-      scrollbar-width: thin;
-    }
-
-    .sheet-overlay.open .sheet { transform: translateY(0); }
-
-    .sheet-handle {
-      width: 40px;
-      height: 4px;
-      margin: 0 auto 15px;
-      border-radius: 999px;
-      background: #c8c4bc;
-    }
-
-    .sheet-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    .sheet-header h2 { margin: 0; font-size: 23px; font-weight: 850; }
-
-    .close-sheet {
-      display: inline-flex;
-      width: 38px;
-      height: 38px;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      border: 0;
-      border-radius: 12px;
-      background: white;
-      color: var(--ink);
-      font-size: 23px;
-    }
-
-    .progress {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 5px;
-      margin: 0 0 17px;
-    }
-
-    .progress span { height: 5px; border-radius: 999px; background: #dcd8d0; }
-    .progress span.done { background: var(--red); }
-
-    .sheet-box {
-      padding: 15px;
-      margin-bottom: 12px;
-      border-radius: 18px;
-      background: white;
-      box-shadow: var(--shadow);
-    }
-
-    .sheet-box h3 { margin: 0 0 12px; font-size: 15px; font-weight: 850; }
-
-    .cart-empty {
-      padding: 15px 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .cart-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid #efede9;
-    }
-
-    .cart-item:last-child { border-bottom: 0; }
-
-    .cart-item-emoji {
-      display: flex;
-      width: 42px;
-      height: 42px;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      border-radius: 12px;
-      background: var(--food-pastel, #fce8df);
-      font-size: 24px;
-    }
-
-    .cart-item-info { flex: 1; min-width: 0; }
-    .cart-item-name { font-size: 13px; font-weight: 800; overflow-wrap: anywhere; }
-    .cart-item-price { margin-top: 3px; color: var(--muted); font-size: 11px; }
-
-    .cart-item .qty { flex: 0 0 auto; }
-    .cart-item .qty button { width: 27px; height: 29px; font-size: 17px; }
-    .cart-item .qty span { min-width: 12px; font-size: 12px; }
-    .cart-item .qty { gap: 5px; padding: 3px 4px; }
-
-    .bill-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 7px 0;
-      font-size: 13px;
-    }
-
-    .bill-row span { color: var(--muted); }
-    .bill-row strong { font-weight: 750; text-align: right; }
-    .bill-dashed { border-top: 1px dashed #d4d0c8; margin: 7px 0; }
-    .bill-total { padding-top: 10px; font-size: 20px; font-weight: 850; }
-    .bill-total span { color: var(--ink); font-weight: 850; }
-
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
-    .form-field { min-width: 0; }
-    .form-field.full-width { grid-column: 1 / -1; }
-
-    label.field-label {
-      display: block;
-      margin: 13px 0 7px;
-      color: var(--ink);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .input, .select, .textarea {
-      display: block;
-      width: 100%;
-      min-width: 0;
-      min-height: 46px;
-      padding: 12px 13px;
-      border: 1.5px solid #e5e1da;
-      border-radius: 14px;
-      background: #fff;
-      color: var(--ink);
-      font-size: 16px;
-      outline: none;
-      transition: border-color .18s ease, background .18s ease;
-    }
-
-    .textarea { min-height: 76px; resize: vertical; }
-
-    .input:focus, .select:focus, .textarea:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(226,55,68,.08);
-    }
-
-    .input:invalid:not(:placeholder-shown),
-    .textarea:invalid:not(:placeholder-shown) {
-      border-color: var(--red);
-      background: #fff4f4;
-    }
-
-    .field-note { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
-
-    .order-types {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 8px;
-    }
-
-    .order-type {
-      display: flex;
-      min-height: 82px;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      padding: 9px 5px;
-      border: 1.5px solid #e7e3dc;
-      border-radius: 15px;
-      background: white;
-      color: var(--ink);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .order-type .type-emoji { font-size: 25px; }
-    .order-type.active { border-color: var(--red); background: var(--red-soft); color: var(--red); }
-    .order-type input { position: absolute; opacity: 0; pointer-events: none; }
-
-    .quick-notes { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
-
-    .note-chip {
-      min-height: 34px;
-      padding: 7px 11px;
-      border: 1px solid #e8e2d8;
-      border-radius: 999px;
-      background: var(--bg);
-      color: #55515b;
-      font-size: 11px;
-      font-weight: 750;
-    }
-
-    .note-chip.active { border-color: var(--red); background: var(--red-soft); color: var(--red); }
-
-    .location-button {
-      width: 100%;
-      min-height: 43px;
-      margin-top: 10px;
-      border: 1.5px dashed var(--red);
-      border-radius: 13px;
-      background: #fff;
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .location-message {
-      margin: 8px 0 0;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #f1eee8;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .distance-map-panel {
-      margin-top: 10px;
-      padding: 11px;
-      border: 1px solid var(--line);
-      border-radius: 15px;
-      background: #fff;
-    }
-
-    .distance-map-title {
-      margin: 0 0 7px;
-      font-size: 12px;
-      font-weight: 850;
-    }
-
-    .distance-text {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    .distance-text.warning { color: #a1242f; font-weight: 800; }
-
-    .distance-map {
-      display: block;
-      width: 100%;
-      height: 180px;
-      margin-top: 9px;
-      border: 0;
-      border-radius: 11px;
-      background: #f1eee8;
-    }
-
-    .distance-map-link {
-      display: inline-block;
-      margin-top: 8px;
-      color: var(--red);
-      font-size: 11px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-    .distance-map[hidden], .distance-map-link[hidden] { display: none !important; }
-
-    /* Customer order tracking */
-    .tracking-section { margin: 32px 0 12px; }
-    .tracking-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .tracking-card {
-      min-width: 0;
-      padding: 18px;
-      border: 1px solid rgba(29,29,31,.04);
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: var(--shadow);
-    }
-    .tracking-card h3 { margin: 0 0 7px; font-size: 16px; font-weight: 850; }
-    .tracking-card .track-help { margin: 0 0 12px; color: var(--muted); font-size: 12px; line-height: 1.5; }
-    .tracking-form { display: grid; gap: 8px; }
-    .tracking-form .input { min-height: 43px; }
-    .tracking-button {
-      min-height: 44px;
-      padding: 11px 14px;
-      border: 0;
-      border-radius: 13px;
-      background: var(--red);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 850;
-    }
-    .tracking-result { min-width: 0; margin-top: 12px; }
-    .tracking-result:empty { display: none; }
-    .tracking-order-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-    .tracking-order-number { margin: 0; font-size: 15px; font-weight: 900; overflow-wrap: anywhere; }
-    .tracking-status-pill { display: inline-block; padding: 6px 9px; border-radius: 999px; background: #f1eee8; color: var(--ink); font-size: 10px; font-weight: 850; white-space: nowrap; }
-    .tracking-status-pill.status-cancelled { color: #a1242f; background: #fff0f0; }
-    .tracking-meta { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
-    .tracking-progress { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 5px; margin-top: 13px; }
-    .tracking-step { min-width: 0; color: #9b9aa3; font-size: 10px; text-align: center; }
-    .tracking-step-mark { display: block; height: 5px; margin-bottom: 6px; border-radius: 999px; background: #e3e0da; }
-    .tracking-step.done { color: var(--ink); font-weight: 800; }
-    .tracking-step.done .tracking-step-mark { background: var(--red); }
-    .tracking-map-link { display: inline-block; margin-top: 10px; color: var(--red); font-size: 11px; font-weight: 800; text-decoration: none; }
-    .tracking-message { margin: 9px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
-
-    @media (max-width: 760px) {
-      .tracking-layout { grid-template-columns: 1fr; gap: 9px; }
-      .tracking-card { padding: 13px; border-radius: 16px; }
-      .distance-map { height: 155px; }
-      .tracking-section { margin-top: 24px; }
-    }
-
-    .checkout-button {
-      display: flex;
-      width: 100%;
-      min-height: 54px;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      margin-top: 14px;
-      border: 0;
-      border-radius: 16px;
-      background: var(--red);
-      color: white;
-      font-size: 15px;
-      font-weight: 850;
-      text-align: left;
-      transition: transform .15s ease, opacity .2s ease;
-    }
-
-    .checkout-button:active { transform: scale(.99); }
-    .checkout-button:disabled { opacity: .6; }
-    .checkout-button .button-amount { white-space: nowrap; }
-
-    .result-box { margin-top: 14px; }
-
-    /* Success feedback */
-
-    .success-view { text-align: center; padding-top: 12px; }
-
-    .success-icon {
-      display: flex;
-      width: 90px;
-      height: 90px;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      background: #dff3e4;
-      color: #218b4b;
-      font-size: 47px;
-      animation: success-pop .65s cubic-bezier(.2,1.5,.4,1) both;
-    }
-
-    @keyframes success-pop {
-      0% { transform: scale(0); }
-      70% { transform: scale(1.12); }
-      100% { transform: scale(1); }
-    }
-
-    .success-view h2 { margin-bottom: 8px; font-size: 28px; font-weight: 850; }
-    .success-view > p { color: var(--muted); font-size: 13px; }
-
-    .token-tile {
-      margin: 20px 0 12px;
-      padding: 19px;
-      border-radius: 18px;
-      background: var(--ink);
-      color: white;
-    }
-
-    .token-label { color: #bdbdc8; font-size: 11px; font-weight: 800; letter-spacing: 2px; }
-    .token-number { margin-top: 8px; font-size: 36px; font-weight: 900; letter-spacing: 1px; overflow-wrap: anywhere; }
-
-    .confetti {
-      position: fixed;
-      z-index: 100;
-      top: -35px;
-      pointer-events: none;
-      font-size: 22px;
-      animation: confetti-fall 3s ease-in forwards;
-    }
-
-    @keyframes confetti-fall {
-      0% { transform: translateY(-20px) rotate(0); opacity: 1; }
-      100% { transform: translateY(105vh) rotate(540deg); opacity: 0; }
-    }
-
-    footer {
-      padding: 22px 0 10px;
-      color: var(--muted);
-      font-size: 11px;
-      text-align: center;
-    }
-
-    /* Tablet */
-
-    @media (min-width: 761px) {
-      .sheet-overlay { align-items: center; padding: 22px; }
-      .sheet { border-radius: 26px; max-height: 88vh; max-height: 88dvh; }
-    }
-
-    @media (min-width: 1000px) {
-      .menu-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .food-card.featured {
-        grid-column: span 2;
-        flex-direction: row;
-        min-height: 200px;
-      }
-
-      .food-card.featured .food-picture {
-        width: 45%;
-        height: auto;
-        min-height: 200px;
-        flex: 0 0 45%;
-      }
-
-      .food-card.featured .food-picture-emoji { font-size: 90px; }
-      .food-card.featured .food-body { justify-content: center; padding: 22px; }
-      .food-card.featured .food-name { font-size: 20px; }
-      .food-card.featured .food-description { margin-bottom: 20px; }
-    }
-
-    /* Compact mobile-first layout */
-
-    @media (max-width: 760px) {
-      html { scroll-padding-top: 100px; }
-
-      .page { padding: 10px 10px 105px; }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        gap: 8px;
-      }
-
-      .hero-tile { border-radius: 16px; padding: 13px; }
-
-      .brand-tile {
-        grid-column: 1;
-        grid-row: auto;
-        min-height: 92px;
-        padding: 15px 100px 14px 14px;
-        justify-content: center;
-      }
-
-      .brand-tile .brand-mark { display: none; }
-
-      .brand-tile h1 {
-        margin: 0 0 5px;
-        font-size: 20px;
-        letter-spacing: -.5px;
-        overflow-wrap: anywhere;
-      }
-
-      .brand-tile p { font-size: 11px; line-height: 1.35; }
-      .brand-emoji { top: 12px; right: 12px; font-size: 64px; }
-
-      .status-tile, .how-tile { display: none; }
-
-      .search-tile {
-        grid-column: 1;
-        grid-row: auto;
-        gap: 8px;
-        padding: 9px 12px;
-        border-radius: 15px;
-      }
-
-      .search-box { gap: 7px; }
-      .search-icon { font-size: 17px; }
-      .search-box input { padding: 8px 0; font-size: 15px; }
-      .veg-toggle-wrap { gap: 5px; font-size: 10px; }
-      .switch { width: 36px; height: 20px; }
-      .switch-track::after { width: 14px; height: 14px; top: 3px; left: 3px; }
-      .switch input:checked + .switch-track::after { transform: translateX(16px); }
-
-      .section-heading { margin: 20px 0 10px; }
-      .section-heading h2 { font-size: 19px; letter-spacing: -.5px; }
-      .section-heading p { font-size: 11px; }
-      .small-button { min-height: 34px; padding: 6px 9px; font-size: 11px; }
-
-      .category-strip {
-        position: sticky;
-        top: 0;
-        z-index: 30;
-        display: flex;
-        gap: 7px;
-        overflow-x: auto;
-        margin: 0 -10px 15px;
-        padding: 9px 10px;
-        background: var(--bg);
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-
-      .category-strip::-webkit-scrollbar { display: none; }
-
-      .category-tile {
-        min-height: 34px;
-        flex: 0 0 auto;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: white;
-        box-shadow: none;
-      }
-
-      .category-tile:hover { transform: none; box-shadow: none; }
-      .category-emoji { font-size: 16px; }
-      .category-name { font-size: 12px; white-space: nowrap; }
-      .category-count { display: none; }
-      .category-tile.active { background: var(--ink); }
-
-      .menu-section { margin: 17px 0 23px; }
-      .menu-section-title { gap: 7px; margin-bottom: 9px; font-size: 16px; letter-spacing: -.3px; }
-      .menu-section-title .title-emoji { font-size: 19px; }
-
-      .menu-grid {
-        grid-template-columns: repeat(2, minmax(0,1fr));
-        gap: 8px;
-      }
-
-      .food-card { border-radius: 16px; }
-      .food-card:hover { transform: none; box-shadow: var(--shadow); }
-
-      .food-picture { height: 72px; }
-      .food-picture::after { width: 86px; height: 86px; }
-      .food-picture-emoji { font-size: 38px; }
-      .food-tag { top: 6px; left: 6px; padding: 4px 6px; font-size: 8px; }
-      .favourite-tag { top: 6px; right: 6px; padding: 4px 5px; font-size: 8px; }
-
-      .food-body { padding: 9px; }
-      .food-name { font-size: 13px; letter-spacing: -.2px; }
-      .food-kind { width: 11px; height: 11px; margin-top: 2px; border-width: 1px; }
-      .food-kind::after { width: 5px; height: 5px; }
-      .food-description { display: none; }
-      .food-bottom { gap: 5px; padding-top: 11px; }
-      .food-price { font-size: 16px; letter-spacing: -.3px; }
-
-      .add-button {
-        min-width: 53px;
-        min-height: 31px;
-        padding: 6px 10px;
-        border-radius: 9px;
-        font-size: 11px;
-      }
-
-      .stepper { min-height: 30px; gap: 4px; padding: 2px 4px; border-radius: 9px; }
-      .stepper button { width: 26px; height: 26px; border-radius: 6px; font-size: 17px; }
-      .stepper span { font-size: 12px; }
-
-      .floating-cart { bottom: 10px; width: calc(100% - 20px); padding: 9px 9px 9px 14px; border-radius: 17px; }
-      .cart-summary-count { font-size: 11px; }
-      .cart-summary-total { font-size: 18px; }
-      .view-cart { min-height: 42px; padding: 0 14px; font-size: 12px; }
-
-      .sheet { padding: 11px 12px 20px; border-radius: 22px 22px 0 0; }
-      .sheet-header h2 { font-size: 20px; }
-      .sheet-box { padding: 12px; margin-bottom: 9px; border-radius: 16px; }
-      .sheet-box h3 { margin-bottom: 8px; font-size: 14px; }
-      .form-grid { grid-template-columns: 1fr; }
-      .order-type { min-height: 72px; border-radius: 13px; font-size: 11px; }
-      .order-type .type-emoji { font-size: 23px; }
-      .input, .select, .textarea { min-height: 43px; padding: 11px 12px; font-size: 16px; }
-      .textarea { min-height: 66px; }
-      label.field-label { margin-top: 11px; font-size: 11px; }
-      .checkout-button { min-height: 51px; padding: 12px 14px; font-size: 14px; }
-      .status { padding: 10px 12px; margin: 10px 0; font-size: 12px; }
-
-      footer { padding: 17px 0 8px; }
-    }
-
-    @media (max-width: 370px) {
-      .brand-tile { padding-right: 80px; }
-      .brand-emoji { right: 5px; font-size: 55px; }
-      .brand-tile h1 { font-size: 18px; }
-      .food-body { padding: 8px; }
-      .food-name { font-size: 12px; }
-      .food-price { font-size: 15px; }
-      .add-button { min-width: 47px; padding: 5px 7px; }
-      .stepper button { width: 24px; height: 25px; }
-      .veg-toggle-wrap { font-size: 9px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f1eee8">
+<meta name="description" content="Order fresh, delicious food from Kuch Bhi Kho Lo Court.">
+<title>MOSA CHOUMIN — Order Online</title>
+<style>
+:root{--bg:#f1eee8;--ink:#1d1d1f;--muted:#6b6b78;--red:#e23744;--green:#139c12;--navy:#270e60;--line:#e4e0d8;--r:20px;--sh:0 1px 2px rgba(0,0,0,.06);--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:170px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Segoe UI",system-ui,Arial,sans-serif;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+body.lock{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation;border:0}
+:focus-visible{outline:3px solid rgba(226,55,68,.35);outline-offset:2px}
+button:disabled{opacity:.55;cursor:not-allowed}
+h1,h2,h3,p{margin:0}h1,h2,h3{letter-spacing:-.5px}
+.hidden{display:none!important}.muted{color:var(--muted)}
+.page{width:min(100%,1240px);margin:0 auto;padding:20px 20px 120px}
+.eyebrow{margin-bottom:6px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+
+/* hero */
+.hero{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+.tile{position:relative;overflow:hidden;border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.brand{background:var(--red);color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end}
+.brand .mark{position:absolute;left:18px;top:18px;display:grid;place-items:center;width:35px;height:35px;border-radius:12px;background:rgba(255,255,255,.2);font-size:21px}
+.brand .big{position:absolute;top:8px;right:10px;font-size:clamp(72px,8vw,120px);opacity:.25;transform:rotate(12deg);pointer-events:none}
+.brand h1{position:relative;max-width:360px;margin-bottom:6px;font-size:clamp(25px,3vw,34px);line-height:1.08;font-weight:850;letter-spacing:-1px}
+.brand p{position:relative;color:rgba(255,255,255,.9);font-size:13px}
+.state{background:#e9e3f7;color:var(--navy);display:flex;flex-direction:column;justify-content:center}
+.state strong{font-size:22px;letter-spacing:-.5px}.state p{margin-top:6px;font-size:12px}
+.how{background:var(--ink);color:#fff}.how .eyebrow{color:#c6c5cf}
+.how ol{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:12px;font-weight:650}
+.how li{display:flex;align-items:center;gap:8px}
+.how li span{display:grid;place-items:center;width:20px;height:20px;border-radius:7px;background:rgba(255,255,255,.14);font-size:10px}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:20;margin:12px -20px 0;padding:10px 20px 8px;background:rgba(241,238,232,.93);backdrop-filter:blur(10px);display:grid;gap:8px}
+.row{display:flex;gap:8px;align-items:center}
+.search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:0 14px;border-radius:14px;background:#fff;box-shadow:var(--sh)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:none;padding:12px 0}
+.sel{border:0;border-radius:14px;padding:12px;background:#fff;box-shadow:var(--sh)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;font-weight:700;font-size:13px;box-shadow:var(--sh);white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff}.chip small{opacity:.6;font-weight:600}
+
+/* menu */
+.status{margin:12px 0 0;padding:12px 14px;border-radius:14px;font-size:14px;font-weight:600}
+.status.error{background:#fde4e6;color:#a3121f}.status.warn{background:#fff0c9;color:#7a5600}.status.ok{background:#e3f5e1;color:#0c6a0b}
+.sec-title{display:flex;align-items:center;gap:8px;margin:22px 0 12px;font-size:20px}
+.head{margin:20px 0 0}.head h2{font-size:24px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.food{display:flex;flex-direction:column;overflow:hidden;border-radius:var(--r);background:#fff;box-shadow:var(--sh);transition:transform .25s var(--ease),box-shadow .25s}
+.food:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.pic{position:relative;height:120px;display:grid;place-items:center;background:var(--p,#fce8df)}
+.pic .em{font-size:58px}
+.fav{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.88);color:var(--red);font-size:18px;line-height:1}
+.body{display:flex;flex:1;flex-direction:column;gap:6px;padding:12px 14px 14px}
+.name{display:flex;gap:8px;align-items:flex-start}.name h3{font-size:16px;line-height:1.25}
+.kind{flex:none;position:relative;display:inline-block;width:16px;height:16px;margin-top:2px;border:2px solid var(--green);border-radius:4px}
+.kind::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--green)}
+.kind.nv{border-color:var(--red)}.kind.nv::after{background:var(--red)}
+.chip .kind{margin:0}
+.desc{color:var(--muted);font-size:12.5px}
+.bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:6px}.bottom b{font-size:17px}
+.add{padding:9px 20px;border-radius:12px;background:#fff;color:var(--red);border:1.5px solid var(--red);font-weight:800;font-size:13px}
+.stepper{display:inline-flex;align-items:center;overflow:hidden;border-radius:12px;background:var(--red);color:#fff;font-weight:800}
+.stepper button{width:34px;height:34px;background:none;color:#fff;font-size:18px}.stepper span{min-width:22px;text-align:center}
+.empty{padding:40px 16px;text-align:center;color:var(--muted)}
+.sk{min-height:190px;background:linear-gradient(90deg,#fff 25%,#f4f1ea 50%,#fff 75%);background-size:200% 100%;animation:sh 1.2s infinite linear}
+@keyframes sh{to{background-position:-200% 0}}
+
+/* tracking */
+.track{margin-top:34px}
+.track-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.card{padding:16px;border-radius:var(--r);background:#fff;box-shadow:var(--sh)}
+.card h3{margin-bottom:4px;font-size:17px}.card .help{margin-bottom:12px;color:var(--muted);font-size:13px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}.top b{font-size:18px}
+.pill{padding:4px 10px;border-radius:999px;background:#e3f5e1;color:#0c6a0b;font-size:12px;font-weight:800}.pill.bad{background:#fde4e6;color:#a3121f}
+.meta{margin:8px 0;color:var(--muted);font-size:13px}.msg{color:var(--muted);font-size:13px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
+.steps div{text-align:center;color:var(--muted);font-size:11px;font-weight:700}
+.steps span{display:block;height:5px;margin-bottom:6px;border-radius:9px;background:#dcd8d0}.steps .done span{background:var(--green)}.steps .done{color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btn{padding:10px 16px;border-radius:12px;background:var(--ink);color:#fff;font-weight:750;font-size:13px}.btn.alt{background:#fff;color:var(--red);border:1.5px solid var(--red)}
+.link{display:inline-block;margin-top:8px;color:var(--red);font-weight:700;font-size:13px}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:13px}
+
+/* floating cart */
+.fcart{position:fixed;left:50%;bottom:16px;z-index:30;width:min(560px,calc(100% - 24px));display:flex;justify-content:space-between;align-items:center;padding:10px 10px 10px 18px;border-radius:18px;background:var(--red);color:#fff;box-shadow:0 10px 30px rgba(226,55,68,.4);transform:translate(-50%,140%);visibility:hidden;transition:transform .35s var(--ease),visibility .35s}
+.fcart.show{transform:translate(-50%,0);visibility:visible}.fcart.bump{animation:bump .35s}
+@keyframes bump{50%{transform:translate(-50%,-6px)}}
+.fcart small{display:block;opacity:.85;font-size:12px}.fcart strong{font-size:18px}
+.fcart button{padding:12px 18px;border-radius:13px;background:#fff;color:var(--red);font-weight:800}
+
+/* sheet */
+.overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,20,25,.5);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.overlay.open{opacity:1;visibility:visible}
+.sheet{width:100%;max-width:650px;max-height:92vh;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;padding:13px 18px 24px;border-radius:26px 26px 0 0;background:var(--bg);transform:translateY(35px);transition:transform .38s var(--ease)}
+.open .sheet{transform:none}
+.sheet.done #cartView,.sheet:not(.done) #doneView{display:none}
+.handle{width:40px;height:4px;margin:0 auto 14px;border-radius:9px;background:#c8c4bc}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.sheet-head h2{font-size:23px;font-weight:850}
+.x{width:38px;height:38px;border-radius:12px;background:#fff;font-size:23px}
+.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:16px}
+.progress span{height:5px;border-radius:9px;background:#dcd8d0}.progress .on{background:var(--red)}
+.box{margin-bottom:12px;padding:15px;border-radius:18px;background:#fff;box-shadow:var(--sh)}.box h3{margin-bottom:12px;font-size:15px;font-weight:850}
+.line{display:flex;align-items:center;gap:12px;padding:8px 0}
+.line .em{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:12px;background:var(--p,#fce8df);font-size:24px}
+.line .info{flex:1;min-width:0;font-weight:650}.line small{display:block;color:var(--muted);font-weight:600}
+.bill{display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:14px}
+.bill.total{padding-top:10px;border-top:1.5px dashed var(--line);font-size:16px}
+.min{margin-top:10px;color:var(--muted);font-size:13px}
+.bar{height:6px;margin-bottom:6px;overflow:hidden;border-radius:9px;background:#e9e6e0}.bar i{display:block;height:100%;background:var(--green);transition:width .3s}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.type{display:grid;gap:2px;place-items:center;padding:10px 4px;border-radius:14px;background:#f6f4ef;border:2px solid transparent;font-weight:750;font-size:13px}
+.type span:first-child{font-size:24px}.type.on{border-color:var(--red);background:#fde4e6}
+.field{margin-bottom:12px}.field label{display:block;margin-bottom:5px;font-size:12px;font-weight:800;color:var(--muted)}
+.input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+textarea.input{min-height:78px;resize:vertical}
+.note{margin-top:6px;color:var(--muted);font-size:12px}.note.warn{color:#a3121f}
+.loc{margin-top:8px;padding:9px 14px;border-radius:12px;background:#e9e3f7;color:var(--navy);font-weight:750;font-size:13px}
+.map{width:100%;height:190px;margin-top:8px;border:0;border-radius:14px}
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.qn{padding:6px 12px;border-radius:999px;background:#f6f4ef;font-size:12px;font-weight:700}.qn.on{background:var(--ink);color:#fff}
+.pay{display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px 18px;border-radius:16px;background:var(--red);color:#fff;font-weight:850;font-size:16px}
+.done-view{text-align:center}
+.tick{display:grid;place-items:center;width:64px;height:64px;margin:6px auto 12px;border-radius:50%;background:var(--green);color:#fff;font-size:32px}
+.token{margin:14px 0;padding:16px;border-radius:16px;background:var(--ink);color:#fff}
+.token div:first-child{font-size:11px;letter-spacing:1px;opacity:.7}.token div:last-child{font-size:30px;font-weight:850;letter-spacing:1px}
+.toast{position:fixed;left:50%;top:14px;z-index:90;padding:10px 18px;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;transform:translate(-50%,-80px);transition:transform .3s var(--ease);pointer-events:none}
+.toast.show{transform:translate(-50%,0)}
+.confetti{position:fixed;top:-30px;z-index:99;pointer-events:none;animation:fall 3s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.food{animation:in .3s var(--ease) both}
+
+@media(min-width:761px){.overlay{align-items:center}.sheet{border-radius:26px;max-height:88vh;max-height:88dvh}}
+@media(max-width:760px){
+  .page{padding:14px 12px 120px}.toolbar{margin:10px -12px 0;padding:8px 12px}
+  .hero{grid-template-columns:1fr 1fr;gap:8px}.brand{grid-column:1/-1;min-height:130px}.tile{padding:14px}
+  .track-grid{grid-template-columns:1fr}.menu-grid{grid-template-columns:1fr;gap:10px}
+  .food{flex-direction:row;border-radius:16px}.food:hover{transform:none}
+  .pic{flex:none;width:96px;height:auto}.pic .em{font-size:40px}.fav{top:4px;right:4px;width:28px;height:28px;font-size:15px}
+  .sk{min-height:100px}.sheet{padding:11px 12px 20px;border-radius:22px 22px 0 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+/* Neo-soft finish — retain the original cream, red, lavender and green palette */
+:root {
+  --sh: 8px 8px 18px rgba(189,182,171,.30), -8px -8px 18px rgba(255,255,255,.88);
+  --sh-strong: 12px 12px 24px rgba(189,182,171,.36), -10px -10px 22px rgba(255,255,255,.92);
+  --sh-pressed: inset 4px 4px 9px rgba(189,182,171,.28), inset -4px -4px 9px rgba(255,255,255,.88);
+}
+body {
+  background: radial-gradient(ellipse at 12% 2%, rgba(255,255,255,.82), transparent 34%),
+              radial-gradient(ellipse at 92% 24%, rgba(226,55,68,.035), transparent 28%),
+              var(--bg);
+}
+.tile, .search, .sel, .chip, .food, .card, .box {
+  border: 1px solid rgba(255,255,255,.72);
+}
+.tile:not(.brand), .search, .sel, .chip:not(.on), .food, .card, .box {
+  box-shadow: var(--sh);
+}
+.tile:not(.brand), .search, .sel, .chip:not(.on), .food, .card, .box, .x, .fav, .add, .type, .qn {
+  transition: box-shadow .24s var(--ease), transform .24s var(--ease), background .24s ease;
+}
+.food:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-strong);
+}
+.fav { box-shadow: 3px 3px 8px rgba(0,0,0,.08), -2px -2px 7px rgba(255,255,255,.9); }
+.add { box-shadow: 4px 4px 9px rgba(189,182,171,.28), -4px -4px 9px rgba(255,255,255,.95); }
+.add:active, .chip:active, .type:active, .qn:active { box-shadow: var(--sh-pressed); transform: scale(.97); }
+.stepper, .fcart, .pay, .btn:not(.alt) {
+  box-shadow: 5px 6px 13px rgba(120,35,42,.18), -2px -2px 8px rgba(255,255,255,.18);
+}
+.track-tile {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  overflow: hidden;
+  background: #fff;
+  color: var(--ink);
+}
+.track-tile .eyebrow { margin: 0; color: var(--muted); }
+.track-tile h2 { position: relative; z-index: 1; font-size: 20px; font-weight: 850; }
+.track-tile > p:not(.eyebrow) { position: relative; z-index: 1; max-width: 220px; color: var(--muted); font-size: 12px; }
+.track-cta {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 3px; padding: 9px 13px;
+  border-radius: 12px; background: var(--red); color: #fff;
+  font-size: 12px; font-weight: 850; text-decoration: none;
+  box-shadow: 4px 5px 10px rgba(226,55,68,.22);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.track-cta:hover { transform: translateY(-2px); box-shadow: 6px 8px 14px rgba(226,55,68,.25); }
+.track-art { position: absolute; right: 13px; top: 3px; color: rgba(226,55,68,.10); font-size: 104px; line-height: 1; transform: rotate(-18deg); pointer-events: none; }
+.toolbar { box-shadow: 0 8px 18px rgba(189,182,171,.12); }
+.search:focus-within, .input:focus { box-shadow: var(--sh-pressed); }
+.card, .box { border-radius: 20px; }
+.sheet { box-shadow: 0 -12px 35px rgba(29,29,31,.12); }
+.x { box-shadow: var(--sh); }
+.x:active, .btn.alt:active, .fcart button:active { box-shadow: var(--sh-pressed); transform: scale(.97); }
+@media (max-width:760px) {
+  .track-tile { min-height: 130px; }
+  .track-tile h2 { font-size: 18px; }
+  .track-art { right: 9px; top: 4px; font-size: 82px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track-cta, .food, .add, .chip, .type, .qn { transition: none !important; }
+}
+
+
+
+/* Glassmorphism layer — keeps the original cream, coral, lavender and green colours */
+:root {
+  --glass-white: rgba(255,255,255,.58);
+  --glass-white-strong: rgba(255,255,255,.76);
+  --glass-line: rgba(255,255,255,.78);
+  --glass-shadow: 0 12px 30px rgba(65,55,45,.09), inset 0 1px 0 rgba(255,255,255,.86);
+  --glass-blur: blur(18px) saturate(145%);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 8% 7%, rgba(255,255,255,.92), transparent 32%),
+    radial-gradient(ellipse at 92% 20%, rgba(226,55,68,.055), transparent 31%),
+    radial-gradient(ellipse at 48% 78%, rgba(39,14,96,.045), transparent 34%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+/* Frosted panels; original accent backgrounds remain recognizable */
+.tile:not(.brand),
+.track-tile,
+.search,
+.sel,
+.chip:not(.on),
+.food,
+.card,
+.box,
+.sheet,
+.x,
+.fav,
+.input,
+.type,
+.qn,
+.loc {
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-line);
+}
+
+.tile:not(.brand) {
+  background: rgba(233,227,247,.58);
+  box-shadow: var(--glass-shadow), var(--sh);
+}
+
+.track-tile {
+  background: rgba(255,255,255,.54);
+  box-shadow: var(--glass-shadow), var(--sh);
+}
+
+.search,
+.sel,
+.chip:not(.on) {
+  background: rgba(255,255,255,.58);
+  box-shadow: 6px 7px 18px rgba(65,55,45,.07), inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.toolbar {
+  background: rgba(241,238,232,.70);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  border-bottom: 1px solid rgba(255,255,255,.66);
+  box-shadow: 0 10px 25px rgba(65,55,45,.07);
+}
+
+.food,
+.card,
+.box {
+  background: rgba(255,255,255,.62);
+  box-shadow: var(--glass-shadow), var(--sh);
+}
+
+.food:hover,
+.tile:not(.brand):hover,
+.card:hover {
+  box-shadow: 0 16px 34px rgba(65,55,45,.12), inset 0 1px 0 rgba(255,255,255,.92);
+}
+
+.fav,
+.x {
+  background: rgba(255,255,255,.70);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+.add,
+.btn.alt,
+.qn,
+.type {
+  background: rgba(255,255,255,.60);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255,255,255,.82);
+}
+
+.add:hover,
+.btn.alt:hover {
+  background: rgba(253,228,230,.74);
+  box-shadow: 0 10px 20px rgba(226,55,68,.12), inset 0 1px 0 rgba(255,255,255,.9);
+  transform: translateY(-2px);
+}
+
+.type.on {
+  background: rgba(253,228,230,.78);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  backdrop-filter: blur(14px) saturate(145%);
+}
+
+.chip.on {
+  box-shadow: 0 8px 18px rgba(29,29,31,.14), inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.input {
+  background: rgba(255,255,255,.66);
+  box-shadow: inset 2px 2px 6px rgba(189,182,171,.11), inset -2px -2px 6px rgba(255,255,255,.7);
+}
+
+.input:focus {
+  background: rgba(255,255,255,.84);
+  border-color: rgba(226,55,68,.48);
+  box-shadow: 0 0 0 3px rgba(226,55,68,.08), inset 2px 2px 6px rgba(189,182,171,.10);
+}
+
+.loc {
+  background: rgba(233,227,247,.70);
+  box-shadow: 4px 5px 12px rgba(39,14,96,.07), inset 0 1px 0 rgba(255,255,255,.85);
+}
+
+.fcart {
+  border: 1px solid rgba(255,255,255,.32);
+  background: rgba(226,55,68,.88);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 15px 38px rgba(120,35,42,.25), inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.fcart button,
+.pay,
+.track-cta,
+.btn:not(.alt) {
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+}
+
+.overlay {
+  background: rgba(29,29,31,.34);
+  -webkit-backdrop-filter: blur(9px) saturate(120%);
+  backdrop-filter: blur(9px) saturate(120%);
+}
+
+.sheet {
+  background: rgba(241,238,232,.82);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  backdrop-filter: blur(26px) saturate(150%);
+  border: 1px solid rgba(255,255,255,.68);
+  box-shadow: 0 -18px 48px rgba(29,29,31,.16), inset 0 1px 0 rgba(255,255,255,.82);
+}
+
+.token {
+  box-shadow: 0 12px 26px rgba(29,29,31,.18), inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.status.error,
+.status.warn,
+.status.ok {
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255,255,255,.62);
+}
+
+.track-cta,
+.pay,
+.btn,
+.add,
+.fcart button,
+.type,
+.qn,
+.chip,
+.fav,
+.x {
+  transition: transform .22s var(--ease), box-shadow .22s ease, background .22s ease;
+}
+
+.track-cta:hover,
+.pay:hover,
+.btn:not(.alt):hover,
+.fcart button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(120,35,42,.19), inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.track-cta:active,
+.pay:active,
+.btn:active,
+.fcart button:active,
+.add:active,
+.chip:active,
+.type:active,
+.qn:active,
+.fav:active,
+.x:active {
+  transform: scale(.97);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .tile:not(.brand), .track-tile, .search, .sel, .chip:not(.on),
+  .food, .card, .box, .sheet, .input {
+    background-color: rgba(255,255,255,.92);
+  }
+}
+
+@media (max-width:760px) {
+  .toolbar { background: rgba(241,238,232,.84); }
+  .food, .card, .box { background: rgba(255,255,255,.72); }
+  .sheet { background: rgba(241,238,232,.91); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .track-cta, .pay, .btn, .add, .chip, .type, .qn, .fav, .x { transition: none !important; }
+}
+
+</style>
 </head>
-
 <body>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<noscript><p class="status error">Please enable JavaScript to order online.</p></noscript>
 
-  <main class="page">
-    <section class="hero-grid" aria-label="Food court introduction">
-      <div class="hero-tile brand-tile">
-        <span class="brand-mark">🍽️</span>
-        <span class="brand-emoji" aria-hidden="true">🍔</span>
-        <h1>Kuch Bhi Kho Lo Court</h1>
-        <p>Fresh, hot &amp; fast · Dine-in, takeaway &amp; delivery</p>
-      </div>
-
-      <div class="hero-tile status-tile">
-        <p class="eyebrow">Status</p>
-        <strong>Open now</strong>
-        <p id="dishCount">Loading dishes…</p>
-      </div>
-
-      <div class="hero-tile how-tile">
-        <p class="eyebrow">How it works</p>
-        <ol class="how-list">
-          <li><span>1</span> Pick food</li>
-          <li><span>2</span> Place order</li>
-          <li><span>3</span> Show token</li>
-        </ol>
-      </div>
-
-      <div class="hero-tile search-tile">
-        <div class="search-box">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Search your favourites…" autocomplete="off" aria-label="Search menu">
-        </div>
-
-        <div class="veg-toggle-wrap">
-          <span>Veg only</span>
-          <label class="switch" aria-label="Show vegetarian food only">
-            <input id="vegOnly" type="checkbox">
-            <span class="switch-track"></span>
-          </label>
-        </div>
-      </div>
-    </section>
-
-    <div id="status" class="status hidden" role="status" aria-live="polite"></div>
-
-    <section aria-labelledby="categoryHeading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Find your craving</p>
-          <h2 id="categoryHeading">Explore categories</h2>
-        </div>
-        <button id="refreshButton" class="small-button" type="button">↻ Refresh</button>
-      </div>
-      <div id="categories" class="category-strip" aria-label="Food categories"></div>
-    </section>
-
-    <section aria-labelledby="menuHeading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Made for your appetite</p>
-          <h2 id="menuHeading">Today's menu</h2>
-          <p id="menuSubheading">Fresh picks, just for you.</p>
-        </div>
-      </div>
-
-      <div id="menu">
-        <div class="empty-menu">Loading the menu…</div>
-      </div>
-    </section>
-
-    <section class="tracking-section" aria-labelledby="trackingHeading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Order updates</p>
-          <h2 id="trackingHeading">Track your order</h2>
-          <p>Check your latest order or look up an order using its number and phone.</p>
-        </div>
-      </div>
-      <div class="tracking-layout">
-        <article class="tracking-card" aria-labelledby="recentOrderHeading">
-          <h3 id="recentOrderHeading">Your recent order</h3>
-          <p class="track-help">The most recent order placed in this browser appears here.</p>
-          <div id="recentOrderContent" class="tracking-result" aria-live="polite">
-            <p class="tracking-message">Your recent order will appear here after you place an order on this browser.</p>
-          </div>
-        </article>
-        <article class="tracking-card" aria-labelledby="findOrderHeading">
-          <h3 id="findOrderHeading">Find an order</h3>
-          <p class="track-help">Enter the order number and the same 10-digit phone number used at checkout.</p>
-          <form id="trackForm" class="tracking-form">
-            <label class="field-label" for="trackOrderNumber">Order number</label>
-            <input id="trackOrderNumber" class="input" required maxlength="40" autocomplete="off" placeholder="e.g. FC001">
-            <label class="field-label" for="trackPhone">Phone number</label>
-            <input id="trackPhone" class="input" required inputmode="numeric" autocomplete="tel" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile number">
-            <button id="trackSubmit" class="tracking-button" type="submit">Track order</button>
-          </form>
-          <div id="trackResult" class="tracking-result" aria-live="polite"></div>
-        </article>
-      </div>
-    </section>
-
-    <footer>
-      © <span id="year"></span> Kuch Bhi Kho Lo Court · Made with ❤️
-    </footer>
-  </main>
-
-  <!-- Floating cart bar -->
-  <div id="floatingCart" class="floating-cart" aria-live="polite">
-    <div class="cart-summary">
-      <div id="floatingCount" class="cart-summary-count">0 items</div>
-      <div id="floatingTotal" class="cart-summary-total">₹0</div>
+<main class="page">
+  <section class="hero" aria-label="Food court introduction">
+    <div class="tile brand">
+      <span class="mark">🍽️</span><span class="big" aria-hidden="true">🍔</span>
+      <h1>Kuch Bhi Kho Lo Court</h1>
+      <p>Fresh, hot &amp; fast · Dine-in, takeaway &amp; delivery</p>
     </div>
-    <button id="viewCartButton" class="view-cart" type="button">View cart →</button>
+    <div class="tile state">
+      <p class="eyebrow">Status</p><strong>Open now</strong><p id="dishCount">Loading dishes…</p>
+    </div>
+    <div class="tile track-tile">
+      <p class="eyebrow">Order updates</p>
+      <h2>Track your order</h2>
+      <p>See your latest order or check its progress.</p>
+      <a class="track-cta" href="#track" data-goto="track">Track an order <span aria-hidden="true">↗</span></a>
+      <span class="track-art" aria-hidden="true">⌁</span>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="row">
+      <label class="search"><span aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Search your favourites…" autocomplete="off" aria-label="Search menu"></label>
+      <select id="sort" class="sel" aria-label="Sort menu">
+        <option value="rec">Recommended</option><option value="asc">Price: low to high</option><option value="desc">Price: high to low</option>
+      </select>
+    </div>
+    <div class="chips" id="diet" aria-label="Diet filter">
+      <button class="chip on" data-diet="all">All</button>
+      <button class="chip" data-diet="veg"><i class="kind"></i>Veg</button>
+      <button class="chip" data-diet="nonveg"><i class="kind nv"></i>Non-veg</button>
+      <button class="chip" id="refresh" aria-label="Refresh menu">↻ Refresh</button>
+    </div>
+    <div class="chips" id="cats" aria-label="Food categories"></div>
   </div>
 
-  <!-- Cart and checkout bottom sheet -->
-  <div id="cartOverlay" class="sheet-overlay" aria-hidden="true">
-    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="cartSheetTitle">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h2 id="cartSheetTitle">Your order</h2>
-        <button id="closeCartButton" class="close-sheet" type="button" aria-label="Close cart">×</button>
-      </div>
+  <div id="status" class="status hidden" role="status" aria-live="polite"></div>
 
-      <div class="progress" aria-label="Checkout progress">
-        <span id="progressCart" class="done"></span>
-        <span id="progressDetails"></span>
-        <span id="progressDone"></span>
-      </div>
+  <section aria-labelledby="menuTitle">
+    <div class="head"><h2 id="menuTitle">Today's menu</h2><p id="menuSub" class="muted">Fresh picks, just for you.</p></div>
+    <div id="menu"></div>
+  </section>
 
-      <div class="sheet-box">
-        <h3>🛒 Your cart</h3>
-        <div id="cartItems" class="cart-empty">Your cart is empty.</div>
-      </div>
+  <section class="track" id="track" aria-labelledby="trackTitle">
+    <h2 id="trackTitle">Track your order</h2>
+    <p class="muted">Check your latest order or look one up with its number and phone.</p>
+    <div class="track-grid">
+      <article class="card">
+        <h3>Your recent order</h3><p class="help">The latest order placed in this browser. Updates automatically.</p>
+        <div id="recent" aria-live="polite"><p class="msg">Your recent order will appear here after you place one.</p></div>
+      </article>
+      <article class="card">
+        <h3>Find an order</h3><p class="help">Enter the order number and the phone number used at checkout.</p>
+        <form id="trackForm" novalidate>
+          <div class="field"><label for="tId">Order number</label><input id="tId" class="input" maxlength="40" autocomplete="off" placeholder="e.g. FC001"></div>
+          <div class="field"><label for="tPhone">Phone number</label><input id="tPhone" class="input" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="10-digit mobile number"></div>
+          <button id="tGo" class="btn" type="submit">Track order</button>
+        </form>
+        <div id="found" aria-live="polite" style="margin-top:12px"></div>
+      </article>
+    </div>
+  </section>
 
-      <div class="sheet-box">
+  <footer>© <span id="year"></span> Kuch Bhi Kho Lo Court · Made with ❤️</footer>
+</main>
+
+<div id="fcart" class="fcart" aria-live="polite">
+  <div><small id="fCount">0 items</small><strong id="fTotal">₹0</strong></div>
+  <button id="openCart" type="button">View cart →</button>
+</div>
+
+<div id="overlay" class="overlay" aria-hidden="true">
+  <section id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="handle"></div>
+    <div class="sheet-head"><h2 id="sheetTitle">Your order</h2><button id="closeSheet" class="x" type="button" aria-label="Close cart">×</button></div>
+
+    <div id="cartView">
+      <div id="progress" class="progress" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="box"><h3>🛒 Your cart</h3><div id="cartItems"></div></div>
+      <div class="box">
         <h3>Bill details</h3>
-        <div class="bill-row"><span>Food subtotal</span><strong id="foodSubtotal">₹0</strong></div>
-        <div class="bill-row"><span>Delivery fee*</span><strong id="deliveryFee">Calculated by server</strong></div>
-        <div class="bill-dashed"></div>
-        <div class="bill-row bill-total"><span>To pay</span><strong id="grandTotal">Calculated at checkout</strong></div>
-        <p id="minimumNote" class="field-note"></p>
+        <div class="bill"><span>Food subtotal</span><strong id="subT">₹0</strong></div>
+        <div class="bill"><span>Delivery fee</span><strong id="feeT">At checkout</strong></div>
+        <div class="bill total"><span>To pay</span><strong id="grandT">₹0</strong></div>
+        <div id="minNote" class="min hidden"></div>
       </div>
-
-      <div class="sheet-box">
+      <div class="box">
         <h3>Delivery or pickup?</h3>
-        <div id="orderTypeTiles" class="order-types">
-          <button type="button" class="order-type active" data-type="delivery">
-            <span class="type-emoji">🛵</span><span>Delivery</span>
-          </button>
-          <button type="button" class="order-type" data-type="takeaway">
-            <span class="type-emoji">🥡</span><span>Takeaway</span>
-          </button>
-          <button type="button" class="order-type" data-type="dine-in">
-            <span class="type-emoji">🍽️</span><span>Dine-in</span>
-          </button>
+        <div class="types">
+          <button type="button" class="type on" data-type="delivery"><span>🛵</span><span>Delivery</span></button>
+          <button type="button" class="type" data-type="takeaway"><span>🥡</span><span>Takeaway</span></button>
+          <button type="button" class="type" data-type="dine-in"><span>🍽️</span><span>Dine-in</span></button>
         </div>
-
-        <form id="orderForm">
-          <div class="form-grid">
-            <div class="form-field full-width">
-              <label class="field-label" for="customerName">Your name *</label>
-              <input class="input" id="customerName" name="name" required maxlength="80" autocomplete="name" placeholder="Enter your full name">
-            </div>
-
-            <div class="form-field full-width">
-              <label class="field-label" for="phone">Mobile number *</label>
-              <input class="input" id="phone" name="phone" required inputmode="tel" autocomplete="tel" maxlength="16" placeholder="Enter your phone number">
-            </div>
-
-            <div class="form-field full-width hidden">
-              <label class="field-label" for="type">Order type *</label>
-              <select class="select" id="type" name="type" required>
-                <option value="delivery">Home delivery</option>
-                <option value="takeaway">Takeaway</option>
-                <option value="dine-in">Dine-in</option>
-              </select>
-            </div>
-
-            <div id="deliveryFields" class="form-field full-width">
-              <label class="field-label" for="address">Delivery address *</label>
-              <textarea class="textarea" id="address" name="address" minlength="25" maxlength="500" placeholder="House/flat, street, area, landmark and city"></textarea>
-              <button id="locationButton" class="location-button" type="button">📍 Use my current location</button>
-              <p id="locationMessage" class="location-message">Your browser may ask permission to access your location.</p>
-              <div class="distance-map-panel" id="distanceMapPanel">
-                <p class="distance-map-title">📍 Kitchen distance &amp; map</p>
-                <p id="distanceText" class="distance-text">Use your current location to estimate the distance from the kitchen.</p>
-                <iframe id="distanceMap" class="distance-map" title="Map from the food court kitchen to your delivery location" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
-                <a id="distanceMapLink" class="distance-map-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Open route in Google Maps ↗</a>
-              </div>
-            </div>
-
-            <div id="tableField" class="form-field full-width hidden">
-              <label class="field-label" for="table">Table number *</label>
-              <input class="input" id="table" name="table" maxlength="20" placeholder="Enter your table number">
-            </div>
-
-            <div class="form-field full-width">
-              <label class="field-label" for="notes">Special instructions (optional)</label>
-              <textarea class="textarea" id="notes" name="notes" maxlength="500" placeholder="For example: less spicy, no onion"></textarea>
-              <div class="quick-notes" aria-label="Quick special instructions">
-                <button type="button" class="note-chip" data-note="Less spicy">Less spicy</button>
-                <button type="button" class="note-chip" data-note="Extra spicy">Extra spicy</button>
-                <button type="button" class="note-chip" data-note="No onion">No onion</button>
-                <button type="button" class="note-chip" data-note="Pack separately">Pack separately</button>
-              </div>
+        <form id="form" novalidate>
+          <div class="field"><label for="name">Your name *</label><input class="input" id="name" maxlength="80" autocomplete="name" placeholder="Enter your full name"></div>
+          <div class="field"><label for="phone">Mobile number *</label><input class="input" id="phone" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="10-digit mobile number"></div>
+          <div id="delFields" class="field">
+            <label for="address">Delivery address *</label>
+            <textarea class="input" id="address" maxlength="500" autocomplete="street-address" placeholder="House/flat, street, area, landmark and city"></textarea>
+            <button id="locBtn" class="loc" type="button">📍 Use my current location</button>
+            <p id="locMsg" class="note">Your browser may ask permission to access your location.</p>
+            <div id="mapPanel" class="hidden">
+              <p id="distText" class="note"></p>
+              <iframe id="map" class="map" title="Map from the kitchen to your delivery location" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <a id="mapLink" class="link" href="#" target="_blank" rel="noopener noreferrer">Open route in Google Maps ↗</a>
             </div>
           </div>
-
-          <button id="placeOrder" class="checkout-button" type="submit">
-            <span id="placeOrderLabel">Place order</span>
-            <span id="placeOrderAmount" class="button-amount">₹0 →</span>
-          </button>
-          <p class="field-note">Your final amount is validated by the ordering server.</p>
+          <div id="tableField" class="field hidden"><label for="table">Table number *</label><input class="input" id="table" maxlength="20" placeholder="Enter your table number"></div>
+          <div class="field">
+            <label for="notes">Special instructions (optional)</label>
+            <textarea class="input" id="notes" maxlength="500" placeholder="For example: less spicy, no onion"></textarea>
+            <div class="quick">
+              <button type="button" class="qn" data-note="Less spicy">Less spicy</button>
+              <button type="button" class="qn" data-note="Extra spicy">Extra spicy</button>
+              <button type="button" class="qn" data-note="No onion">No onion</button>
+              <button type="button" class="qn" data-note="Pack separately">Pack separately</button>
+            </div>
+          </div>
+          <div id="formError" class="status error hidden" role="alert" style="margin:0 0 12px"></div>
+          <button id="pay" class="pay" type="submit"><span id="payLabel">Place order</span><span id="payAmt">₹0 →</span></button>
+          <p class="note">The ordering server validates your final amount.</p>
         </form>
-
-        <div id="orderResult" class="result-box" aria-live="polite"></div>
       </div>
-    </section>
-  </div>
-
-  <script>
-    "use strict";
-
-    // Existing backend URL — unchanged.
-    const API_URL = "https://script.google.com/macros/s/AKfycbxFnlBMfa5OxypWumiimkAhwjiQYU7593JFgB9nWXOvQ1XPoHLgWhjo-NrBU4fhZqkgzg/exec";
-    const RECENT_ORDER_KEY = "kbklc_recent_order_v1";
-    const TRACKING_STEPS = ["NEW", "PREPARING", "READY", "COMPLETED"];
-    const TRACKING_LABELS = ["New", "Preparing", "Ready", "Completed"];
-
-    let menuItems = [];
-    let config = null;
-    const cart = new Map();
-    let customerLat = null;
-    let customerLng = null;
-    let submitting = false;
-
-    const $ = (id) => document.getElementById(id);
-
-    function showStatus(message, kind) {
-      const el = $("status");
-      el.textContent = message;
-      el.className = "status " + (kind || "error");
-    }
-
-    function clearStatus() {
-      $("status").textContent = "";
-      $("status").className = "status hidden";
-    }
-
-    function rupees(value) {
-      const number = Number(value);
-      return Number.isFinite(number)
-        ? new Intl.NumberFormat("en-IN", {
-            style: "currency", currency: "INR", maximumFractionDigits: 2
-          }).format(number)
-        : "—";
-    }
-
-    async function apiRequest(data) {
-      if (!API_URL || API_URL.includes("PASTE_YOUR_WEB_APP")) {
-        throw new Error("Add your deployed Apps Script /exec URL in index.html first.");
-      }
-
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(data),
-        redirect: "follow"
-      });
-
-      const raw = await response.text();
-      let result;
-      try {
-        result = JSON.parse(raw);
-      } catch {
-        throw new Error("The server returned an unexpected response. Check the Web App deployment and URL.");
-      }
-
-      if (!response.ok || result.ok === false) {
-        throw new Error(result.error || "The request could not be completed.");
-      }
-      if (result.ok !== true) {
-        throw new Error("The server response was not recognised.");
-      }
-      return result;
-    }
-
-    async function loadData() {
-      $("menu").replaceChildren();
-      const loading = document.createElement("div");
-      loading.className = "empty-menu";
-      loading.textContent = "Loading menu from the server…";
-      $("menu").append(loading);
-      $("refreshButton").disabled = true;
-      clearStatus();
-
-      try {
-        const results = await Promise.all([
-          apiRequest({ action: "config" }),
-          apiRequest({ action: "menu" })
-        ]);
-
-        config = results[0];
-        menuItems = Array.isArray(results[1].items) ? results[1].items : [];
-
-        renderMenu();
-        renderCart();
-        updateOrderFields();
-
-        if (menuItems.length === 0) {
-          showStatus("The server is running, but no menu items are currently available.", "error");
-        }
-      } catch (error) {
-        $("menu").replaceChildren();
-        const message = document.createElement("p");
-        message.className = "empty-menu";
-        message.textContent = "We could not load the menu. Please check your internet connection and try again.";
-        $("menu").append(message);
-        showStatus(error.message || "Unable to connect to the ordering server.", "error");
-      } finally {
-        $("refreshButton").disabled = false;
-      }
-    }
-
-    function renderMenu() {
-      const container = $("menu");
-      container.replaceChildren();
-
-      const available = menuItems.filter(item => item.available === true);
-      const searchTerm = ($("searchInput")?.value || "").trim().toLowerCase();
-      const vegOnly = $("vegOnly")?.checked === true;
-      const selectedCategory = window.selectedFoodCategory || "All";
-
-      const filtered = available.filter(item => {
-        const name = String(item.name || "").toLowerCase();
-        const category = getCategory(item);
-        const matchesSearch = !searchTerm ||
-          name.includes(searchTerm) ||
-          category.toLowerCase().includes(searchTerm);
-        const matchesVeg = !vegOnly || item.veg === true;
-        const matchesCategory = selectedCategory === "All" || category === selectedCategory;
-        return matchesSearch && matchesVeg && matchesCategory;
-      });
-
-      $("dishCount").textContent = available.length + " dishes available";
-      $("menuSubheading").textContent = filtered.length
-        ? filtered.length + " delicious " + (filtered.length === 1 ? "pick" : "picks") + " to explore."
-        : "Try another search or category.";
-
-      renderCategories(available);
-
-      if (!filtered.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty-menu";
-        empty.textContent = "No dishes found. Try another category or search.";
-        container.append(empty);
-        return;
-      }
-
-      const grouped = new Map();
-      filtered.forEach(item => {
-        const category = getCategory(item);
-        if (!grouped.has(category)) grouped.set(category, []);
-        grouped.get(category).push(item);
-      });
-
-      const groups = Array.from(grouped.entries());
-      groups.forEach(([category, items], groupIndex) => {
-        const section = document.createElement("section");
-        section.className = "menu-section";
-
-        const heading = document.createElement("h3");
-        heading.className = "menu-section-title";
-        heading.append(
-          makeTextElement("span", categoryEmoji(category), "title-emoji"),
-          document.createTextNode(category)
-        );
-
-        const grid = document.createElement("div");
-        grid.className = "menu-grid";
-
-        const sorted = items.slice().sort((a, b) => {
-          const aAvailable = a.available === true ? 0 : 1;
-          const bAvailable = b.available === true ? 0 : 1;
-          return aAvailable - bAvailable;
-        });
-
-        sorted.forEach((item, index) => {
-          const card = document.createElement("article");
-          card.className = "food-card";
-          card.style.animationDelay = Math.min(index * 35, 245) + "ms";
-
-          if (items.length >= 3 && index === 0 && window.matchMedia("(min-width: 1000px)").matches) {
-            card.classList.add("featured");
-          }
-
-          const picture = document.createElement("div");
-          picture.className = "food-picture";
-          picture.style.setProperty("--food-pastel", pastelForCategory(category));
-
-          const emoji = makeTextElement("span", foodEmoji(item), "food-picture-emoji");
-          emoji.setAttribute("aria-hidden", "true");
-
-          const tag = makeTextElement("span", category, "food-tag");
-          const fav = makeTextElement("span", "★ YOUR FAV", "favourite-tag");
-          fav.classList.add("hidden");
-
-          if (index === 0) fav.classList.remove("hidden");
-
-          picture.append(emoji, tag, fav);
-
-          const body = document.createElement("div");
-          body.className = "food-body";
-
-          const nameRow = document.createElement("div");
-          nameRow.className = "food-name-row";
-
-          const foodKind = document.createElement("span");
-          foodKind.className = "food-kind" + (item.veg === true ? "" : " nonveg");
-          foodKind.setAttribute("aria-label", item.veg === true ? "Vegetarian" : "Non-vegetarian");
-
-          const name = makeTextElement("h3", item.name, "food-name");
-          nameRow.append(foodKind, name);
-
-          const description = makeTextElement(
-            "p",
-            item.veg === true ? "Veg · Made for your cravings" : "Non-veg · Full of flavour",
-            "food-description"
-          );
-
-          const bottom = document.createElement("div");
-          bottom.className = "food-bottom";
-
-          const price = makeTextElement("div", rupees(item.price), "food-price");
-          const buttonArea = document.createElement("div");
-          const count = cart.get(String(item.id)) || 0;
-
-          if (count > 0) {
-            const stepper = document.createElement("div");
-            stepper.className = "stepper";
-
-            const minus = makeTextElement("button", "−");
-            minus.type = "button";
-            minus.setAttribute("aria-label", "Remove one " + item.name);
-            minus.addEventListener("click", () => changeQty(item.id, -1));
-
-            const quantity = makeTextElement("span", String(count));
-
-            const plus = makeTextElement("button", "+");
-            plus.type = "button";
-            plus.setAttribute("aria-label", "Add one " + item.name);
-            plus.disabled = count >= 20;
-            plus.addEventListener("click", () => addItem(item.id));
-
-            stepper.append(minus, quantity, plus);
-            buttonArea.append(stepper);
-          } else {
-            const button = makeTextElement("button", "ADD +", "add-button");
-            button.type = "button";
-            button.addEventListener("click", () => addItem(item.id));
-            buttonArea.append(button);
-          }
-
-          bottom.append(price, buttonArea);
-          body.append(nameRow, description, bottom);
-          card.append(picture, body);
-          grid.append(card);
-        });
-
-        section.append(heading, grid);
-        container.append(section);
-      });
-    }
-
-    function addItem(id) {
-      const key = String(id);
-      const item = menuItems.find(entry => String(entry.id) === key && entry.available === true);
-      if (!item) return;
-
-      const current = cart.get(key) || 0;
-      if (current >= 20) {
-        showStatus("You can order up to 20 of each item in one cart.", "error");
-        return;
-      }
-      cart.set(key, current + 1);
-      clearStatus();
-      renderMenu();
-      renderCart();
-
-      // UI-only feedback: toast and gentle haptic feedback.
-      showToast(item.name + " added");
-      if (navigator.vibrate) navigator.vibrate(15);
-      const bar = $("floatingCart");
-      bar.classList.remove("bounce");
-      void bar.offsetWidth;
-      bar.classList.add("bounce");
-    }
-
-    function changeQty(id, amount) {
-      const key = String(id);
-      const next = (cart.get(key) || 0) + amount;
-      if (next <= 0) cart.delete(key);
-      else if (next <= 20) cart.set(key, next);
-      renderMenu();
-      renderCart();
-    }
-
-    function cartLines() {
-      return Array.from(cart.entries()).map(([id, qty]) => {
-        const item = menuItems.find(entry => String(entry.id) === id);
-        return item ? { item, qty } : null;
-      }).filter(Boolean);
-    }
-
-    function subtotal() {
-      return cartLines().reduce((sum, line) => sum + Number(line.item.price) * line.qty, 0);
-    }
-
-    function renderCart() {
-      const container = $("cartItems");
-      container.replaceChildren();
-      const lines = cartLines();
-
-      if (!lines.length) {
-        container.className = "cart-empty";
-        container.textContent = "Your cart is empty.";
-      } else {
-        container.className = "";
-        lines.forEach(({ item, qty }) => {
-          const row = document.createElement("div");
-          row.className = "cart-item";
-          row.style.setProperty("--food-pastel", pastelForCategory(getCategory(item)));
-
-          const itemEmoji = makeTextElement("div", foodEmoji(item), "cart-item-emoji");
-          itemEmoji.setAttribute("aria-hidden", "true");
-
-          const info = document.createElement("div");
-          info.className = "cart-item-info";
-
-          const name = makeTextElement("div", item.name, "cart-item-name");
-          const price = makeTextElement("div", rupees(Number(item.price) * qty), "cart-item-price");
-          info.append(name, price);
-
-          const controls = document.createElement("div");
-          controls.className = "qty";
-
-          const minus = makeTextElement("button", "−");
-          minus.type = "button";
-          minus.setAttribute("aria-label", "Remove one " + item.name);
-          minus.addEventListener("click", () => changeQty(item.id, -1));
-
-          const count = makeTextElement("span", String(qty));
-
-          const plus = makeTextElement("button", "+");
-          plus.type = "button";
-          plus.setAttribute("aria-label", "Add one " + item.name);
-          plus.disabled = qty >= 20;
-          plus.addEventListener("click", () => addItem(item.id));
-
-          controls.append(minus, count, plus);
-          row.append(itemEmoji, info, controls);
-          container.append(row);
-        });
-      }
-
-      $("foodSubtotal").textContent = rupees(subtotal());
-      $("deliveryFee").textContent = $("type").value === "delivery"
-        ? "Calculated at checkout" : rupees(0);
-      $("grandTotal").textContent = $("type").value === "delivery"
-        ? "Calculated at checkout" : rupees(subtotal());
-
-      if (config && Number.isFinite(Number(config.minOrder))) {
-        $("minimumNote").textContent =
-          "Minimum delivery food order: " + rupees(config.minOrder) +
-          ". The server validates the final amount.";
-      }
-
-      updateFloatingCart();
-    }
-
-    function updateOrderFields() {
-      const type = $("type").value;
-      const delivery = type === "delivery";
-      const dineIn = type === "dine-in";
-
-      $("deliveryFields").classList.toggle("hidden", !delivery);
-      $("tableField").classList.toggle("hidden", !dineIn);
-      $("address").required = delivery;
-      $("table").required = dineIn;
-
-      document.querySelectorAll(".order-type").forEach(button => {
-        button.classList.toggle("active", button.dataset.type === type);
-      });
-
-      $("deliveryFee").textContent = delivery ? "Calculated at checkout" : rupees(0);
-      $("grandTotal").textContent = delivery ? "Calculated at checkout" : rupees(subtotal());
-      $("placeOrderAmount").textContent = rupees(subtotal()) + " →";
-      $("distanceMapPanel").classList.toggle("hidden", !delivery);
-      if (delivery && typeof customerLat === "number" && typeof customerLng === "number") {
-        updateDistanceMap();
-      }
-      renderCart();
-    }
-
-    function directDistanceKm(lat1, lng1, lat2, lng2) {
-      const radians = value => value * Math.PI / 180;
-      const dLat = radians(lat2 - lat1);
-      const dLng = radians(lng2 - lng1);
-      const a = Math.sin(dLat / 2) ** 2 +
-        Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLng / 2) ** 2;
-      return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
-    }
-
-    function updateDistanceMap() {
-      if (!config || typeof customerLat !== "number" || typeof customerLng !== "number") return;
-      const shopLat = Number(config.shopLat);
-      const shopLng = Number(config.shopLng);
-      const distance = directDistanceKm(shopLat, shopLng, customerLat, customerLng);
-      const warning = distance > Number(config.radiusKm || 5);
-      const text = $("distanceText");
-      text.classList.toggle("warning", warning);
-      text.textContent = warning
-        ? "Approx. direct distance: " + distance.toFixed(2) + " km. This is outside our " + Number(config.radiusKm || 5) + " km delivery limit."
-        : "Approx. direct distance from kitchen: " + distance.toFixed(2) + " km · Delivery limit: " + Number(config.radiusKm || 5) + " km. The server confirms the final eligibility and fee.";
-      const origin = shopLat + "," + shopLng;
-      const destination = customerLat + "," + customerLng;
-      const route = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(origin) + "&destination=" + encodeURIComponent(destination);
-      const embed = "https://maps.google.com/maps?saddr=" + encodeURIComponent(origin) + "&daddr=" + encodeURIComponent(destination) + "&output=embed";
-      $("distanceMap").src = embed;
-      $("distanceMap").hidden = false;
-      $("distanceMapLink").href = route;
-      $("distanceMapLink").hidden = false;
-    }
-
-    function getCurrentLocation() {
-      if (!navigator.geolocation) {
-        $("locationMessage").textContent = "Your browser does not support location sharing. Try another browser.";
-        return;
-      }
-
-      $("locationButton").disabled = true;
-      $("locationButton").textContent = "Getting location…";
-      $("locationMessage").textContent = "Please allow location access if your browser asks.";
-
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          customerLat = position.coords.latitude;
-          customerLng = position.coords.longitude;
-          $("locationMessage").textContent =
-            "Location captured successfully. Your exact coordinates will be sent with your delivery order.";
-          updateDistanceMap();
-          $("locationButton").textContent = "📍 Location captured";
-          $("locationButton").disabled = false;
-        },
-        error => {
-          customerLat = null;
-          customerLng = null;
-          const message = error.code === 1
-            ? "Location permission was denied. Allow location access in your browser and try again."
-            : "Could not get your location. Check your device location settings and try again.";
-          $("locationMessage").textContent = message;
-          $("distanceText").textContent = "Use your current location to estimate the distance from the kitchen.";
-          $("distanceText").classList.remove("warning");
-          $("distanceMap").hidden = true;
-          $("distanceMap").removeAttribute("src");
-          $("distanceMapLink").hidden = true;
-          $("locationButton").textContent = "📍 Use my current location";
-          $("locationButton").disabled = false;
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-      );
-    }
-
-    async function submitOrder(event) {
-      event.preventDefault();
-      if (submitting) return;
-      clearStatus();
-
-      const lines = cartLines();
-      if (!lines.length) {
-        showStatus("Please add at least one food item to your cart.", "error");
-        showCartSheet();
-        return;
-      }
-
-      const type = $("type").value;
-      const address = $("address").value.trim();
-
-      if (type === "delivery") {
-        if (address.length < 25) {
-          showStatus("Please enter a complete delivery address of at least 25 characters.", "error");
-          $("address").focus();
-          showCartSheet();
-          return;
-        }
-        if (typeof customerLat !== "number" || typeof customerLng !== "number") {
-          showStatus("Please use the location button and allow location access before placing a delivery order.", "error");
-          showCartSheet();
-          return;
-        }
-      }
-
-      const phone = $("phone").value.trim();
-      if (!/^[6-9]\d{9}$/.test(phone)) {
-        showStatus("Please enter a valid 10-digit Indian mobile number.", "error");
-        $("phone").focus();
-        showCartSheet();
-        return;
-      }
-
-      const payload = {
-        name: $("customerName").value.trim(),
-        phone,
-        type,
-        table: type === "dine-in" ? $("table").value.trim() : "",
-        items: lines.map(({ item, qty }) => ({ id: item.id, qty })),
-        notes: $("notes").value.trim(),
-        address: type === "delivery" ? address : "",
-        lat: type === "delivery" ? customerLat : null,
-        lng: type === "delivery" ? customerLng : null
-      };
-
-      submitting = true;
-      $("placeOrder").disabled = true;
-      $("placeOrderLabel").textContent = "Placing order…";
-      $("placeOrderAmount").textContent = "Please wait";
-      $("orderResult").replaceChildren();
-
-      try {
-        // Same order payload and existing backend request.
-        const result = await apiRequest(payload);
-        saveRecentOrder({ orderId: result.orderId, phone: phone.replace(/\D/g, ""), date: result.date || "" });
-
-        const box = document.createElement("div");
-        box.className = "status success";
-
-        const heading = document.createElement("strong");
-        heading.textContent = "Order placed successfully!";
-
-        const orderId = document.createElement("p");
-        orderId.textContent = "Order number: " + String(result.orderId || "Confirmed");
-
-        const total = document.createElement("p");
-        total.textContent = "Order total: " + rupees(result.total);
-
-        const message = document.createElement("p");
-        message.textContent = "Please keep your order number for reference.";
-
-        box.append(heading, orderId, total, message);
-
-        if (result.map) {
-          const mapLink = document.createElement("a");
-          mapLink.href = result.map;
-          mapLink.target = "_blank";
-          mapLink.rel = "noopener noreferrer";
-          mapLink.textContent = "Open delivery route in Google Maps";
-          box.append(document.createElement("br"), mapLink);
-        }
-
-        $("orderResult").append(box);
-        showSuccessSheet(result);
-        loadRecentOrder();
-        cart.clear();
-        renderMenu();
-        renderCart();
-        $("orderForm").reset();
-        customerLat = null;
-        customerLng = null;
-        $("locationButton").textContent = "📍 Use my current location";
-        $("locationMessage").textContent =
-          "Your browser may ask permission to access your location.";
-        updateOrderFields();
-        box.scrollIntoView({ behavior: "smooth", block: "center" });
-      } catch (error) {
-        showStatus(
-          "We could not confirm your order. " +
-          (error.message || "Please try again.") +
-          " If you are unsure whether it was submitted, check with the food court before retrying.",
-          "error"
-        );
-        showCartSheet();
-      } finally {
-        submitting = false;
-        $("placeOrder").disabled = false;
-        $("placeOrderLabel").textContent = "Place order";
-        $("placeOrderAmount").textContent = rupees(subtotal()) + " →";
-      }
-    }
-
-    function saveRecentOrder(order) {
-      try {
-        if (!order || !order.orderId || !order.phone) return;
-        localStorage.setItem(RECENT_ORDER_KEY, JSON.stringify({
-          orderId: String(order.orderId),
-          phone: String(order.phone).replace(/\D/g, ""),
-          date: String(order.date || "")
-        }));
-      } catch (_) {
-        // Private browsing or storage restrictions should not stop checkout.
-      }
-    }
-
-    function readRecentOrder() {
-      try {
-        const raw = localStorage.getItem(RECENT_ORDER_KEY);
-        if (!raw) return null;
-        const saved = JSON.parse(raw);
-        if (!saved || !saved.orderId || !/^[6-9]\d{9}$/.test(String(saved.phone || ""))) return null;
-        return saved;
-      } catch (_) {
-        return null;
-      }
-    }
-
-    async function loadRecentOrder() {
-      const target = $("recentOrderContent");
-      const saved = readRecentOrder();
-      target.replaceChildren();
-      if (!saved) {
-        target.append(makeTextElement("p", "Your recent order will appear here after you place an order on this browser.", "tracking-message"));
-        return;
-      }
-      target.append(makeTextElement("p", "Loading your latest order…", "tracking-message"));
-      try {
-        const request = { action: "track", orderId: saved.orderId, phone: saved.phone };
-        if (saved.date) request.date = saved.date;
-        const result = await apiRequest(request);
-        renderTrackingOrder(target, result.order);
-        appendTrackingRefresh(target, saved.orderId, saved.phone, saved.date);
-      } catch (error) {
-        target.replaceChildren();
-        target.append(makeTextElement("p", "Could not refresh this order right now. You can enter the order number and phone in Find an order.", "tracking-message"));
-        const retry = makeTextElement("button", "Refresh recent order", "tracking-button");
-        retry.type = "button";
-        retry.addEventListener("click", loadRecentOrder);
-        target.append(retry);
-      }
-    }
-
-    async function trackOrder(orderId, phone, target, date) {
-      target.replaceChildren();
-      target.append(makeTextElement("p", "Checking order details…", "tracking-message"));
-      try {
-        const request = { action: "track", orderId: orderId.trim(), phone: phone.replace(/\D/g, "") };
-        if (date) request.date = date;
-        const result = await apiRequest(request);
-        renderTrackingOrder(target, result.order);
-        appendTrackingRefresh(target, orderId.trim(), phone.replace(/\D/g, ""), date || "");
-      } catch (error) {
-        target.replaceChildren();
-        target.append(makeTextElement("p", error.message || "We could not find that order. Check the order number and phone number.", "tracking-message"));
-      }
-    }
-
-    function appendTrackingRefresh(target, orderId, phone, date) {
-      const button = makeTextElement("button", "Refresh status", "tracking-button");
-      button.type = "button";
-      button.style.marginTop = "10px";
-      button.addEventListener("click", () => trackOrder(orderId, phone, target, date));
-      target.append(button);
-    }
-
-    function renderTrackingOrder(target, order) {
-      target.replaceChildren();
-      if (!order) {
-        target.append(makeTextElement("p", "Order details are not available.", "tracking-message"));
-        return;
-      }
-
-      const top = makeTextElement("div", undefined, "tracking-order-top");
-      const number = makeTextElement("p", String(order.orderId || "Order"), "tracking-order-number");
-      const status = String(order.status || "NEW").toUpperCase();
-      const pill = makeTextElement("span", status.replace(/_/g, " "), "tracking-status-pill" + (status === "CANCELLED" ? " status-cancelled" : ""));
-      top.append(number, pill);
-
-      const metaLines = [];
-      if (order.date || order.time) metaLines.push([order.date, order.time].filter(Boolean).join(" · "));
-      if (order.items) metaLines.push("Items: " + order.items);
-      if (order.type) metaLines.push("Order type: " + String(order.type).replace(/-/g, " "));
-      metaLines.push("Total: " + rupees(order.total));
-      if (String(order.type || "").toLowerCase() === "delivery" && Number.isFinite(Number(order.distanceKm))) {
-        metaLines.push("Approx. kitchen distance: " + Number(order.distanceKm).toFixed(2) + " km");
-      }
-      const meta = makeTextElement("p", metaLines.join("\n"), "tracking-meta");
-      meta.style.whiteSpace = "pre-line";
-      target.append(top, meta);
-
-      if (status === "CANCELLED") {
-        target.append(makeTextElement("p", "This order has been cancelled. Please contact the food court if you need help.", "tracking-message"));
-      } else {
-        const activeIndex = TRACKING_STEPS.indexOf(status);
-        const progress = makeTextElement("div", undefined, "tracking-progress");
-        TRACKING_STEPS.forEach((step, index) => {
-          const cell = makeTextElement("div", undefined, "tracking-step" + (activeIndex >= index && activeIndex >= 0 ? " done" : ""));
-          cell.append(makeTextElement("span", "", "tracking-step-mark"), makeTextElement("span", TRACKING_LABELS[index]));
-          progress.append(cell);
-        });
-        target.append(progress);
-        if (activeIndex < 0) target.append(makeTextElement("p", "Current status: " + status, "tracking-message"));
-      }
-
-      if (order.map && String(order.type || "").toLowerCase() === "delivery") {
-        const link = makeTextElement("a", "Open delivery route in Google Maps ↗", "tracking-map-link");
-        link.href = String(order.map);
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        target.append(link);
-      }
-    }
-
-    /* UI-only helpers */
-
-    function makeTextElement(tag, text, className) {
-      const element = document.createElement(tag);
-      if (text !== undefined) element.textContent = text;
-      if (className) element.className = className;
-      return element;
-    }
-
-    function getCategory(item) {
-      const raw = String(item.category || "Other").trim();
-      return raw || "Other";
-    }
-
-    function categoryEmoji(category) {
-      const value = String(category).toLowerCase();
-      if (/burger/.test(value)) return "🍔";
-      if (/pizza/.test(value)) return "🍕";
-      if (/biryani|rice/.test(value)) return "🍚";
-      if (/dosa|idli|south/.test(value)) return "🥞";
-      if (/drink|beverage|coke|coffee|tea|chai|juice/.test(value)) return "🥤";
-      if (/dessert|sweet|cake|ice cream/.test(value)) return "🍰";
-      if (/roll|wrap|sandwich/.test(value)) return "🌯";
-      if (/chinese|noodle|momo/.test(value)) return "🥡";
-      if (/fries|snack/.test(value)) return "🍟";
-      if (/chicken|non.?veg/.test(value)) return "🍗";
-      if (/paneer|veg|vegetarian/.test(value)) return "🥗";
-      return "🍽️";
-    }
-
-    function foodEmoji(item) {
-      const value = (String(item.name || "") + " " + String(item.category || "")).toLowerCase();
-      if (/burger/.test(value)) return "🍔";
-      if (/pizza/.test(value)) return "🍕";
-      if (/biryani/.test(value)) return "🍛";
-      if (/rice/.test(value)) return "🍚";
-      if (/dosa/.test(value)) return "🥞";
-      if (/idli/.test(value)) return "🥟";
-      if (/coke|cola|soda|drink/.test(value)) return "🥤";
-      if (/coffee|cold coffee/.test(value)) return "🧋";
-      if (/tea|chai/.test(value)) return "🍵";
-      if (/juice/.test(value)) return "🧃";
-      if (/dessert|sweet|cake|ice cream/.test(value)) return "🍰";
-      if (/roll|wrap/.test(value)) return "🌯";
-      if (/sandwich/.test(value)) return "🥪";
-      if (/chinese|noodle/.test(value)) return "🍜";
-      if (/momo/.test(value)) return "🥟";
-      if (/fries/.test(value)) return "🍟";
-      if (/snack/.test(value)) return "🍿";
-      if (/chicken/.test(value)) return "🍗";
-      if (/paneer/.test(value)) return "🧀";
-      if (/thali/.test(value)) return "🍱";
-      if (/idli/.test(value)) return "🥥";
-      if (/burger/.test(value)) return "🍔";
-      return item.veg === true ? "🥗" : "🍽️";
-    }
-
-    function pastelForCategory(category) {
-      const colors = ["#fce8df", "#e4f4e8", "#eee7ff", "#fff0c9", "#e0f7f0", "#e9edf9"];
-      let hash = 0;
-      for (let i = 0; i < String(category).length; i++) {
-        hash = (hash + String(category).charCodeAt(i)) % colors.length;
-      }
-      return colors[hash];
-    }
-
-    function renderCategories(available) {
-      const container = $("categories");
-      const current = window.selectedFoodCategory || "All";
-      const counts = new Map();
-
-      available.forEach(item => {
-        const category = getCategory(item);
-        counts.set(category, (counts.get(category) || 0) + 1);
-      });
-
-      container.replaceChildren();
-      const categories = ["All", ...counts.keys()];
-
-      categories.forEach((category, index) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "category-tile" + (current === category ? " active" : "");
-        button.dataset.color = String((index - 1 + 6) % 6);
-        button.setAttribute("aria-pressed", String(current === category));
-
-        const emoji = makeTextElement("span", category === "All" ? "✨" : categoryEmoji(category), "category-emoji");
-        const name = makeTextElement("span", category, "category-name");
-        const count = makeTextElement("span", category === "All"
-          ? available.length + " items"
-          : (counts.get(category) || 0) + " items", "category-count");
-
-        button.append(emoji, name, count);
-        button.addEventListener("click", () => {
-          window.selectedFoodCategory = category;
-          renderMenu();
-        });
-        container.append(button);
-      });
-    }
-
-    function updateFloatingCart() {
-      const lines = cartLines();
-      const count = lines.reduce((sum, line) => sum + line.qty, 0);
-      const bar = $("floatingCart");
-
-      $("floatingCount").textContent = count + (count === 1 ? " item" : " items");
-      $("floatingTotal").textContent = rupees(subtotal());
-      $("placeOrderAmount").textContent = rupees(subtotal()) + " →";
-
-      bar.classList.toggle("visible", count > 0);
-      bar.setAttribute("aria-hidden", String(count === 0));
-    }
-
-    let toastTimeout;
-    function showToast(message) {
-      const toast = $("toast");
-      toast.textContent = message;
-      toast.classList.add("visible");
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => toast.classList.remove("visible"), 1800);
-    }
-
-    function showCartSheet() {
-      $("cartOverlay").classList.add("open");
-      $("cartOverlay").setAttribute("aria-hidden", "false");
-      document.body.classList.add("sheet-open");
-    }
-
-    function closeCartSheet() {
-      $("cartOverlay").classList.remove("open");
-      $("cartOverlay").setAttribute("aria-hidden", "true");
-      document.body.classList.remove("sheet-open");
-    }
-
-    function showSuccessSheet(result) {
-      $("cartSheetTitle").textContent = "Order confirmed";
-      $("progressDetails").classList.add("done");
-      $("progressDone").classList.add("done");
-
-      const container = $("orderResult");
-      container.replaceChildren();
-
-      const view = makeTextElement("div", undefined, "success-view");
-      const icon = makeTextElement("div", "✓", "success-icon");
-      const title = makeTextElement("h2", "Order placed!");
-      const description = makeTextElement("p", "Your food journey starts now.");
-
-      const token = makeTextElement("div", undefined, "token-tile");
-      token.append(
-        makeTextElement("div", "YOUR TOKEN", "token-label"),
-        makeTextElement("div", String(result.orderId || "CONFIRMED"), "token-number")
-      );
-
-      const summary = makeTextElement("div", undefined, "sheet-box");
-      summary.style.textAlign = "left";
-      summary.append(
-        makeTextElement("div", "Order total", "eyebrow"),
-        makeTextElement("h3", rupees(result.total)),
-        makeTextElement("p", "Keep your token number for reference.", "muted")
-      );
-
-      if (result.map) {
-        const link = makeTextElement("a", "Open delivery route in Google Maps");
-        link.href = result.map;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        summary.append(link);
-      }
-
-      const closeButton = makeTextElement("button", "Continue", "checkout-button");
-      closeButton.type = "button";
-      closeButton.style.justifyContent = "center";
-      closeButton.addEventListener("click", () => {
-        closeCartSheet();
-        $("cartSheetTitle").textContent = "Your order";
-        $("progressDetails").classList.remove("done");
-        $("progressDone").classList.remove("done");
-        container.replaceChildren();
-      });
-
-      view.append(icon, title, description, token, summary, closeButton);
-      container.append(view);
-
-      showCartSheet();
-      makeConfetti();
-    }
-
-    function makeConfetti() {
-      const pieces = ["🎉", "✨", "🍔", "❤️"];
-      for (let i = 0; i < 12; i++) {
-        const piece = document.createElement("span");
-        piece.className = "confetti";
-        piece.textContent = pieces[i % pieces.length];
-        piece.style.left = Math.random() * 100 + "vw";
-        piece.style.animationDelay = Math.random() * .7 + "s";
-        piece.style.fontSize = (16 + Math.random() * 13) + "px";
-        document.body.append(piece);
-        setTimeout(() => piece.remove(), 3900);
-      }
-    }
-
-    // Existing event wiring, with presentation-only controls.
-    $("type").addEventListener("change", updateOrderFields);
-    $("locationButton").addEventListener("click", getCurrentLocation);
-    $("orderForm").addEventListener("submit", submitOrder);
-    $("refreshButton").addEventListener("click", loadData);
-    $("trackForm").addEventListener("submit", event => {
-      event.preventDefault();
-      const orderId = $("trackOrderNumber").value.trim();
-      const phone = $("trackPhone").value.trim();
-      if (!orderId || !/^[6-9]\d{9}$/.test(phone)) {
-        $("trackResult").replaceChildren(makeTextElement("p", "Enter an order number and a valid 10-digit Indian mobile number.", "tracking-message"));
-        return;
-      }
-      $("trackSubmit").disabled = true;
-      $("trackSubmit").textContent = "Checking…";
-      trackOrder(orderId, phone, $("trackResult")).finally(() => {
-        $("trackSubmit").disabled = false;
-        $("trackSubmit").textContent = "Track order";
-      });
-    });
-    $("year").textContent = new Date().getFullYear();
-
-    $("searchInput").addEventListener("input", renderMenu);
-    $("vegOnly").addEventListener("change", renderMenu);
-
-    $("viewCartButton").addEventListener("click", showCartSheet);
-    $("closeCartButton").addEventListener("click", closeCartSheet);
-
-    $("cartOverlay").addEventListener("click", event => {
-      if (event.target === $("cartOverlay")) closeCartSheet();
-    });
-
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeCartSheet();
-    });
-
-    document.querySelectorAll(".order-type").forEach(button => {
-      button.addEventListener("click", () => {
-        $("type").value = button.dataset.type;
-        updateOrderFields();
-      });
-    });
-
-    document.querySelectorAll(".note-chip").forEach(button => {
-      button.addEventListener("click", () => {
-        const note = button.dataset.note;
-        const notes = $("notes");
-        const existing = notes.value.split(",").map(value => value.trim()).filter(Boolean);
-        const index = existing.indexOf(note);
-
-        if (index >= 0) existing.splice(index, 1);
-        else existing.push(note);
-
-        notes.value = existing.join(", ");
-        button.classList.toggle("active", index < 0);
-      });
-    });
-
-    window.selectedFoodCategory = "All";
-    loadData();
-    loadRecentOrder();
-  </script>
+    </div>
+
+    <div id="doneView" class="done-view" aria-live="polite"></div>
+  </section>
+</div>
+
+<script>
+"use strict";
+const API_URL = "https://script.google.com/macros/s/AKfycbxFnlBMfa5OxypWumiimkAhwjiQYU7593JFgB9nWXOvQ1XPoHLgWhjo-NrBU4fhZqkgzg/exec";
+const K = { order: "kbklc_recent_order_v1", menu: "kbklc_menu_v2", cart: "kbklc_cart_v1", favs: "kbklc_favs_v1", me: "kbklc_profile_v1", last: "kbklc_last_items_v1" };
+const STEPS = [["NEW", "New"], ["PREPARING", "Preparing"], ["READY", "Ready"], ["COMPLETED", "Completed"]];
+const MAX_QTY = 20, FAV = "__fav__";
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode: ignore */ } }
+};
+const rupees = v => {
+  const n = Number(v);
+  return Number.isFinite(n) ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 }).format(n) : "—";
+};
+const cleanPhone = v => { let d = String(v).replace(/\D/g, ""); if (d.length > 10 && /^(91|0)/.test(d)) d = d.slice(-10); return d; };
+const validPhone = p => /^[6-9]\d{9}$/.test(p);
+const getCat = i => String(i.category || "").trim() || "Other";
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const EMOJI = [[/momo/, "🥟"], [/burger/, "🍔"], [/pizza/, "🍕"], [/biryani/, "🍛"], [/thali/, "🍱"], [/rice/, "🍚"], [/dosa/, "🥞"], [/idli/, "🥟"],
+  [/cold coffee|shake/, "🧋"], [/coffee/, "☕"], [/tea|chai/, "🍵"], [/juice/, "🧃"], [/coke|cola|soda|drink|beverage/, "🥤"],
+  [/ice cream/, "🍨"], [/dessert|sweet|cake/, "🍰"], [/roll|wrap/, "🌯"], [/sandwich/, "🥪"], [/chinese|noodle/, "🍜"], [/fries/, "🍟"],
+  [/snack/, "🍿"], [/egg/, "🥚"], [/chicken|non.?veg/, "🍗"], [/paneer/, "🧀"], [/veg/, "🥗"]];
+const emoji = (text, veg) => (EMOJI.find(([re]) => re.test(String(text).toLowerCase())) || [0, veg === true ? "🥗" : "🍽️"])[1];
+const PASTELS = ["#fce8df", "#e4f4e8", "#eee7ff", "#fff0c9", "#e0f7f0", "#e9edf9"];
+const pastel = c => PASTELS[[...String(c)].reduce((h, ch) => (h + ch.charCodeAt(0)) % PASTELS.length, 0)];
+
+let toastT;
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 1800);
+}
+const showStatus = (msg, kind = "error") => { const s = $("status"); s.textContent = msg; s.className = "status " + kind; };
+const clearStatus = () => { $("status").className = "status hidden"; };
+function formError(msg) { const e = $("formError"); e.textContent = msg || ""; e.classList.toggle("hidden", !msg); if (msg) e.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+
+/* ---------- API: timeout, retry with backoff for safe (read) calls ---------- */
+async function api(data, { retries = 0, timeout = 20000 } = {}) {
+  let err;
+  for (let i = 0; i <= retries; i++) {
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), timeout);
+    try {
+      const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data), redirect: "follow", signal: ctl.signal });
+      let out;
+      try { out = JSON.parse(await res.text()); } catch { throw new Error("The server returned an unexpected response. Please try again."); }
+      if (!res.ok || out.ok !== true) throw Object.assign(new Error(out.error || "The request could not be completed."), { fatal: true });
+      return out;
+    } catch (e) {
+      err = e.name === "AbortError" ? new Error("The server took too long to respond.")
+        : e instanceof TypeError ? new Error("Network problem. Check your internet connection.") : e;
+      if (err.fatal || i === retries) break;
+      await new Promise(r => setTimeout(r, 600 * 2 ** i));
+    } finally { clearTimeout(timer); }
+  }
+  throw err;
+}
+
+/* ---------- state ---------- */
+let items = [], byId = new Map(), config = null, type = "delivery", lat = null, lng = null, submitting = false, lastFocus, pollT, activeRecent = false;
+const f = { q: "", cat: "All", diet: "all", sort: "rec" };
+const cart = new Map(Object.entries(store.get(K.cart, {})).map(([k, v]) => [k, Math.min(MAX_QTY, Math.floor(+v) || 0)]).filter(([, v]) => v > 0));
+const favs = new Set((store.get(K.favs, []) || []).map(String));
+const saveCart = () => store.set(K.cart, Object.fromEntries(cart));
+const lines = () => [...cart].map(([id, qty]) => ({ it: byId.get(id), qty })).filter(l => l.it);
+const subtotal = () => lines().reduce((s, l) => s + Number(l.it.price) * l.qty, 0);
+
+/* ---------- load menu (cached first, then fresh; works if server is slow/offline) ---------- */
+async function loadData(manual) {
+  const cached = store.get(K.menu);
+  if (!items.length) {
+    if (cached?.items?.length) applyData(cached.config, cached.items);
+    else $("menu").innerHTML = `<div class="menu-grid">${'<div class="food sk"></div>'.repeat(6)}</div>`;
+  }
+  $("refresh").disabled = true;
+  try {
+    const [c, m] = await Promise.all([api({ action: "config" }, { retries: 2 }), api({ action: "menu" }, { retries: 2 })]);
+    const list = Array.isArray(m.items) ? m.items : [];
+    store.set(K.menu, { t: Date.now(), config: c, items: list });
+    applyData(c, list); clearStatus();
+    if (!list.length) showStatus("The server is running, but no menu items are available right now.");
+    else if (manual) toast("Menu updated");
+  } catch (e) {
+    if (items.length) showStatus("Showing the last saved menu. " + e.message, "warn");
+    else { $("menu").innerHTML = `<div class="empty">We couldn't load the menu.<br><br><button class="btn" id="retry">Try again</button></div>`; showStatus(e.message); }
+  } finally { $("refresh").disabled = false; }
+}
+function applyData(c, list) {
+  config = c; items = list; byId = new Map(list.map(i => [String(i.id), i]));
+  let removed = false;
+  for (const id of [...cart.keys()]) { const it = byId.get(id); if (!it || it.available !== true) { cart.delete(id); removed = true; } }
+  if (removed) { saveCart(); toast("Unavailable items were removed from your cart"); }
+  renderCats(); renderMenu(); setType(type);
+}
+
+/* ---------- menu ---------- */
+const stepper = (id, n) => `<div class="stepper"><button data-dec="${esc(id)}" aria-label="Remove one">−</button><span>${n}</span><button data-inc="${esc(id)}" aria-label="Add one" ${n >= MAX_QTY ? "disabled" : ""}>+</button></div>`;
+const ctl = id => { const n = cart.get(String(id)) || 0; return n ? stepper(id, n) : `<button class="add" data-inc="${esc(id)}">ADD +</button>`; };
+
+function card(i) {
+  const id = esc(i.id), cat = getCat(i), fav = favs.has(String(i.id)), veg = i.veg === true;
+  return `<article class="food" data-id="${id}">
+    <div class="pic" style="--p:${pastel(cat)}"><span class="em" aria-hidden="true">${emoji(i.name + " " + cat, i.veg)}</span>
+      <button class="fav" data-fav="${id}" aria-pressed="${fav}" aria-label="${fav ? "Remove from" : "Add to"} favourites">${fav ? "♥" : "♡"}</button></div>
+    <div class="body">
+      <div class="name"><i class="kind${veg ? "" : " nv"}" role="img" aria-label="${veg ? "Vegetarian" : "Non-vegetarian"}"></i><h3>${esc(i.name)}</h3></div>
+      <p class="desc">${esc(i.description || i.desc || (veg ? "Veg · " : "Non-veg · ") + cat)}</p>
+      <div class="bottom"><b>${rupees(i.price)}</b><div class="ctl">${ctl(i.id)}</div></div>
+    </div></article>`;
+}
+
+function renderCats() {
+  const avail = items.filter(i => i.available === true), counts = new Map();
+  avail.forEach(i => counts.set(getCat(i), (counts.get(getCat(i)) || 0) + 1));
+  const favN = avail.filter(i => favs.has(String(i.id))).length;
+  const chips = [["All", "✨", "All", avail.length], ...(favN ? [[FAV, "❤️", "Favourites", favN]] : []), ...[...counts].map(([c, n]) => [c, emoji(c), c, n])];
+  if (!chips.some(c => c[0] === f.cat)) f.cat = "All";
+  $("cats").innerHTML = chips.map(([v, e, l, n]) => `<button class="chip${f.cat === v ? " on" : ""}" data-cat="${esc(v)}" aria-pressed="${f.cat === v}"><span>${e}</span>${esc(l)} <small>${n}</small></button>`).join("");
+}
+
+function renderMenu() {
+  const avail = items.filter(i => i.available === true), q = f.q.toLowerCase();
+  let list = avail.filter(i => {
+    const cat = getCat(i);
+    return (!q || (i.name + " " + cat).toLowerCase().includes(q)) &&
+      (f.diet === "all" || (f.diet === "veg") === (i.veg === true)) &&
+      (f.cat === "All" || (f.cat === FAV ? favs.has(String(i.id)) : cat === f.cat));
+  });
+  $("dishCount").textContent = avail.length + " dishes available";
+  $("menuSub").textContent = list.length ? `${list.length} ${list.length === 1 ? "pick" : "picks"} to explore.` : "Try another search or category.";
+  if (!list.length) { $("menu").innerHTML = `<div class="empty">${items.length ? "No dishes found. Try another category or search." : "No dishes available right now."}</div>`; return; }
+
+  if (f.sort !== "rec") {
+    list = list.slice().sort((a, b) => (f.sort === "asc" ? 1 : -1) * (Number(a.price) - Number(b.price)));
+    $("menu").innerHTML = `<div class="menu-grid" style="margin-top:14px">${list.map(card).join("")}</div>`;
+    return;
+  }
+  const groups = new Map();
+  list.forEach(i => { const c = getCat(i); (groups.get(c) || groups.set(c, []).get(c)).push(i); });
+  $("menu").innerHTML = [...groups].map(([c, arr]) =>
+    `<section><h3 class="sec-title"><span>${emoji(c)}</span>${esc(c)}</h3><div class="menu-grid">${arr.map(card).join("")}</div></section>`).join("");
+}
+
+/* ---------- cart ---------- */
+function change(id, d) {
+  id = String(id);
+  const it = byId.get(id); if (!it || it.available !== true) return;
+  const n = (cart.get(id) || 0) + d;
+  if (n > MAX_QTY) { toast("You can order up to 20 of each item"); return; }
+  n <= 0 ? cart.delete(id) : cart.set(id, n);
+  saveCart();
+  $$(`.food[data-id="${CSS.escape(id)}"] .ctl`).forEach(el => el.innerHTML = ctl(id));
+  renderCart();
+  if (d > 0) {
+    toast(it.name + " added"); navigator.vibrate?.(15);
+    const bar = $("fcart"); bar.classList.remove("bump"); void bar.offsetWidth; bar.classList.add("bump");
+  }
+}
+
+function renderCart() {
+  const L = lines(), sub = subtotal(), count = L.reduce((s, l) => s + l.qty, 0), delivery = type === "delivery";
+  $("cartItems").innerHTML = L.length ? L.map(({ it, qty }) =>
+    `<div class="line" style="--p:${pastel(getCat(it))}"><span class="em" aria-hidden="true">${emoji(it.name + " " + getCat(it), it.veg)}</span>
+     <div class="info">${esc(it.name)}<small>${rupees(Number(it.price) * qty)}</small></div>${stepper(it.id, qty)}</div>`).join("")
+    : `<p class="muted" style="padding:12px 0">Your cart is empty. Add something tasty!</p>`;
+
+  $("subT").textContent = rupees(sub);
+  $("feeT").textContent = delivery ? "At checkout" : rupees(0);
+  $("grandT").textContent = delivery ? rupees(sub) + " + delivery" : rupees(sub);
+
+  const min = Number(config?.minOrder) || 0, mn = $("minNote");
+  mn.classList.toggle("hidden", !(delivery && min > 0));
+  if (delivery && min > 0) {
+    const need = min - sub;
+    mn.innerHTML = need > 0 ? `<div class="bar"><i style="width:${Math.min(100, sub / min * 100)}%"></i></div>Add <b>${rupees(need)}</b> more for delivery (minimum ${rupees(min)}).` : "✓ Minimum delivery order met.";
+  }
+  $("fCount").textContent = count + (count === 1 ? " item" : " items");
+  $("fTotal").textContent = rupees(sub);
+  if (!submitting) $("payAmt").textContent = rupees(sub) + " →";
+  const bar = $("fcart"); bar.classList.toggle("show", count > 0); bar.setAttribute("aria-hidden", String(count === 0));
+  updateProgress();
+}
+
+function updateProgress() {
+  const [a, b, c] = $("progress").children;
+  a.className = cart.size ? "on" : "";
+  b.className = $("name").value.trim() && validPhone(cleanPhone($("phone").value)) ? "on" : "";
+  c.className = $("sheet").classList.contains("done") ? "on" : "";
+}
+
+function setType(t) {
+  type = t;
+  const delivery = t === "delivery";
+  $("delFields").classList.toggle("hidden", !delivery);
+  $("tableField").classList.toggle("hidden", t !== "dine-in");
+  $$(".type").forEach(b => b.classList.toggle("on", b.dataset.type === t));
+  $("mapPanel").classList.toggle("hidden", !delivery || lat == null);
+  if (delivery && lat != null) updateDistance();
+  saveProfile(); renderCart();
+}
+
+/* ---------- sheet ---------- */
+function openSheet() {
+  lastFocus = document.activeElement;
+  $("overlay").classList.add("open"); $("overlay").setAttribute("aria-hidden", "false"); document.body.classList.add("lock");
+  $("closeSheet").focus();
+}
+function closeSheet() {
+  $("overlay").classList.remove("open"); $("overlay").setAttribute("aria-hidden", "true"); document.body.classList.remove("lock");
+  $("sheet").classList.remove("done"); $("sheetTitle").textContent = "Your order"; formError("");
+  lastFocus?.focus?.();
+}
+
+/* ---------- location & distance ---------- */
+const hasShop = () => [config?.shopLat, config?.shopLng].every(v => v != null && v !== "" && Number.isFinite(Number(v)));
+function distanceKm() {
+  if (!hasShop() || lat == null) return null;
+  const rad = v => v * Math.PI / 180, a1 = Number(config.shopLat), o1 = Number(config.shopLng);
+  const dLat = rad(lat - a1), dLng = rad(lng - o1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a1)) * Math.cos(rad(lat)) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+}
+const radius = () => Number(config?.radiusKm) || 5;
+function updateDistance() {
+  const d = distanceKm(); if (d == null) return;
+  const out = d > radius(), o = `${config.shopLat},${config.shopLng}`, dest = `${lat},${lng}`;
+  $("mapPanel").classList.remove("hidden");
+  $("distText").classList.toggle("warn", out);
+  $("distText").textContent = out
+    ? `Approx. direct distance: ${d.toFixed(2)} km. This is outside our ${radius()} km delivery limit.`
+    : `Approx. direct distance from kitchen: ${d.toFixed(2)} km · Delivery limit: ${radius()} km. The server confirms the final eligibility and fee.`;
+  $("map").src = `https://maps.google.com/maps?saddr=${encodeURIComponent(o)}&daddr=${encodeURIComponent(dest)}&output=embed`;
+  $("mapLink").href = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(o)}&destination=${encodeURIComponent(dest)}`;
+}
+function getLocation(precise = true) {
+  if (!navigator.geolocation) { $("locMsg").textContent = "Your browser does not support location sharing. Try another browser."; return; }
+  const btn = $("locBtn"); btn.disabled = true; btn.textContent = "Getting location…";
+  $("locMsg").textContent = "Please allow location access if your browser asks.";
+  navigator.geolocation.getCurrentPosition(p => {
+    lat = p.coords.latitude; lng = p.coords.longitude;
+    $("locMsg").textContent = "Location captured. Your coordinates will be sent with your delivery order.";
+    btn.textContent = "📍 Location captured"; btn.disabled = false; updateDistance();
+  }, e => {
+    if (precise && e.code !== 1) return getLocation(false); // retry once with low accuracy (faster indoors)
+    lat = lng = null; $("mapPanel").classList.add("hidden");
+    $("locMsg").textContent = e.code === 1 ? "Location permission was denied. Allow location access in your browser and try again." : "Could not get your location. Check your device location settings and try again.";
+    btn.textContent = "📍 Use my current location"; btn.disabled = false;
+  }, { enableHighAccuracy: precise, timeout: precise ? 12000 : 15000, maximumAge: precise ? 0 : 60000 });
+}
+
+/* ---------- place order ---------- */
+function saveProfile() { store.set(K.me, { name: $("name").value, phone: $("phone").value, address: $("address").value, type }); }
+
+async function submit(e) {
+  e.preventDefault(); if (submitting) return;
+  formError("");
+  const L = lines(), sub = subtotal(), delivery = type === "delivery";
+  const name = $("name").value.trim(), phone = cleanPhone($("phone").value), address = $("address").value.trim(), table = $("table").value.trim();
+  const min = Number(config?.minOrder) || 0, d = distanceKm();
+  const checks = [
+    [!L.length, "Please add at least one food item to your cart."],
+    [!name, "Please enter your name.", "name"],
+    [!validPhone(phone), "Please enter a valid 10-digit Indian mobile number.", "phone"],
+    [type === "dine-in" && !table, "Please enter your table number.", "table"],
+    [delivery && address.length < 25, "Please enter a complete delivery address of at least 25 characters.", "address"],
+    [delivery && lat == null, "Please tap “Use my current location” and allow access before placing a delivery order."],
+    [delivery && min > sub, `Minimum delivery food order is ${rupees(min)}. Add ${rupees(min - sub)} more, or choose takeaway or dine-in.`],
+    [delivery && d != null && d > radius(), `Your location is outside our ${radius()} km delivery limit. Please choose takeaway or dine-in.`]
+  ];
+  const bad = checks.find(c => c[0]);
+  if (bad) { formError(bad[1]); if (bad[2]) $(bad[2]).focus(); return; }
+
+  const payload = {
+    name, phone, type, table: type === "dine-in" ? table : "",
+    items: L.map(({ it, qty }) => ({ id: it.id, qty })), notes: $("notes").value.trim(),
+    address: delivery ? address : "", lat: delivery ? lat : null, lng: delivery ? lng : null
+  };
+  submitting = true; $("pay").disabled = true; $("payLabel").textContent = "Placing order…"; $("payAmt").textContent = "Please wait";
+  try {
+    const r = await api(payload, { timeout: 30000 }); // never auto-retried: avoids duplicate orders
+    if (r.orderId) store.set(K.order, { orderId: String(r.orderId), phone, date: String(r.date || "") });
+    store.set(K.last, L.map(({ it, qty }) => ({ id: it.id, qty })));
+    cart.clear(); saveCart();
+    lat = lng = null; $("locBtn").textContent = "📍 Use my current location"; $("locMsg").textContent = "Your browser may ask permission to access your location.";
+    $("notes").value = ""; $("table").value = ""; syncNotes(); $("mapPanel").classList.add("hidden");
+    showSuccess(r); renderMenu(); renderCart(); loadRecent();
+  } catch (err) {
+    formError(`We couldn't confirm your order. ${err.message} If you're unsure whether it went through, check “Your recent order” or call the food court before retrying.`);
+  } finally {
+    submitting = false; $("pay").disabled = false; $("payLabel").textContent = "Place order"; renderCart();
+  }
+}
+
+function showSuccess(r) {
+  $("sheetTitle").textContent = "Order confirmed";
+  const map = /^https?:\/\//.test(r.map || "") ? `<a class="link" href="${esc(r.map)}" target="_blank" rel="noopener noreferrer">Open delivery route in Google Maps ↗</a>` : "";
+  $("doneView").innerHTML = `<div class="tick">✓</div><h2>Order placed!</h2><p class="muted">Your food journey starts now.</p>
+    <div class="token"><div>YOUR TOKEN</div><div>${esc(r.orderId || "CONFIRMED")}</div></div>
+    <div class="box" style="text-align:left"><p class="eyebrow">Order total</p><h3 style="font-size:22px;margin:0">${rupees(r.total)}</h3>
+      <p class="muted" style="font-size:13px">Keep your token number for reference.</p>${map}</div>
+    <div class="actions" style="justify-content:center"><button class="btn alt" data-goto="track">Track order</button><button class="btn" data-close>Continue</button></div>`;
+  $("sheet").classList.add("done"); updateProgress(); openSheet(); $("sheet").scrollTop = 0;
+  if (!reduced) for (let i = 0; i < 14; i++) {
+    const s = document.createElement("span"); s.className = "confetti"; s.textContent = ["🎉", "✨", "🍔", "❤️"][i % 4];
+    s.style.cssText = `left:${Math.random() * 100}vw;animation-delay:${Math.random() * .7}s;font-size:${16 + Math.random() * 13}px`;
+    document.body.append(s); setTimeout(() => s.remove(), 4000);
+  }
+}
+
+/* ---------- order tracking ---------- */
+const reqs = {}; // target id -> {orderId, phone, date}
+
+async function trackInto(target, req, quiet) {
+  reqs[target.id] = req;
+  if (!quiet) target.innerHTML = `<p class="msg">Checking order details…</p>`;
+  try {
+    const r = await api({ action: "track", orderId: req.orderId, phone: req.phone, ...(req.date ? { date: req.date } : {}) }, { retries: 1 });
+    renderOrder(target, r.order);
+    return r.order;
+  } catch (e) {
+    if (quiet && target.firstChild) return null; // keep showing the last known status
+    target.innerHTML = `<p class="msg">${esc(e.message || "We could not find that order. Check the order number and phone number.")}</p><div class="actions"><button class="btn" data-track="${target.id}">Try again</button></div>`;
+    return null;
+  }
+}
+
+function renderOrder(target, o) {
+  if (!o) { target.innerHTML = `<p class="msg">Order details are not available.</p>`; return; }
+  const st = String(o.status || "NEW").toUpperCase(), idx = STEPS.findIndex(s => s[0] === st);
+  const isDel = String(o.type || "").toLowerCase() === "delivery", meta = [];
+  if (o.date || o.time) meta.push([o.date, o.time].filter(Boolean).join(" · "));
+  if (o.items) meta.push("Items: " + o.items);
+  if (o.type) meta.push("Order type: " + String(o.type).replace(/-/g, " "));
+  meta.push("Total: " + rupees(o.total));
+  if (isDel && Number.isFinite(Number(o.distanceKm))) meta.push("Approx. kitchen distance: " + Number(o.distanceKm).toFixed(2) + " km");
+  const again = target.id === "recent" && (store.get(K.last, []) || []).some(x => byId.get(String(x.id))?.available === true)
+    ? `<button class="btn alt" data-again>🔁 Order again</button>` : "";
+  target.innerHTML = `
+    <div class="top"><b>${esc(o.orderId || "Order")}</b><span class="pill${st === "CANCELLED" ? " bad" : ""}">${esc(st.replace(/_/g, " "))}</span></div>
+    <p class="meta">${meta.map(esc).join("<br>")}</p>
+    ${st === "CANCELLED" ? `<p class="msg">This order has been cancelled. Please contact the food court if you need help.</p>`
+      : `<div class="steps">${STEPS.map(([, l], i) => `<div class="${idx >= i ? "done" : ""}"><span></span>${l}</div>`).join("")}</div>${idx < 0 ? `<p class="msg">Current status: ${esc(st)}</p>` : ""}`}
+    ${isDel && /^https?:\/\//.test(o.map || "") ? `<a class="link" href="${esc(o.map)}" target="_blank" rel="noopener noreferrer">Open delivery route in Google Maps ↗</a>` : ""}
+    <div class="actions"><button class="btn" data-track="${target.id}">↻ Refresh status</button>${again}</div>`;
+}
+
+async function loadRecent(quiet) {
+  clearTimeout(pollT);
+  const s = store.get(K.order);
+  if (!s?.orderId || !validPhone(String(s.phone || ""))) { activeRecent = false; return; }
+  const o = await trackInto($("recent"), { orderId: s.orderId, phone: s.phone, date: s.date }, quiet);
+  const st = String(o?.status || "").toUpperCase();
+  activeRecent = !o || !["COMPLETED", "CANCELLED"].includes(st);
+  if (activeRecent) pollT = setTimeout(() => { if (!document.hidden) loadRecent(true); }, 30000);
+}
+
+/* ---------- notes chips ---------- */
+function syncNotes() {
+  const list = $("notes").value.split(",").map(v => v.trim().toLowerCase());
+  $$(".qn").forEach(b => b.classList.toggle("on", list.includes(b.dataset.note.toLowerCase())));
+}
+
+/* ---------- events (delegated: one listener per kind, no per-card handlers) ---------- */
+document.addEventListener("click", e => {
+  const b = e.target.closest("button, a[data-goto]"); if (!b) return;
+  const d = b.dataset;
+  if (d.inc !== undefined) change(d.inc, 1);
+  else if (d.dec !== undefined) change(d.dec, -1);
+  else if (d.fav !== undefined) {
+    favs.has(d.fav) ? favs.delete(d.fav) : favs.add(d.fav); store.set(K.favs, [...favs]);
+    const on = favs.has(d.fav); b.textContent = on ? "♥" : "♡"; b.setAttribute("aria-pressed", on);
+    renderCats(); if (f.cat === FAV) renderMenu(); else if (on) toast("Saved to favourites");
+  }
+  else if (d.cat !== undefined) { f.cat = d.cat; renderCats(); renderMenu(); }
+  else if (d.diet !== undefined) { f.diet = d.diet; $$("[data-diet]").forEach(c => c.classList.toggle("on", c.dataset.diet === d.diet)); renderMenu(); }
+  else if (d.type !== undefined) setType(d.type);
+  else if (d.note !== undefined) {
+    const n = $("notes"), list = n.value.split(",").map(v => v.trim()).filter(Boolean), i = list.findIndex(v => v.toLowerCase() === d.note.toLowerCase());
+    i >= 0 ? list.splice(i, 1) : list.push(d.note); n.value = list.join(", "); syncNotes();
+  }
+  else if (d.track !== undefined) { const t = $(d.track); if (reqs[d.track]) trackInto(t, reqs[d.track]); }
+  else if (d.again !== undefined) {
+    let added = 0;
+    (store.get(K.last, []) || []).forEach(x => { const id = String(x.id); if (byId.get(id)?.available === true) { cart.set(id, Math.min(MAX_QTY, (cart.get(id) || 0) + (Math.floor(+x.qty) || 1))); added++; } });
+    saveCart(); renderMenu(); renderCart();
+    added ? (toast("Items added to your cart"), openSheet()) : toast("Those items aren't available right now");
+  }
+  else if (d.goto === "track") { closeSheet(); $("track").scrollIntoView(); }
+  else if (d.close !== undefined) closeSheet();
+  else if (b.id === "retry" || b.id === "refresh") loadData(b.id === "refresh");
+});
+
+let searchT;
+$("q").addEventListener("input", e => { clearTimeout(searchT); searchT = setTimeout(() => { f.q = e.target.value.trim(); renderMenu(); }, 150); });
+$("sort").addEventListener("change", e => { f.sort = e.target.value; renderMenu(); });
+$("openCart").addEventListener("click", openSheet);
+$("closeSheet").addEventListener("click", closeSheet);
+$("overlay").addEventListener("click", e => { if (e.target === $("overlay")) closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("overlay").classList.contains("open")) closeSheet(); });
+$("locBtn").addEventListener("click", () => getLocation());
+$("form").addEventListener("submit", submit);
+$("form").addEventListener("input", () => { saveProfile(); syncNotes(); updateProgress(); formError(""); });
+$("trackForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const id = $("tId").value.trim(), phone = cleanPhone($("tPhone").value);
+  if (!id || !validPhone(phone)) { $("found").innerHTML = `<p class="msg">Enter an order number and a valid 10-digit Indian mobile number.</p>`; return; }
+  $("tGo").disabled = true; $("tGo").textContent = "Checking…";
+  await trackInto($("found"), { orderId: id, phone });
+  $("tGo").disabled = false; $("tGo").textContent = "Track order";
+});
+addEventListener("online", () => { clearStatus(); loadData(); loadRecent(true); });
+addEventListener("offline", () => showStatus("You're offline. You can browse the saved menu, but orders need internet.", "warn"));
+document.addEventListener("visibilitychange", () => { if (!document.hidden && activeRecent) loadRecent(true); });
+
+/* ---------- init ---------- */
+(function init() {
+  const me = store.get(K.me, {});
+  if (me) {
+    $("name").value = me.name || ""; $("phone").value = me.phone || ""; $("address").value = me.address || "";
+    if (["delivery", "takeaway", "dine-in"].includes(me.type)) type = me.type;
+    if (me.phone) $("tPhone").value = cleanPhone(me.phone);
+  }
+  $("year").textContent = new Date().getFullYear();
+  setType(type); loadData(); loadRecent();
+  if (!navigator.onLine) showStatus("You're offline. You can browse the saved menu, but orders need internet.", "warn");
+})();
+</script>
 </body>
 </html>
