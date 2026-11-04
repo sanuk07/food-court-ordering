@@ -1025,17 +1025,10 @@
       if (selectedImage) {
         try { payload.imageData = await compressMenuImage(selectedImage); } catch (imageError) { $('menuFormMessage').textContent = imageError.message; return; }
       }
+      // Send an ID only when editing an existing item.
+      // For new items, Code.gs generates the next available numeric ID.
       if (idValue) {
         payload.id = Number(idValue);
-      } else {
-        // The current Code.gs menu_save action requires a numeric ID.
-        // A timestamp-based ID avoids colliding with soft-deleted menu rows
-        // that are intentionally hidden from the public menu response.
-        const highestVisibleId = state.menu.reduce(
-          (max, item) => Math.max(max, Number(item.id) || 0),
-          0
-        );
-        payload.id = Math.max(Date.now(), highestVisibleId + 1);
       }
       if (payload.name.length < 2 || !payload.category || payload.price === '' || !Number.isFinite(Number(payload.price)) || Number(payload.price) < 0) {
         $('menuFormMessage').textContent = 'Please enter a valid dish name, category and price.';
