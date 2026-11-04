@@ -269,7 +269,148 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
-  </style>
+  
+
+    /* Glassmorphism + neo-soft finish. Original cream, coral, lavender and green tones are retained. */
+    body {
+      background:
+        radial-gradient(ellipse at 8% 0%, rgba(255,255,255,.94), transparent 34%),
+        radial-gradient(ellipse at 96% 16%, rgba(226,55,68,.055), transparent 27%),
+        radial-gradient(ellipse at 50% 100%, rgba(123,77,255,.045), transparent 36%),
+        var(--page);
+      background-attachment: fixed;
+    }
+    .topbar {
+      background: rgba(241,238,232,.70);
+      backdrop-filter: blur(22px) saturate(145%);
+      -webkit-backdrop-filter: blur(22px) saturate(145%);
+      border-bottom: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 8px 28px rgba(34,28,20,.045);
+    }
+    .main-nav {
+      background: rgba(226,221,212,.48);
+      border: 1px solid rgba(255,255,255,.72);
+      box-shadow: inset 2px 2px 5px rgba(189,182,171,.16), inset -2px -2px 5px rgba(255,255,255,.7);
+    }
+    .main-nav button.active {
+      background: rgba(255,255,255,.82);
+      box-shadow: 4px 4px 10px rgba(189,182,171,.22), -4px -4px 10px rgba(255,255,255,.92);
+    }
+    .login-wrap {
+      background:
+        radial-gradient(circle at 5% 5%, rgba(255,229,191,.78) 0, transparent 34%),
+        radial-gradient(circle at 98% 90%, rgba(249,220,224,.76) 0, transparent 32%),
+        radial-gradient(circle at 55% 45%, rgba(255,255,255,.76), transparent 55%),
+        var(--page);
+    }
+    .login-card, .mini-tile:not(.dark), .stat-card, .section-card, .order-card,
+    .menu-card, .modal, .alarm-panel {
+      background: rgba(255,255,255,.66);
+      border: 1px solid rgba(255,255,255,.86);
+      backdrop-filter: blur(18px) saturate(138%);
+      -webkit-backdrop-filter: blur(18px) saturate(138%);
+      box-shadow: 9px 9px 22px rgba(189,182,171,.23),
+                  -8px -8px 22px rgba(255,255,255,.82),
+                  inset 1px 1px 0 rgba(255,255,255,.72);
+    }
+    .login-card { border-radius: 30px; }
+    .hero-brand {
+      background: linear-gradient(135deg, rgba(226,55,68,.98), rgba(196,39,52,.94));
+      border: 1px solid rgba(255,255,255,.34);
+      box-shadow: 10px 12px 24px rgba(170,70,66,.18), inset 1px 1px 0 rgba(255,255,255,.22);
+    }
+    .mini-tile.green { background: rgba(229,245,232,.74); }
+    .mini-tile.dark {
+      background: rgba(29,29,31,.92);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 8px 9px 20px rgba(29,29,31,.15), inset 1px 1px 0 rgba(255,255,255,.10);
+    }
+    .stat-card { border-radius: 21px; transition: transform .22s ease, box-shadow .22s ease; }
+    .stat-card:hover, .mini-tile:not(.dark):hover, .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 12px 12px 26px rgba(189,182,171,.28), -9px -9px 24px rgba(255,255,255,.9), inset 1px 1px 0 rgba(255,255,255,.78);
+    }
+    .section-card { border-radius: 25px; background: rgba(255,255,255,.58); }
+    .section-head { border-bottom-color: rgba(226,221,212,.68); }
+    .order-card, .menu-card {
+      background: rgba(255,255,255,.72);
+      border-color: rgba(255,255,255,.9);
+      border-radius: 20px;
+      box-shadow: 5px 5px 14px rgba(189,182,171,.16), -5px -5px 14px rgba(255,255,255,.76), inset 1px 1px 0 rgba(255,255,255,.85);
+    }
+    .order-card:hover, .menu-card:hover {
+      border-color: rgba(226,55,68,.18);
+      box-shadow: 9px 10px 20px rgba(189,182,171,.24), -7px -7px 18px rgba(255,255,255,.9);
+      transform: translateY(-2px);
+    }
+    .order-items { background: rgba(250,248,244,.76); border: 1px solid rgba(255,255,255,.8); }
+    .field input, .field select, .field textarea, .control,
+    .date-actions input, .search-wrap input, .status-control select {
+      background: rgba(255,255,255,.76);
+      border-color: rgba(218,211,201,.82);
+      box-shadow: inset 2px 2px 5px rgba(189,182,171,.09), inset -2px -2px 5px rgba(255,255,255,.88);
+    }
+    .btn { box-shadow: 4px 4px 10px rgba(189,182,171,.16), -3px -3px 9px rgba(255,255,255,.42); }
+    .btn-primary { box-shadow: 5px 6px 13px rgba(226,55,68,.20), inset 1px 1px 0 rgba(255,255,255,.18); }
+    .btn-light { background: rgba(255,255,255,.76); border-color: rgba(255,255,255,.9); }
+    .btn:active, .icon-btn:active { box-shadow: inset 3px 3px 7px rgba(189,182,171,.20), inset -3px -3px 7px rgba(255,255,255,.75); }
+    .tabs { gap: 8px; }
+    .tab { border: 1px solid transparent; }
+    .tab.active { background: var(--ink); box-shadow: 4px 5px 10px rgba(29,29,31,.14), inset 1px 1px 0 rgba(255,255,255,.12); }
+    .modal { background: rgba(241,238,232,.88); }
+    .overlay { background: rgba(29,29,31,.32); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .toast { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.18); }
+
+    /* Incoming-order sound controls */
+    .alarm-panel {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      margin: 0 0 22px; padding: 17px 19px; border-radius: 22px;
+    }
+    .alarm-copy { min-width: 0; flex: 1; }
+    .alarm-title-row { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; }
+    .alarm-icon { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 14px; background: var(--red-soft); font-size: 20px; box-shadow: inset 2px 2px 5px rgba(189,182,171,.12), inset -2px -2px 5px rgba(255,255,255,.88); }
+    .alarm-panel h3 { margin: 2px 0 0; font-size: 17px; letter-spacing: -.03em; }
+    .alarm-description { margin: 7px 0 0 51px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .alarm-state { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: var(--red-soft); color: #a9232d; font-size: 10px; font-weight: 850; white-space: nowrap; }
+    .alarm-state::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .alarm-state.on { background: var(--green-soft); color: var(--green); }
+    .alarm-controls { display: flex; align-items: center; justify-content: flex-end; gap: 14px; flex-wrap: wrap; }
+    .alarm-toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 850; white-space: nowrap; cursor: pointer; }
+    .alarm-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .alarm-switch { position: relative; display: inline-block; width: 38px; height: 22px; border-radius: 999px; background: #d8d4cd; box-shadow: inset 2px 2px 4px rgba(0,0,0,.10); transition: background .2s ease; }
+    .alarm-switch::after { content: ''; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 1px 2px 4px rgba(0,0,0,.18); transition: transform .2s ease; }
+    .alarm-toggle input:checked + .alarm-switch { background: var(--green); }
+    .alarm-toggle input:checked + .alarm-switch::after { transform: translateX(16px); }
+    .alarm-toggle input:focus-visible + .alarm-switch { outline: 3px solid rgba(226,55,68,.25); outline-offset: 3px; }
+    .alarm-volume { display: grid; gap: 5px; min-width: 112px; color: var(--muted); font-size: 10px; font-weight: 800; }
+    .alarm-volume span { display: flex; justify-content: space-between; gap: 8px; }
+    .alarm-volume strong { color: var(--ink); }
+    .alarm-volume input { width: 112px; accent-color: var(--red); cursor: pointer; }
+    .alarm-buttons { display: flex; gap: 7px; flex-wrap: wrap; }
+    .alarm-buttons .btn { white-space: nowrap; }
+    .new-order-flash { animation: new-order-glow 1s ease-in-out 3; border-color: rgba(226,55,68,.42) !important; }
+    @keyframes new-order-glow { 50% { box-shadow: 0 0 0 4px rgba(226,55,68,.10), 8px 8px 20px rgba(189,182,171,.22); } }
+
+    @media (max-width: 900px) {
+      .alarm-panel { align-items: flex-start; flex-direction: column; gap: 14px; }
+      .alarm-controls { width: 100%; justify-content: flex-start; }
+    }
+    @media (max-width: 600px) {
+      .alarm-panel { padding: 14px; border-radius: 18px; gap: 12px; }
+      .alarm-description { margin-left: 0; }
+      .alarm-title-row { gap: 8px; }
+      .alarm-panel h3 { font-size: 15px; }
+      .alarm-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center; }
+      .alarm-volume, .alarm-volume input { width: 100%; min-width: 0; }
+      .alarm-buttons { grid-column: 1 / -1; }
+      .alarm-buttons .btn { flex: 1; }
+    }
+    @supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+      .login-card, .mini-tile:not(.dark), .stat-card, .section-card, .order-card, .menu-card, .modal, .alarm-panel { background: rgba(255,255,255,.92); }
+    }
+
+  .menu-admin-thumb{width:64px;height:54px;object-fit:cover;border-radius:12px;display:block;margin-bottom:8px;border:1px solid rgba(0,0,0,.08)}
+    </style>
 </head>
 <body>
   <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
@@ -320,6 +461,35 @@
         <div class="mini-tile dark"><div class="eyebrow">THE SIMPLE WORKFLOW</div><div class="tile-value" style="font-size:18px">From new to done</div><div class="steps-line"><span>01 · Accept</span><span>02 · Prepare</span><span>03 · Complete</span></div></div>
       </section>
 
+      <section class="alarm-panel" aria-labelledby="alarmHeading">
+        <div class="alarm-copy">
+          <div class="alarm-title-row">
+            <span class="alarm-icon" aria-hidden="true">🔔</span>
+            <div>
+              <div class="eyebrow">INCOMING ORDER NOTIFICATIONS</div>
+              <h3 id="alarmHeading">New order sound alert</h3>
+            </div>
+            <span id="alarmStateBadge" class="alarm-state">Sound off</span>
+          </div>
+          <p id="alarmStatusText" class="alarm-description">Turn on sound to hear a buzzer when a new order arrives. Keep this admin page open.</p>
+        </div>
+        <div class="alarm-controls">
+          <label class="alarm-toggle" for="alarmEnabledToggle">
+            <input id="alarmEnabledToggle" type="checkbox">
+            <span class="alarm-switch" aria-hidden="true"></span>
+            <span>Enable sound</span>
+          </label>
+          <label class="alarm-volume" for="alarmVolume">
+            <span>Volume <strong id="alarmVolumeValue">65%</strong></span>
+            <input id="alarmVolume" type="range" min="0" max="100" step="5" value="65">
+          </label>
+          <div class="alarm-buttons">
+            <button id="testAlarmButton" class="btn btn-light btn-small" type="button">▶ Test sound</button>
+            <button id="stopAlarmButton" class="btn btn-danger-light btn-small" type="button">■ Stop alert</button>
+          </div>
+        </div>
+      </section>
+
       <section class="summary-grid" aria-label="Order statistics">
         <div class="stat-card"><div class="stat-head"><span>All orders</span><span class="stat-icon">🧾</span></div><div id="statAll" class="stat-num">—</div><div class="stat-note">For selected date</div></div>
         <div class="stat-card"><div class="stat-head"><span>New orders</span><span class="stat-icon" style="background:var(--orange-soft)">🔔</span></div><div id="statNew" class="stat-num">—</div><div class="stat-note">Need attention</div></div>
@@ -366,6 +536,7 @@
             <div class="field full"><label for="menuName">Dish name</label><input id="menuName" name="name" maxlength="80" placeholder="e.g. Paneer Tikka Roll" required minlength="2"></div>
             <div class="field"><label for="menuPrice">Price (₹)</label><input id="menuPrice" name="price" type="number" min="0" max="100000" step="0.01" placeholder="120" required></div>
             <div class="field"><label for="menuCategory">Category</label><input id="menuCategory" name="category" maxlength="40" placeholder="e.g. Rolls" required></div>
+            <div class="field full"><label for="menuImage">Food image (optional)</label><input id="menuImage" type="file" accept="image/jpeg,image/png,image/webp"><small class="muted">Upload a food photo. It will appear in the customer menu. If you skip it, an emoji will be shown.</small><div id="menuImagePreviewWrap" class="hidden" style="margin-top:10px"><img id="menuImagePreview" alt="Food image preview" style="width:120px;height:90px;object-fit:cover;border-radius:12px;border:1px solid #ddd"><label class="check-row" style="margin-top:8px"><input id="menuRemoveImage" type="checkbox"><span>Remove current image (show emoji instead)</span></label></div></div>
             <div class="field full"><label>Food type</label><label class="check-row"><input id="menuVeg" type="checkbox" checked><span>Vegetarian</span></label></div>
             <div class="field full"><label>Availability</label><label class="check-row"><input id="menuAvailable" type="checkbox" checked><span>Available to customers</span></label></div>
           </div>
@@ -390,7 +561,9 @@
       loadingOrders: false,
       loadingMenu: false,
       currentTab: 'orders',
-      lastRefresh: null
+      lastRefresh: null,
+      orderSnapshotDate: null,
+      orderSnapshot: new Set()
     };
 
     const $ = (id) => document.getElementById(id);
@@ -432,6 +605,143 @@
       item.textContent = message;
       $('toastStack').appendChild(item);
       window.setTimeout(() => { item.style.opacity = '0'; item.style.transform = 'translateY(-8px)'; window.setTimeout(() => item.remove(), 220); }, 2800);
+    }
+
+    /* ---------- New-order sound alert (Web Audio; no external audio file) ---------- */
+    const ALARM_STORAGE_KEY = 'foodcourt_admin_alarm_settings_v1';
+    let alarmSettings = { enabled: false, volume: 65 };
+    let alarmAudioContext = null;
+    let alarmNodes = [];
+    let alarmTimers = [];
+
+    function loadAlarmSettings() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(ALARM_STORAGE_KEY) || 'null');
+        if (saved && typeof saved === 'object') {
+          alarmSettings.enabled = saved.enabled === true;
+          alarmSettings.volume = Math.max(0, Math.min(100, Number(saved.volume ?? 65)));
+        }
+      } catch (_) { /* Use defaults when browser storage is unavailable. */ }
+      syncAlarmControls();
+    }
+
+    function saveAlarmSettings() {
+      try { localStorage.setItem(ALARM_STORAGE_KEY, JSON.stringify(alarmSettings)); }
+      catch (_) { /* Sound still works for this page session. */ }
+      syncAlarmControls();
+    }
+
+    function syncAlarmControls() {
+      if (!$('alarmEnabledToggle')) return;
+      $('alarmEnabledToggle').checked = alarmSettings.enabled;
+      $('alarmVolume').value = String(alarmSettings.volume);
+      $('alarmVolumeValue').textContent = alarmSettings.volume + '%';
+      $('alarmStateBadge').textContent = alarmSettings.enabled ? 'Sound on' : 'Sound off';
+      $('alarmStateBadge').classList.toggle('on', alarmSettings.enabled);
+      $('alarmStatusText').textContent = alarmSettings.enabled
+        ? 'Sound alerts are enabled. New orders are checked about every 20 seconds while this admin page is open.'
+        : 'Turn on sound to hear a buzzer when a new order arrives. Keep this admin page open.';
+    }
+
+    async function getAlarmAudioContext() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) throw new Error('This browser does not support sound alerts.');
+      if (!alarmAudioContext) alarmAudioContext = new AudioContextClass();
+      if (alarmAudioContext.state === 'suspended') await alarmAudioContext.resume();
+      return alarmAudioContext;
+    }
+
+    function stopOrderAlarm() {
+      alarmTimers.forEach(timer => window.clearTimeout(timer));
+      alarmTimers = [];
+      alarmNodes.forEach(node => { try { node.stop(); } catch (_) { /* Already stopped. */ } });
+      alarmNodes = [];
+    }
+
+    function playOneBuzz(frequency) {
+      if (!alarmSettings.enabled || !alarmAudioContext) return;
+      const ctx = alarmAudioContext;
+      const now = ctx.currentTime;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const peak = Math.max(0.0001, (alarmSettings.volume / 100) * 0.13);
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(frequency, now);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(peak, now + 0.018);
+      gain.gain.setValueAtTime(peak, now + 0.13);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.onended = () => {
+        alarmNodes = alarmNodes.filter(node => node !== oscillator);
+        try { oscillator.disconnect(); gain.disconnect(); } catch (_) { /* Already disconnected. */ }
+      };
+      alarmNodes.push(oscillator);
+      oscillator.start(now);
+      oscillator.stop(now + 0.26);
+    }
+
+    function playOrderAlarm() {
+      if (!alarmSettings.enabled) return;
+      stopOrderAlarm();
+      const pattern = [
+        [0, 560], [320, 440], [650, 560],
+        [1450, 560], [1770, 440], [2100, 560]
+      ];
+      pattern.forEach(([delay, frequency]) => {
+        const timer = window.setTimeout(() => playOneBuzz(frequency), delay);
+        alarmTimers.push(timer);
+      });
+    }
+
+    async function testOrderAlarm() {
+      alarmSettings.enabled = true;
+      saveAlarmSettings();
+      try {
+        await getAlarmAudioContext();
+        playOrderAlarm();
+        toast('Test sound is playing');
+      } catch (error) {
+        alarmSettings.enabled = false;
+        saveAlarmSettings();
+        toast(error.message || 'Could not play the test sound.', 'error');
+      }
+    }
+
+    function checkForNewOrders(orders, date) {
+      const currentKeys = new Set(orders.map(order => String(order.date || date) + '|' + String(order.orderId || '')));
+
+      // Establish a quiet baseline on first login or when a different date is selected.
+      if (state.orderSnapshotDate !== date) {
+        state.orderSnapshotDate = date;
+        state.orderSnapshot = currentKeys;
+        return;
+      }
+
+      const incoming = orders.filter(order => {
+        const key = String(order.date || date) + '|' + String(order.orderId || '');
+        return !state.orderSnapshot.has(key) && String(order.status || '').toUpperCase() === 'NEW';
+      });
+
+      state.orderSnapshot = currentKeys;
+
+      // Historical dates never trigger a new-order alarm.
+      if (date !== localISODate() || !incoming.length) return;
+
+      const count = incoming.length;
+      toast(count === 1
+        ? '🔔 New order received: ' + (incoming[0].orderId || 'Order')
+        : '🔔 ' + count + ' new orders received');
+      playOrderAlarm();
+    }
+
+    function armAudioUnlock() {
+      const unlock = () => {
+        if (alarmSettings.enabled) getAlarmAudioContext().catch(() => {});
+      };
+      document.addEventListener('pointerdown', unlock, { once: true });
+      document.addEventListener('keydown', unlock, { once: true });
     }
 
     async function api(payload) {
@@ -480,6 +790,9 @@
       state.password = '';
       state.orders = [];
       state.menu = [];
+      state.orderSnapshotDate = null;
+      state.orderSnapshot = new Set();
+      stopOrderAlarm();
       $('adminPassword').value = '';
       $('appView').classList.add('hidden');
       $('loginView').classList.remove('hidden');
@@ -501,7 +814,9 @@
           if (/wrong password/i.test(result.error || '')) logout();
           throw new Error(result.error || 'Could not load orders.');
         }
-        state.orders = Array.isArray(result.orders) ? result.orders : [];
+        const receivedOrders = Array.isArray(result.orders) ? result.orders : [];
+        checkForNewOrders(receivedOrders, date);
+        state.orders = receivedOrders;
         state.lastRefresh = new Date();
         renderStats();
         renderOrders();
@@ -630,8 +945,9 @@
       }
       grid.innerHTML = items.map((item, index) => {
         const available = item.available === true;
+        const imageBlock = item.imageUrl ? '<img class="menu-admin-thumb" src="' + escapeHtml(item.imageUrl) + '" alt="' + escapeHtml(item.name) + '">' : '';
         return '<article class="menu-card ' + (available ? '' : 'unavailable') + '" style="animation-delay:' + Math.min(index * 20, 160) + 'ms">' +
-          '<div class="menu-card-top"><span class="food-icon">' + foodEmoji(item) + '</span><span class="availability ' + (available ? 'on' : 'off') + '">' + (available ? '● Available' : '● Sold out') + '</span></div>' +
+          '<div class="menu-card-top"><span class="food-icon">' + (item.imageUrl ? '<img class="menu-admin-thumb" src="' + escapeHtml(item.imageUrl) + '" alt="" style="margin:0">' : foodEmoji(item)) + '</span><span class="availability ' + (available ? 'on' : 'off') + '">' + (available ? '● Available' : '● Sold out') + '</span></div>' +
           '<h4>' + escapeHtml(item.name) + '</h4><div class="cat">' + escapeHtml(item.category) + ' · <span class="veg-symbol ' + (item.veg ? '' : 'nonveg') + '"></span>' + (item.veg ? 'Veg' : 'Non-veg') + ' · ID ' + escapeHtml(item.id) + '</div>' +
           '<div class="menu-card-bottom"><div class="menu-price">' + currency(item.price) + '</div></div>' +
           '<div class="menu-card-actions"><button type="button" class="btn btn-light btn-small" data-edit-menu="' + Number(item.id) + '">Edit</button><button type="button" class="btn btn-light btn-small" data-toggle-menu="' + Number(item.id) + '" data-available="' + (!available) + '">' + (available ? 'Mark sold out' : 'Make available') + '</button><button type="button" class="btn btn-danger-light btn-small" data-delete-menu="' + Number(item.id) + '">Delete</button></div>' +
@@ -661,6 +977,10 @@
       $('menuCategory').value = item ? item.category : '';
       $('menuVeg').checked = item ? item.veg === true : true;
       $('menuAvailable').checked = item ? item.available === true : true;
+      $('menuImage').value = '';
+      $('menuRemoveImage').checked = false;
+      $('menuImagePreviewWrap').classList.toggle('hidden', !(item && item.imageUrl));
+      $('menuImagePreview').src = item && item.imageUrl ? item.imageUrl : '';
       $('menuModalTitle').textContent = item ? 'Edit menu item' : 'Add menu item';
       $('saveMenuButton').textContent = item ? 'Save changes' : 'Add item';
       $('menuFormMessage').textContent = '';
@@ -671,6 +991,19 @@
     function closeMenuModal() {
       $('menuModalOverlay').classList.add('hidden');
       $('menuFormMessage').textContent = '';
+    }
+
+    async function compressMenuImage(file) {
+      if (!file) return '';
+      if (!/^image\/(jpeg|png|webp)$/.test(file.type)) throw new Error('Choose a JPG, PNG or WebP image.');
+      const source = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = () => reject(new Error('Could not read image.')); reader.readAsDataURL(file); });
+      const img = await new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => reject(new Error('Could not open image.')); image.src = source; });
+      const scale = Math.min(1, 900 / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas'); canvas.width = Math.max(1, Math.round(img.width * scale)); canvas.height = Math.max(1, Math.round(img.height * scale));
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      const output = canvas.toDataURL('image/jpeg', 0.72);
+      if (output.length > 520000) throw new Error('Image is still too large. Please choose a smaller photo.');
+      return output;
     }
 
     async function saveMenuItem(event) {
@@ -684,9 +1017,26 @@
         price: $('menuPrice').value,
         category: $('menuCategory').value.trim(),
         veg: $('menuVeg').checked,
-        available: $('menuAvailable').checked
+        available: $('menuAvailable').checked,
+        removeImage: $('menuRemoveImage').checked,
+        imageUrl: idValue ? ((state.menu.find(item => Number(item.id) === Number(idValue)) || {}).imageUrl || '') : ''
       };
-      if (idValue) payload.id = Number(idValue);
+      const selectedImage = $('menuImage').files && $('menuImage').files[0];
+      if (selectedImage) {
+        try { payload.imageData = await compressMenuImage(selectedImage); } catch (imageError) { $('menuFormMessage').textContent = imageError.message; return; }
+      }
+      if (idValue) {
+        payload.id = Number(idValue);
+      } else {
+        // The current Code.gs menu_save action requires a numeric ID.
+        // A timestamp-based ID avoids colliding with soft-deleted menu rows
+        // that are intentionally hidden from the public menu response.
+        const highestVisibleId = state.menu.reduce(
+          (max, item) => Math.max(max, Number(item.id) || 0),
+          0
+        );
+        payload.id = Math.max(Date.now(), highestVisibleId + 1);
+      }
       if (payload.name.length < 2 || !payload.category || payload.price === '' || !Number.isFinite(Number(payload.price)) || Number(payload.price) < 0) {
         $('menuFormMessage').textContent = 'Please enter a valid dish name, category and price.';
         return;
@@ -750,6 +1100,38 @@
       }
     }
 
+    // Sound settings are remembered in this browser only. The browser requires a
+    // user interaction before it allows audio playback.
+    $('alarmEnabledToggle').addEventListener('change', async (event) => {
+      alarmSettings.enabled = event.target.checked;
+      if (!alarmSettings.enabled) {
+        stopOrderAlarm();
+        saveAlarmSettings();
+        toast('New-order sound alerts are off');
+        return;
+      }
+      try {
+        await getAlarmAudioContext();
+        saveAlarmSettings();
+        toast('New-order sound alerts are on');
+      } catch (error) {
+        alarmSettings.enabled = false;
+        saveAlarmSettings();
+        toast(error.message || 'Could not enable sound alerts.', 'error');
+      }
+    });
+
+    $('alarmVolume').addEventListener('input', (event) => {
+      alarmSettings.volume = Math.max(0, Math.min(100, Number(event.target.value) || 0));
+      saveAlarmSettings();
+    });
+
+    $('testAlarmButton').addEventListener('click', testOrderAlarm);
+    $('stopAlarmButton').addEventListener('click', () => {
+      stopOrderAlarm();
+      toast('Sound alert stopped');
+    });
+
     $('loginForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const button = $('loginButton');
@@ -802,6 +1184,7 @@
     });
     $('addMenuButton').addEventListener('click', () => openMenuModal());
     $('menuForm').addEventListener('submit', saveMenuItem);
+    $('menuImage').addEventListener('change', () => { const file = $('menuImage').files && $('menuImage').files[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { $('menuImagePreview').src = reader.result; $('menuImagePreviewWrap').classList.remove('hidden'); }; reader.readAsDataURL(file); $('menuRemoveImage').checked = false; });
     $('closeMenuModal').addEventListener('click', closeMenuModal);
     $('cancelMenuButton').addEventListener('click', closeMenuModal);
     $('menuModalOverlay').addEventListener('click', (event) => { if (event.target === $('menuModalOverlay')) closeMenuModal(); });
@@ -815,8 +1198,20 @@
 
     // Refresh order data in the background while the page is open; pause in inactive tabs.
     window.setInterval(() => {
-      if (state.password && !document.hidden && state.currentTab === 'orders' && !state.loadingOrders) loadOrders({ quiet: true });
-    }, 45000);
+      if (state.password && !document.hidden && !state.loadingOrders) {
+        loadOrders({ quiet: true });
+      }
+    }, 20000);
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && state.password && !state.loadingOrders) {
+        loadOrders({ quiet: true });
+      }
+    });
+
+    // Sound preferences persist locally; audio is unlocked on the first user gesture.
+    loadAlarmSettings();
+    armAudioUnlock();
 
     // The dashboard starts locked; no password is stored in localStorage or the URL.
     $('adminPassword').focus();
