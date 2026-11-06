@@ -361,6 +361,37 @@
     .overlay { background: rgba(29,29,31,.32); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
     .toast { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.18); }
 
+
+    /* Store open / close controls */
+    .store-panel {
+      display:flex; align-items:center; justify-content:space-between; gap:18px;
+      margin:0 0 18px; padding:17px 19px; border-radius:22px;
+    }
+    .store-copy { min-width:0; flex:1; }
+    .store-title-row { display:flex; align-items:center; gap:11px; flex-wrap:wrap; }
+    .store-icon { display:grid; place-items:center; flex:0 0 40px; width:40px; height:40px; border-radius:14px; background:var(--green-soft); font-size:20px; }
+    .store-panel h3 { margin:2px 0 0; font-size:17px; letter-spacing:-.03em; }
+    .store-description { margin:7px 0 0 51px; color:var(--muted); font-size:11px; line-height:1.5; }
+    .store-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:var(--green-soft); color:var(--green); font-size:10px; font-weight:850; white-space:nowrap; }
+    .store-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .store-badge.closed { background:var(--red-soft); color:#a9232d; }
+    .store-controls { display:flex; align-items:end; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+    .store-time-field { display:grid; gap:5px; min-width:135px; color:var(--muted); font-size:10px; font-weight:800; }
+    .store-time-field input { width:100%; min-height:38px; padding:7px 10px; border:1px solid var(--line); border-radius:11px; background:rgba(255,255,255,.8); color:var(--ink); }
+    .store-buttons { display:flex; gap:7px; flex-wrap:wrap; }
+    @media(max-width:900px) {
+      .store-panel { align-items:flex-start; flex-direction:column; gap:13px; }
+      .store-controls { width:100%; justify-content:flex-start; }
+    }
+    @media(max-width:600px) {
+      .store-panel { padding:14px; border-radius:18px; }
+      .store-description { margin-left:0; }
+      .store-controls { display:grid; grid-template-columns:1fr; }
+      .store-time-field { width:100%; }
+      .store-buttons { width:100%; }
+      .store-buttons .btn { flex:1; }
+    }
+
     /* Incoming-order sound controls */
     .alarm-panel {
       display: flex; align-items: center; justify-content: space-between; gap: 20px;
@@ -490,6 +521,30 @@
         </div>
       </section>
 
+      <section class="alarm-panel store-panel" aria-labelledby="storeHeading">
+        <div class="store-copy">
+          <div class="store-title-row">
+            <span class="store-icon" aria-hidden="true">🏪</span>
+            <div>
+              <div class="eyebrow">CUSTOMER ORDERING CONTROL</div>
+              <h3 id="storeHeading">Store availability</h3>
+            </div>
+            <span id="storeAdminBadge" class="store-badge">Store open</span>
+          </div>
+          <p id="storeAdminMessage" class="store-description">Customers can browse the menu and place orders.</p>
+        </div>
+        <div class="store-controls">
+          <label class="store-time-field" for="nextOpenTime">
+            <span>Next opening time (tomorrow)</span>
+            <input id="nextOpenTime" type="time" value="09:00">
+          </label>
+          <div class="store-buttons">
+            <button id="saveStoreTimeButton" class="btn btn-light btn-small" type="button">Save opening time</button>
+            <button id="storeToggleButton" class="btn btn-danger-light btn-small" type="button">Close store</button>
+          </div>
+        </div>
+      </section>
+
       <section class="summary-grid" aria-label="Order statistics">
         <div class="stat-card"><div class="stat-head"><span>All orders</span><span class="stat-icon">🧾</span></div><div id="statAll" class="stat-num">—</div><div class="stat-note">For selected date</div></div>
         <div class="stat-card"><div class="stat-head"><span>New orders</span><span class="stat-icon" style="background:var(--orange-soft)">🔔</span></div><div id="statNew" class="stat-num">—</div><div class="stat-note">Need attention</div></div>
@@ -563,7 +618,9 @@
       currentTab: 'orders',
       lastRefresh: null,
       orderSnapshotDate: null,
-      orderSnapshot: new Set()
+      orderSnapshot: new Set(),
+      storeOpen: true,
+      nextOpenTime: '09:00'
     };
 
     const $ = (id) => document.getElementById(id);
@@ -773,6 +830,64 @@
       }
     }
 
+
+    function formatStoreTime(value) {
+      const parts = String(value || '09:00').split(':');
+      let hour = Number(parts[0]) || 0;
+      const minute = String(parts[1] || '00').padStart(2, '0');
+      const suffix = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return hour + ':' + minute + ' ' + suffix;
+    }
+
+    function renderStoreControls() {
+      const badge = $('storeAdminBadge');
+      badge.textContent = state.storeOpen ? 'Store open' : 'Store closed';
+      badge.classList.toggle('closed', !state.storeOpen);
+      $('storeAdminMessage').textContent = state.storeOpen
+        ? 'Customers can browse the menu and place orders.'
+        : 'Ordering is paused. Customers will see that the store opens tomorrow at ' + formatStoreTime(state.nextOpenTime) + '.';
+      $('storeToggleButton').textContent = state.storeOpen ? 'Close store' : 'Open store';
+      $('storeToggleButton').classList.toggle('btn-danger-light', state.storeOpen);
+      $('storeToggleButton').classList.toggle('btn-primary', !state.storeOpen);
+      $('nextOpenTime').value = state.nextOpenTime || '09:00';
+    }
+
+    async function loadStoreSettings() {
+      if (!state.password) return;
+      const result = await api({ action: 'config' });
+      if (!result.ok) throw new Error(result.error || 'Could not load store settings.');
+      state.storeOpen = result.storeOpen !== false;
+      state.nextOpenTime = result.nextOpenTime || '09:00';
+      renderStoreControls();
+    }
+
+    async function saveStoreSettings(openState, button) {
+      const nextOpenTime = $('nextOpenTime').value || '09:00';
+      setButtonBusy(button, true, 'Saving…');
+      try {
+        const result = await api({
+          action: 'store_update',
+          password: state.password,
+          storeOpen: openState,
+          nextOpenTime: nextOpenTime
+        });
+        if (!result.ok) throw new Error(result.error || 'Could not update store settings.');
+        state.storeOpen = result.storeOpen === true;
+        state.nextOpenTime = result.nextOpenTime || nextOpenTime;
+        renderStoreControls();
+        toast(state.storeOpen
+          ? 'Store is now open'
+          : 'Store closed. Customers will see tomorrow’s opening time.');
+      } catch (error) {
+        toast(error.message || 'Could not update store settings.', 'error');
+      } finally {
+        setButtonBusy(button, false);
+        // setButtonBusy restores the old label, so render the latest store state again.
+        renderStoreControls();
+      }
+    }
+
     async function login(password) {
       const result = await api({ action: 'login', password });
       if (!result.ok) throw new Error(result.error || 'Login failed.');
@@ -782,7 +897,7 @@
       $('loginMessage').textContent = '';
       $('orderDate').value = localISODate();
       switchTab('orders');
-      await Promise.all([loadOrders(), loadMenu()]);
+      await Promise.all([loadOrders(), loadMenu(), loadStoreSettings()]);
       toast('Welcome to your dashboard');
     }
 
@@ -1140,6 +1255,13 @@
       } finally {
         setButtonBusy(button, false);
       }
+    });
+
+    $('storeToggleButton').addEventListener('click', () => {
+      saveStoreSettings(!state.storeOpen, $('storeToggleButton'));
+    });
+    $('saveStoreTimeButton').addEventListener('click', () => {
+      saveStoreSettings(state.storeOpen, $('saveStoreTimeButton'));
     });
 
     $('logoutButton').addEventListener('click', logout);
